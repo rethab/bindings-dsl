@@ -1,3 +1,10 @@
+/******
+ * Copyright © 2008–2009 Maurício C. Antunes
+ * This file is distributed under the BSD license.
+ * Check LICENSE file in distribution package for
+ * details.
+******/
+
 #ifndef __BINDINGS_C_MACROS_H__
 #define __BINDINGS_C_MACROS_H__
 
