@@ -5,8 +5,8 @@
  * details.
 ******/
 
-#ifndef __BINDINGS_MACROS_H__
-#define __BINDINGS_MACROS_H__
+#ifndef __BINDINGS_DSL_H__
+#define __BINDINGS_DSL_H__
 
 #define hsc_strict_import(dummy) printf( \
     "import Foreign.Ptr (Ptr,FunPtr,plusPtr)\n" \
@@ -229,5 +229,5 @@
      printf("    return ()\n"); \
     } \
 
-#endif /* __BINDINGS_MACROS_H__ */
+#endif /* __BINDINGS_DSL_H__ */
 

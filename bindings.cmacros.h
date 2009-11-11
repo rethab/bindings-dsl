@@ -5,8 +5,8 @@
  * details.
 ******/
 
-#ifndef __BINDINGS_C_MACROS_H__
-#define __BINDINGS_C_MACROS_H__
+#ifndef __BINDINGS_CMACROS_H__
+#define __BINDINGS_CMACROS_H__
 
 #define BC_GLOBALARRAY(name,type) \
 const type* array_##name () \
@@ -266,4 +266,5 @@ void inline_##name (t1 v1,t2 v2,t3 v3,t4 v4,t5 v5,t6 v6,t7 v7,t8 v8,t9 v9,t10 v1
   name (v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15,v16,v17,v18,v19,v20); \
 } \
 
-#endif /* __BINDINGS_C_MACROS_H__ */
+#endif /* __BINDINGS_CMACROS_H__ */
+
