@@ -13,7 +13,7 @@ description:
   to help write bindings to inline functions or macro functions.
   Documentation is available in package homepage:
   .
-  <http>://bitbucket.org/mauricio/bindings-dsl
+  <http://bitbucket.org/mauricio/bindings-dsl>
   .
   This package contains no Haskell code, only C header files
   designed for hsc2hsc.
