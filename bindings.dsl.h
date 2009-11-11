@@ -119,17 +119,6 @@
      printf("\n"); \
     } \
 
-/* hsc_fractional_t is deprecated */
-#define hsc_fractional_t(name) \
-    printf("type ");bc_conid(# name);printf(" = "); \
-    switch (sizeof(name)) \
-        { \
-         case sizeof(float): printf("CFloat");break; \
-         case sizeof(double): printf("CDouble");break; \
-         case sizeof(long double): printf("CLDouble");break; \
-        } \
-    printf("\n"); \
-
 #define hsc_opaque_t(name) \
     printf("data ");bc_conid(# name); \
     printf(" = "); \
@@ -232,13 +221,6 @@
         } \
      printf("    return ()\n"); \
     } \
-
-
-/* This re-export is deprecated. You should
- * import <bindings.c_macros.h> directly in
- * your C files.
- */
-#include <bindings.c_macros.h>
 
 #endif /* __BINDINGS_MACROS_H__ */
 

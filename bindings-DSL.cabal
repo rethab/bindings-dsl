@@ -26,4 +26,5 @@ stability: Stable API, ready for production use. Maintained with care.
 build-type: Simple
 bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
 category: FFI
-install-includes: bindings.macros.h , bindings.c_macros.h
+install-includes: bindings.dsl.h , bindings.cmacros.h
+build-depends: base >= 0 && < 1000
