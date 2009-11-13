@@ -28,3 +28,4 @@ bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
 category: FFI
 install-includes: bindings.dsl.h , bindings.cmacros.h
 build-depends: base >= 0 && < 1000
+exposed-modules: Bindings
