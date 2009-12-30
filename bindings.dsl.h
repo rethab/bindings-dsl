@@ -8,6 +8,8 @@
 #ifndef __BINDINGS_DSL_H__
 #define __BINDINGS_DSL_H__
 
+#include <inttypes.h>
+
 #define hsc_strict_import(dummy) printf( \
     "import Foreign.Ptr (Ptr,FunPtr,plusPtr)\n" \
     "import Foreign.Ptr (wordPtrToPtr,castPtrToFunPtr)\n" \
@@ -69,8 +71,10 @@
 #define bc_famaccess(type,field) {printf("p'");bc_glue(type,field);}; \
 
 #define bc_decimal(name) (name) > 0 \
-    ? printf("%ju",(uintmax_t)(name)) \
-    : printf("%jd",(intmax_t)(name)) \
+    ? printf("%"PRIuMAX,(uintmax_t)(name)) \
+    : printf("%"PRIdMAX,(intmax_t)(name)) \
+
+#define bc_wordptr(name) printf("%"PRIuPTR,(uintptr_t)(name)) \
 
 #define bc_float(name) printf("%Le",(long double)(name)) \
 
@@ -83,12 +87,13 @@
     bc_varid(# name);printf(" :: (Fractional a) => a\n"); \
 
 #define hsc_pointer(name) \
-    bc_varid(# name);printf(" = wordPtrToPtr %zu\n",(size_t)(name)); \
+    bc_varid(# name);printf(" = wordPtrToPtr "); \
+    bc_wordptr(name);printf("\n"); \
     bc_varid(# name);printf(" :: Ptr a\n"); \
 
 #define hsc_function_pointer(name) \
     bc_varid(# name);printf(" = (castPtrToFunPtr . wordPtrToPtr) "); \
-    printf("%zu\n",(size_t)(name)); \
+    bc_wordptr(name);printf("\n"); \
     bc_varid(# name);printf(" :: FunPtr a\n"); \
 
 #define hsc_ccall(name,type) \
@@ -122,7 +127,7 @@
      if (size==sizeof(int)) printf("%s",sign?"CInt":"CUInt"); \
      else if (size==sizeof(char)) printf("%s", \
        (char)(-1)<0?(sign?"CChar":"CUChar"):(sign?"CSChar":"CChar")); \
-     else printf("%s%zu",sign?"Int":"Word",8*size); \
+     else printf("%s%"PRIuMAX,sign?"Int":"Word",(uintmax_t)(8*size)); \
      printf("\n"); \
     } \
 
@@ -196,16 +201,18 @@
         } \
      printf("instance Storable "); \
      bc_conid(typename);printf(" where\n"); \
-     printf("  sizeOf _ = %zu\n  alignment = sizeOf\n",typesize); \
+     printf("  sizeOf _ = %"PRIuMAX"\n  alignment = sizeOf\n", \
+       (uintmax_t)(typesize)); \
      printf("  peek p = do\n"); \
      int i; \
      for (i=0;i<f.n;i++) \
         { \
          printf("    v%d <- ",i); \
          if (f.k[i] < 0) \
-            printf("peekByteOff p %zu",f.o[i]); \
+            printf("peekByteOff p %"PRIuMAX"",(uintmax_t)(f.o[i])); \
          if (f.k[i] > 0) \
-            printf("peekArray %zu (plusPtr p %zu)",f.s[i],f.o[i]); \
+            printf("peekArray %"PRIuMAX" (plusPtr p %"PRIuMAX")", \
+              (uintmax_t)(f.s[i]),(uintmax_t)(f.o[i])); \
          if (f.k[i] == 0) \
             printf("return []"); \
          printf("\n"); \
@@ -218,12 +225,14 @@
         { \
          printf("    "); \
          if (f.k[i] < 0) \
-            printf("pokeByteOff p %zu v%d",f.o[i],i); \
+            printf("pokeByteOff p %"PRIuMAX" v%d",(uintmax_t)(f.o[i]),i); \
          if (f.k[i] > 0) \
-            printf("pokeArray (plusPtr p %zu) " \
-              "(take %zu v%d)",f.o[i],f.s[i],i); \
+            printf("pokeArray (plusPtr p %"PRIuMAX") " \
+              "(take %"PRIuMAX" v%d)",(uintmax_t)(f.o[i]), \
+              (uintmax_t)(f.s[i]),i); \
          if (f.k[i] == 0) \
-            printf("pokeArray (plusPtr p %zu) v%d",f.o[i],i); \
+            printf("pokeArray (plusPtr p %"PRIuMAX") v%d", \
+              (uintmax_t)(f.o[i]),i); \
          printf("\n"); \
         } \
      printf("    return ()\n"); \
