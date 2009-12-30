@@ -16,7 +16,7 @@ description:
   <http://bitbucket.org/mauricio/bindings-dsl>
   .
   This package contains no Haskell code, only C header files
-  designed for hsc2hsc.
+  designed for hsc2hs.
 version: 1.0.3
 license: BSD3
 license-file: LICENSE
