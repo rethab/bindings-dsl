@@ -185,9 +185,11 @@
 
 #define hsc_union_field(name,type) \
      bc_prefield(name,[type],3); \
+     bc_posfield; \
 
 #define hsc_union_array_field(name,type) \
      bc_prefield(name,[type],4); \
+     bc_posfield; \
 
 #define hsc_flexible_array_member(name,type) \
      bc_prefield(name,[type],5); \
@@ -214,9 +216,9 @@
      for (i=0;i<f.n;i++) \
         { \
          printf("    v%d <- ",i); \
-         if (f.k[i] == 1) \
+         if (f.k[i] == 1 || f.k[i] == 3) \
             printf("peekByteOff p %"PRIuMAX"",(uintmax_t)(f.o[i])); \
-         if (f.k[i] == 2) \
+         if (f.k[i] == 2 || f.k[i] == 4) \
             printf("peekArray %"PRIuMAX" (plusPtr p %"PRIuMAX")", \
               (uintmax_t)(f.s[i]),(uintmax_t)(f.o[i])); \
          if (f.k[i] == 5) \
@@ -230,9 +232,9 @@
      for (i=0;i<f.n;i++) \
         { \
          printf("    "); \
-         if (f.k[i] == 1) \
+         if (f.k[i] == 1 || f.k[i] == 3) \
             printf("pokeByteOff p %"PRIuMAX" v%d",(uintmax_t)(f.o[i]),i); \
-         if (f.k[i] == 2) \
+         if (f.k[i] == 2 || f.k[i] == 4) \
             printf("pokeArray (plusPtr p %"PRIuMAX") " \
               "(take %"PRIuMAX" v%d)",(uintmax_t)(f.o[i]), \
               (uintmax_t)(f.s[i]),i); \
