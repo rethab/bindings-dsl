@@ -150,97 +150,101 @@
     printf("  :: (");bc_typemarkup(# type); \
     printf(") -> IO ");bc_conid(# name);printf("\n"); \
 
+static struct {
+	int n, is_array[500], is_union[500], is_fam[500];
+	size_t howmany[500], offset[500];
+	char fname[500][1000], ftype[500][1000];
+} bc_fielddata;
+
 #define hsc_starttype(name) \
     { \
      name *refpointer = 0; \
-     struct {int n, k[500]; size_t s[500], o[500];} f; \
-     f.n = 0; \
+     bc_fielddata.n = 0; \
      printf("data ");bc_conid(# name);printf(" = "); \
      bc_conid(# name);printf("{"); \
      char typename[] = # name; \
      size_t typesize = sizeof(name); \
-     struct {int d; char n[1000], t[1000];} fam; \
-     fam.n[0] = '\0' ; \
+     int index; \
 
-#define bc_prefield(name,type,typeofarray) \
-     if (f.n > 0) printf(","); \
+#define hsc_field(name,type) \
+     index = bc_fielddata.n++; \
+     if (index > 0) printf(","); \
      printf("\n  "); \
      bc_fieldname(typename,# name); \
      printf(" :: ");bc_typemarkup(# type); \
-     f.k[f.n] = typeofarray; \
-     f.o[f.n] = (size_t)&(refpointer->name); \
-
-#define bc_posfield \
-     f.n++; \
-
-#define hsc_field(name,type) \
-     bc_prefield(name,type,(1)); \
-     bc_posfield; \
+     bc_fielddata.offset[index] = (size_t)&(refpointer->name); \
+     bc_fielddata.is_array[index] = 0; \
+     bc_fielddata.is_union[index] = 0; \
+     bc_fielddata.is_fam[index] = 0; \
+     strcpy(bc_fielddata.fname[index],# name); \
+     strcpy(bc_fielddata.ftype[index],# type); \
 
 #define hsc_array_field(name,type) \
-     bc_prefield(name,[type],2); \
-     f.s[f.n] = sizeof(refpointer->name); \
-     f.s[f.n] /= sizeof(refpointer->name[0]); \
-     bc_posfield; \
+     hsc_field(name,[type]); \
+     bc_fielddata.howmany[index] = sizeof(refpointer->name) \
+       / sizeof(refpointer->name[0]); \
+     bc_fielddata.is_array[index] = 1; \
 
 #define hsc_union_field(name,type) \
-     bc_prefield(name,[type],3); \
-     bc_posfield; \
+     hsc_field(name,type); \
+     bc_fielddata[index].is_union = 1; \
 
 #define hsc_union_array_field(name,type) \
-     bc_prefield(name,[type],4); \
-     bc_posfield; \
+     hsc_array_field(name,type); \
+     bc_fielddata[index].is_union = 1; \
 
 #define hsc_flexible_array_member(name,type) \
-     bc_prefield(name,[type],5); \
-     strcpy(fam.n,# name); strcpy(fam.t,# type); \
-     fam.d = f.o[f.n]; \
-     bc_posfield; \
+     hsc_field(name,[type]); \
+     bc_fielddata.is_fam[index] = 1; \
+     strcpy(bc_fielddata.ftype[index],# type); \
 
 #define hsc_stoptype(dummy) \
      printf("\n } deriving (Eq,Show)\n"); \
-     if (*fam.n) \
+     int i; \
+     for (i=0; i < bc_fielddata.n; i++) if (bc_fielddata.is_fam[i]) \
         { \
-         bc_famaccess(typename,fam.n); \
-         printf(" p = plusPtr p %d\n",fam.d); \
-         bc_famaccess(typename,fam.n); \
+         bc_famaccess(typename,bc_fielddata.fname[i]); \
+         printf(" p = plusPtr p %d\n",bc_fielddata.offset[i]); \
+         bc_famaccess(typename,bc_fielddata.fname[i]); \
          printf(" :: Ptr (");bc_conid(typename);printf(") -> "); \
-         printf("Ptr (");bc_typemarkup(fam.t);printf(")\n"); \
+         printf("Ptr (");bc_typemarkup(bc_fielddata.ftype[i]);printf(")\n"); \
         } \
      printf("instance Storable "); \
      bc_conid(typename);printf(" where\n"); \
      printf("  sizeOf _ = %"PRIuMAX"\n  alignment = sizeOf\n", \
        (uintmax_t)(typesize)); \
      printf("  peek p = do\n"); \
-     int i; \
-     for (i=0;i<f.n;i++) \
+     for (i=0; i < bc_fielddata.n; i++) \
         { \
          printf("    v%d <- ",i); \
-         if (f.k[i] == 1 || f.k[i] == 3) \
-            printf("peekByteOff p %"PRIuMAX"",(uintmax_t)(f.o[i])); \
-         if (f.k[i] == 2 || f.k[i] == 4) \
-            printf("peekArray %"PRIuMAX" (plusPtr p %"PRIuMAX")", \
-              (uintmax_t)(f.s[i]),(uintmax_t)(f.o[i])); \
-         if (f.k[i] == 5) \
+         if (bc_fielddata.is_fam[i]) \
             printf("return []"); \
+         else if (bc_fielddata.is_array[i]) \
+            printf("peekArray %"PRIuMAX" (plusPtr p %"PRIuMAX")", \
+              (uintmax_t)(bc_fielddata.howmany[i]), \
+              (uintmax_t)(bc_fielddata.offset[i])); \
+         else \
+            printf("peekByteOff p %"PRIuMAX"", \
+              (uintmax_t)(bc_fielddata.offset[i])); \
          printf("\n"); \
         } \
      printf("    return $ ");bc_conid(typename); \
-     for (i=0;i<f.n;i++) printf(" v%d",i); printf("\n"); \
+     for (i=0; i < bc_fielddata.n; i++) printf(" v%d",i); printf("\n"); \
      printf("  poke p (");bc_conid(typename); \
-     for (i=0;i<f.n;i++) printf(" v%d",i); printf(") = do\n"); \
-     for (i=0;i<f.n;i++) \
+     for (i=0; i < bc_fielddata.n; i++) printf(" v%d",i); printf(") = do\n"); \
+     for (i=0; i < bc_fielddata.n; i++) \
         { \
          printf("    "); \
-         if (f.k[i] == 1 || f.k[i] == 3) \
-            printf("pokeByteOff p %"PRIuMAX" v%d",(uintmax_t)(f.o[i]),i); \
-         if (f.k[i] == 2 || f.k[i] == 4) \
-            printf("pokeArray (plusPtr p %"PRIuMAX") " \
-              "(take %"PRIuMAX" v%d)",(uintmax_t)(f.o[i]), \
-              (uintmax_t)(f.s[i]),i); \
-         if (f.k[i] == 5) \
+         if (bc_fielddata.is_fam[i]) \
             printf("pokeArray (plusPtr p %"PRIuMAX") v%d", \
-              (uintmax_t)(f.o[i]),i); \
+              (uintmax_t)(bc_fielddata.offset[i]),i); \
+         else if (bc_fielddata.is_array[i]) \
+            printf("pokeArray (plusPtr p %"PRIuMAX") " \
+              "(take %"PRIuMAX" v%d)",(uintmax_t)(bc_fielddata.offset[i]), \
+              (uintmax_t)(bc_fielddata.howmany[i]),i); \
+         else \
+            printf("pokeByteOff p %"PRIuMAX" v%d", \
+              (uintmax_t)(bc_fielddata.offset[i]),i); \
          printf("\n"); \
         } \
      printf("    return ()\n"); \
