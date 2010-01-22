@@ -2,7 +2,7 @@ cabal-version: >= 1.2.3
 name: bindings-DSL
 homepage: http://bitbucket.org/mauricio/bindings-dsl
 synopsis:
-  Domain specific language for FFI description, on top of hsc2hs.
+  FFI domain specific language, on top of hsc2hs.
 description: 
   This is a set of macros to be used when writing Haskell FFI.
   They were designed to be able to fully describe C interfaces,
@@ -17,12 +17,12 @@ description:
   .
   This package contains no Haskell code, only C header files
   designed for hsc2hs.
-version: 1.0.3
+version: 1.0.4
 license: BSD3
 license-file: LICENSE
 maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
 author: Maurício C. Antunes
-stability: Stable API, ready for production use. Maintained with care.
+stability: Stable API, well tested, ready for production use. Carefully maintained.
 build-type: Simple
 bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
 category: FFI
