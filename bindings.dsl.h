@@ -16,6 +16,7 @@
     "import Foreign.Storable\n" \
     "import Foreign.C.Types\n" \
     "import Foreign.C.String (CString,CStringLen,CWString,CWStringLen)\n" \
+    "import Foreign.Marshal.Alloc (alloca)\n" \
     "import Foreign.Marshal.Array (peekArray,pokeArray)\n" \
     "import Data.Int\n" \
     "import Data.Word\n" \
@@ -67,6 +68,8 @@
 #define bc_wrapper(name) {printf("mk'");bc_word(name);}; \
 
 #define bc_fieldname(type,field) {printf("c'");bc_glue(type,field);}; \
+
+#define bc_unionupdate(type,field) {printf("u'");bc_glue(type,field);}; \
 
 #define bc_famaccess(type,field) {printf("p'");bc_glue(type,field);}; \
 
@@ -208,6 +211,38 @@ static struct {
          bc_famaccess(typename,bc_fielddata.fname[i]); \
          printf(" :: Ptr (");bc_conid(typename);printf(") -> "); \
          printf("Ptr (");bc_typemarkup(bc_fielddata.ftype[i]);printf(")\n"); \
+        } \
+     for (i=0; i < bc_fielddata.n; i++) if (bc_fielddata.is_union[i]) \
+        { \
+         bc_unionupdate(typename,bc_fielddata.fname[i]); \
+         printf(" v vf = alloca \\p -> do\n"); \
+         printf("  poke p v\n"); \
+         if (bc_fielddata.is_array[i]) \
+            { \
+             printf("  pokeArray (plusPtr p %"PRIuMAX") ", \
+               (uintmax_t)(bc_fielddata.offset[i])); \
+             printf("(take %"PRIuMAX" vf)", \
+               (uintmax_t)(bc_fielddata.howmany[i])); \
+            } \
+         else \
+           printf("  pokeByteOff p %"PRIuMAX" vf", \
+             (uintmax_t)(bc_fielddata.offset[i])); \
+         printf("\n"); \
+         printf("  vu <- peek p\n"); \
+         printf("  return $\n"); \
+         int j; \
+         for (j=0; j < bc_fielddata.n; j++) if (bc_fielddata.is_union[j]) \
+            { \
+             printf("    {"); bc_fieldname(typename,bc_fielddata.fname[j]); \
+             printf(" = "); bc_fieldname(typename,bc_fielddata.fname[j]); \
+             printf(" vu}\n"); \
+            } \
+         printf("    v\n"); \
+         bc_unionupdate(typename,bc_fielddata.fname[i]); \
+         printf(" :: ");bc_conid(typename); \
+         printf(" -> ");bc_typemarkup(bc_fielddata.ftype[i]) \
+         printf(" -> IO ");bc_conid(typename); \
+         printf("\n"); \
         } \
      printf("instance Storable "); \
      bc_conid(typename);printf(" where\n"); \
