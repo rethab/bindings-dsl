@@ -190,11 +190,11 @@ static struct {
 
 #define hsc_union_field(name,type) \
      hsc_field(name,type); \
-     bc_fielddata[index].is_union = 1; \
+     bc_fielddata.is_union[index] = 1; \
 
 #define hsc_union_array_field(name,type) \
      hsc_array_field(name,type); \
-     bc_fielddata[index].is_union = 1; \
+     bc_fielddata.is_union[index] = 1; \
 
 #define hsc_flexible_array_member(name,type) \
      hsc_field(name,[type]); \
@@ -215,7 +215,7 @@ static struct {
      for (i=0; i < bc_fielddata.n; i++) if (bc_fielddata.is_union[i]) \
         { \
          bc_unionupdate(typename,bc_fielddata.fname[i]); \
-         printf(" v vf = alloca \\p -> do\n"); \
+         printf(" v vf = alloca $ \\p -> do\n"); \
          printf("  poke p v\n"); \
          if (bc_fielddata.is_array[i]) \
             { \
@@ -229,7 +229,7 @@ static struct {
              (uintmax_t)(bc_fielddata.offset[i])); \
          printf("\n"); \
          printf("  vu <- peek p\n"); \
-         printf("  return $\n"); \
+         printf("  return $ v \n"); \
          int j; \
          for (j=0; j < bc_fielddata.n; j++) if (bc_fielddata.is_union[j]) \
             { \
@@ -237,7 +237,6 @@ static struct {
              printf(" = "); bc_fieldname(typename,bc_fielddata.fname[j]); \
              printf(" vu}\n"); \
             } \
-         printf("    v\n"); \
          bc_unionupdate(typename,bc_fielddata.fname[i]); \
          printf(" :: ");bc_conid(typename); \
          printf(" -> ");bc_typemarkup(bc_fielddata.ftype[i]) \
