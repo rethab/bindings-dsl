@@ -100,10 +100,13 @@
     bc_varid(# name);printf(" :: FunPtr a\n"); \
 
 #define hsc_ccall(name,type) \
-    printf("foreign import ccall \"%s\" ",# name); \
+    hsc_callconv(name,ccall,type) \
+
+#define hsc_callconv(name,conv,type) \
+    printf("foreign import "# conv" \"%s\" ",# name); \
     bc_varid(# name);printf("\n"); \
     printf("  :: ");bc_typemarkup(# type);printf("\n"); \
-    printf("foreign import ccall \"&%s\" ",# name); \
+    printf("foreign import "# conv" \"&%s\" ",# name); \
     bc_ptrid(# name);printf("\n"); \
     printf("  :: FunPtr (");bc_typemarkup(# type);printf(")\n"); \
 
