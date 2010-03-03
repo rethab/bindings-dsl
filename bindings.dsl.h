@@ -67,6 +67,8 @@
 
 #define bc_wrapper(name) {printf("mk'");bc_word(name);}; \
 
+#define bc_dynamic(name) {printf("get'");bc_word(name);}; \
+
 #define bc_fieldname(type,field) {printf("c'");bc_glue(type,field);}; \
 
 #define bc_unionupdate(type,field) {printf("u'");bc_glue(type,field);}; \
@@ -155,6 +157,10 @@
     bc_wrapper(# name);printf("\n"); \
     printf("  :: (");bc_typemarkup(# type); \
     printf(") -> IO ");bc_conid(# name);printf("\n"); \
+    printf("foreign import ccall \"dynamic\" "); \
+    bc_dynamic(# name);printf("\n"); \
+    printf("  :: ");bc_conid(# name); \
+    printf(" -> (");bc_typemarkup(# type);printf(")\n"); \
 
 static struct {
 	int n, is_array[500], is_union[500], is_fam[500];
