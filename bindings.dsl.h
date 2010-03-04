@@ -67,7 +67,7 @@
 
 #define bc_wrapper(name) {printf("mk'");bc_word(name);}; \
 
-#define bc_dynamic(name) {printf("get'");bc_word(name);}; \
+#define bc_dynamic(name) {printf("mK'");bc_word(name);}; \
 
 #define bc_fieldname(type,field) {printf("c'");bc_glue(type,field);}; \
 
