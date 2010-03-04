@@ -9,21 +9,33 @@
 #define __BINDINGS_CMACROS_H__
 
 #define BC_GLOBALARRAY(name,type) \
-const type* array_##name () \
+const type* array_##name (void) \
 { \
   return name; \
 } \
 
 #define BC_INLINE_(name,ret) \
-ret inline_##name () \
+ret inline_##name (void) \
 { \
   return name; \
 } \
 
 #define BC_INLINE_VOID(name) \
-void inline_##name () \
+void inline_##name (void) \
 { \
   name; \
+} \
+
+#define BC_INLINE0(name,ret) \
+ret inline_##name (void) \
+{ \
+  return name (); \
+} \
+
+#define BC_INLINE0VOID(name) \
+void inline_##name (void) \
+{ \
+  name (); \
 } \
 
 #define BC_INLINE1(name,t1,ret) \
