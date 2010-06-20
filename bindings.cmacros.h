@@ -9,7 +9,7 @@
 #define __BINDINGS_CMACROS_H__
 
 #define BC_GLOBALARRAY(name,type) \
-const type* array_##name (void) \
+type const *array_##name (void) \
 { \
   return name; \
 } \
