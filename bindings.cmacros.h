@@ -278,5 +278,16 @@ void inline_##name (t1 v1,t2 v2,t3 v3,t4 v4,t5 v5,t6 v6,t7 v7,t8 v8,t9 v9,t10 v1
   name (v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15,v16,v17,v18,v19,v20); \
 } \
 
+#define BC_GOBJECT_NOTCLASSED(prefix,object,CamelCase) \
+    BC_INLINE_(prefix##_TYPE_##object,GType) \
+    BC_INLINE1(prefix##_##object,void*,CamelCase*) \
+    BC_INLINE1(prefix##_IS_##object,void*,gboolean) \
+
+#define BC_GOBJECT(prefix,object,CamelCase) \
+    BC_GOBJECT_NOTCLASSED(prefix,object,CamelCase) \
+    BC_INLINE1(prefix##_##object##_CLASS,void*,CamelCase##Class*) \
+    BC_INLINE1(prefix##_IS_##object##_CLASS,void*,gboolean) \
+    BC_INLINE1(prefix##_##object##_GET_CLASS,void*,CamelCase##Class*) \
+
 #endif /* __BINDINGS_CMACROS_H__ */
 

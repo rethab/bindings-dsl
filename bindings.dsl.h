@@ -293,5 +293,18 @@ static struct {
      printf("    return ()\n"); \
     } \
 
+#define hsc_gobject_notclassed(prefix,object,CamelCase) \
+    hsc_opaque_t(CamelCase) \
+    hsc_cinline(prefix##_TYPE_##object,<GType>) \
+    hsc_cinline(prefix##_##object,Ptr a -> Ptr <CamelCase>) \
+    hsc_cinline(prefix##_IS_##object,Ptr a -> <gboolean>) \
+
+#define hsc_gobject(prefix,object,CamelCase) \
+    hsc_opaque_t(CamelCase##Class) \
+    hsc_gobject_notclassed(prefix,object,CamelCase) \
+    hsc_cinline(prefix##_##object##_CLASS,Ptr a -> Ptr <CamelCase##Class>) \
+    hsc_cinline(prefix##_IS_##object##_CLASS,Ptr a -> <gboolean>) \
+    hsc_cinline(prefix##_##object##_GET_CLASS,Ptr a -> Ptr <CamelCase##Class>) \
+
 #endif /* __BINDINGS_DSL_H__ */
 

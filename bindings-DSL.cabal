@@ -11,13 +11,13 @@ description:
   derived from C names, structures are mapped to Haskell instances
   of Storable, and there are also macros you can use with C code
   to help write bindings to inline functions or macro functions.
-  Documentation is available in package homepage:
+  Documentation is available at package homepage:
   .
   <http://bitbucket.org/mauricio/bindings-dsl>
   .
   This package contains no Haskell code, only C header files
   designed for hsc2hs.
-version: 1.0.7
+version: 1.0.8
 license: BSD3
 license-file: LICENSE
 maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
