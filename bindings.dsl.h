@@ -216,7 +216,7 @@ static struct {
      for (i=0; i < bc_fielddata.n; i++) if (bc_fielddata.is_fam[i]) \
         { \
          bc_famaccess(typename,bc_fielddata.fname[i]); \
-         printf(" p = plusPtr p %d\n",bc_fielddata.offset[i]); \
+         printf(" p = plusPtr p %zu\n",bc_fielddata.offset[i]); \
          bc_famaccess(typename,bc_fielddata.fname[i]); \
          printf(" :: Ptr (");bc_conid(typename);printf(") -> "); \
          printf("Ptr (");bc_typemarkup(bc_fielddata.ftype[i]);printf(")\n"); \
