@@ -164,7 +164,7 @@
 
 static struct {
 	int n, is_array[500], is_union[500], is_fam[500];
-	size_t howmany[500], offset[500];
+	uintmax_t howmany[500], offset[500];
 	char fname[500][1000], ftype[500][1000];
 } bc_fielddata;
 
@@ -184,7 +184,7 @@ static struct {
      printf("\n  "); \
      bc_fieldname(typename,# name); \
      printf(" :: ");bc_typemarkup(# type); \
-     bc_fielddata.offset[index] = (size_t)&(refpointer->name); \
+     bc_fielddata.offset[index] = (uintmax_t)&(refpointer->name); \
      bc_fielddata.is_array[index] = 0; \
      bc_fielddata.is_union[index] = 0; \
      bc_fielddata.is_fam[index] = 0; \
@@ -216,7 +216,7 @@ static struct {
      for (i=0; i < bc_fielddata.n; i++) if (bc_fielddata.is_fam[i]) \
         { \
          bc_famaccess(typename,bc_fielddata.fname[i]); \
-         printf(" p = plusPtr p %zu\n",bc_fielddata.offset[i]); \
+         printf(" p = plusPtr p %"PRIuMAX"\n",bc_fielddata.offset[i]); \
          bc_famaccess(typename,bc_fielddata.fname[i]); \
          printf(" :: Ptr (");bc_conid(typename);printf(") -> "); \
          printf("Ptr (");bc_typemarkup(bc_fielddata.ftype[i]);printf(")\n"); \
@@ -229,13 +229,13 @@ static struct {
          if (bc_fielddata.is_array[i]) \
             { \
              printf("  pokeArray (plusPtr p %"PRIuMAX") ", \
-               (uintmax_t)(bc_fielddata.offset[i])); \
+               bc_fielddata.offset[i]); \
              printf("(take %"PRIuMAX" vf)", \
-               (uintmax_t)(bc_fielddata.howmany[i])); \
+               bc_fielddata.howmany[i]); \
             } \
          else \
            printf("  pokeByteOff p %"PRIuMAX" vf", \
-             (uintmax_t)(bc_fielddata.offset[i])); \
+               bc_fielddata.offset[i]); \
          printf("\n"); \
          printf("  vu <- peek p\n"); \
          printf("  return $ v \n"); \
@@ -264,11 +264,10 @@ static struct {
             printf("return []"); \
          else if (bc_fielddata.is_array[i]) \
             printf("peekArray %"PRIuMAX" (plusPtr p %"PRIuMAX")", \
-              (uintmax_t)(bc_fielddata.howmany[i]), \
-              (uintmax_t)(bc_fielddata.offset[i])); \
+              bc_fielddata.howmany[i], bc_fielddata.offset[i]); \
          else \
             printf("peekByteOff p %"PRIuMAX"", \
-              (uintmax_t)(bc_fielddata.offset[i])); \
+              bc_fielddata.offset[i]); \
          printf("\n"); \
         } \
      printf("    return $ ");bc_conid(typename); \
@@ -280,14 +279,13 @@ static struct {
          printf("    "); \
          if (bc_fielddata.is_fam[i]) \
             printf("pokeArray (plusPtr p %"PRIuMAX") v%d", \
-              (uintmax_t)(bc_fielddata.offset[i]),i); \
+              bc_fielddata.offset[i],i); \
          else if (bc_fielddata.is_array[i]) \
-            printf("pokeArray (plusPtr p %"PRIuMAX") " \
-              "(take %"PRIuMAX" v%d)",(uintmax_t)(bc_fielddata.offset[i]), \
-              (uintmax_t)(bc_fielddata.howmany[i]),i); \
+            printf("pokeArray (plusPtr p %"PRIuMAX") (take %"PRIuMAX" v%d)", \
+              bc_fielddata.offset[i], bc_fielddata.howmany[i],i); \
          else \
             printf("pokeByteOff p %"PRIuMAX" v%d", \
-              (uintmax_t)(bc_fielddata.offset[i]),i); \
+              bc_fielddata.offset[i],i); \
          printf("\n"); \
         } \
      printf("    return ()\n"); \
