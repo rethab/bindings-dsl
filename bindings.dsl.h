@@ -1,5 +1,5 @@
 /******
- * Copyright © 2008–2009 Maurício C. Antunes
+ * Copyright © 2008–2011 Maurício C. Antunes
  * This file is distributed under the BSD license.
  * Check LICENSE file in distribution package for
  * details.
@@ -184,7 +184,8 @@ static struct {
      printf("\n  "); \
      bc_fieldname(typename,# name); \
      printf(" :: ");bc_typemarkup(# type); \
-     bc_fielddata.offset[index] = (uintmax_t)&(refpointer->name); \
+     bc_fielddata.offset[index] = (uintmax_t) \
+         ((char*)&refpointer->name - (char*)refpointer); \
      bc_fielddata.is_array[index] = 0; \
      bc_fielddata.is_union[index] = 0; \
      bc_fielddata.is_fam[index] = 0; \
