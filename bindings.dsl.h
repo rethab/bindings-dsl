@@ -101,8 +101,11 @@
     bc_wordptr(name);printf("\n"); \
     bc_varid(# name);printf(" :: FunPtr a\n"); \
 
-#define hsc_ccall(name,type) \
-    hsc_callconv(name,ccall,type) \
+#ifdef BINDINGS_STDCALLCONV
+#define hsc_ccall(name,type) hsc_callconv(name,stdcall,type)
+#else
+#define hsc_ccall(name,type) hsc_callconv(name,ccall,type)
+#endif
 
 #define hsc_callconv(name,conv,type) \
     printf("foreign import "# conv" \"%s\" ",# name); \
@@ -150,14 +153,20 @@
     bc_typemarkup(# type); \
     printf("\n"); \
 
-#define hsc_callback(name,type) \
+#ifdef BINDINGS_STDCALLCONV
+#define hsc_callback(name,type) hsc_callbackconv(name,stdcall,type)
+#else
+#define hsc_callback(name,type) hsc_callbackconv(name,ccall,type)
+#endif
+
+#define hsc_callbackconv(name,conv,type) \
     printf("type ");bc_conid(# name);printf(" = FunPtr ("); \
     bc_typemarkup(# type);printf(")\n"); \
-    printf("foreign import ccall \"wrapper\" "); \
+    printf("foreign import "# conv" \"wrapper\" "); \
     bc_wrapper(# name);printf("\n"); \
     printf("  :: (");bc_typemarkup(# type); \
     printf(") -> IO ");bc_conid(# name);printf("\n"); \
-    printf("foreign import ccall \"dynamic\" "); \
+    printf("foreign import "# conv" \"dynamic\" "); \
     bc_dynamic(# name);printf("\n"); \
     printf("  :: ");bc_conid(# name); \
     printf(" -> (");bc_typemarkup(# type);printf(")\n"); \
