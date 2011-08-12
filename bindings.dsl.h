@@ -73,6 +73,8 @@
 
 #define bc_unionupdate(type,field) {printf("u'");bc_glue(type,field);}; \
 
+#define bc_fieldupdate(type,field) {printf("f'");bc_glue(type,field);}; \
+
 #define bc_famaccess(type,field) {printf("p'");bc_glue(type,field);}; \
 
 #define bc_decimal(name) (name) > 0 \
@@ -234,6 +236,11 @@ static struct {
      for (i=0; i < bc_fielddata.n; i++) if (bc_fielddata.is_union[i]) \
         { \
          bc_unionupdate(typename,bc_fielddata.fname[i]); \
+         printf(" :: ");bc_conid(typename); \
+         printf(" -> ");bc_typemarkup(bc_fielddata.ftype[i]) \
+         printf(" -> IO ");bc_conid(typename); \
+         printf("\n"); \
+         bc_unionupdate(typename,bc_fielddata.fname[i]); \
          printf(" v vf = alloca $ \\p -> do\n"); \
          printf("  poke p v\n"); \
          if (bc_fielddata.is_array[i]) \
@@ -248,7 +255,7 @@ static struct {
                bc_fielddata.offset[i]); \
          printf("\n"); \
          printf("  vu <- peek p\n"); \
-         printf("  return $ v \n"); \
+         printf("  return $ v\n"); \
          int j; \
          for (j=0; j < bc_fielddata.n; j++) if (bc_fielddata.is_union[j]) \
             { \
@@ -256,11 +263,29 @@ static struct {
              printf(" = "); bc_fieldname(typename,bc_fielddata.fname[j]); \
              printf(" vu}\n"); \
             } \
-         bc_unionupdate(typename,bc_fielddata.fname[i]); \
-         printf(" :: ");bc_conid(typename); \
-         printf(" -> ");bc_typemarkup(bc_fielddata.ftype[i]) \
-         printf(" -> IO ");bc_conid(typename); \
-         printf("\n"); \
+        } \
+     for (i=0; i < bc_fielddata.n; i++) \
+        { \
+         bc_fieldupdate(typename,bc_fielddata.fname[i]); \
+         printf(" :: (");bc_typemarkup(bc_fielddata.ftype[i]); \
+         printf(" -> ");bc_typemarkup(bc_fielddata.ftype[i]); \
+         printf(") -> Ptr ");bc_conid(typename); \
+         printf(" -> IO (");bc_typemarkup(bc_fielddata.ftype[i]); \
+         printf(")\n"); \
+         bc_fieldupdate(typename,bc_fielddata.fname[i]); \
+         printf(" f p = let pb = plusPtr p %"PRIuMAX, \
+           bc_fielddata.offset[i]); \
+         if (bc_fielddata.is_array[i]) \
+            printf(" ; c = %"PRIuMAX"\n  in peekArray c pb", \
+              bc_fielddata.howmany[i]); \
+         else \
+            printf("\n  in peek pb"); \
+         printf(" >>= \\v -> ("); \
+         if (bc_fielddata.is_array[i]) \
+            printf("pokeArray pb $ take c"); \
+         else \
+            printf("poke pb"); \
+         printf(" $ f v) >> return v\n"); \
         } \
      printf("instance Storable "); \
      bc_conid(typename);printf(" where\n"); \
