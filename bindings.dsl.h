@@ -73,9 +73,7 @@
 
 #define bc_unionupdate(type,field) {printf("u'");bc_glue(type,field);}; \
 
-#define bc_fieldupdate(type,field) {printf("f'");bc_glue(type,field);}; \
-
-#define bc_famaccess(type,field) {printf("p'");bc_glue(type,field);}; \
+#define bc_fieldoffset(type,field) {printf("p'");bc_glue(type,field);}; \
 
 #define bc_decimal(name) (name) > 0 \
     ? printf("%"PRIuMAX,(uintmax_t)(name)) \
@@ -225,11 +223,11 @@ static struct {
 #define hsc_stoptype(dummy) \
      printf("\n } deriving (Eq,Show)\n"); \
      int i; \
-     for (i=0; i < bc_fielddata.n; i++) if (bc_fielddata.is_fam[i]) \
+     for (i=0; i < bc_fielddata.n; i++) \
         { \
-         bc_famaccess(typename,bc_fielddata.fname[i]); \
+         bc_fieldoffset(typename,bc_fielddata.fname[i]); \
          printf(" p = plusPtr p %"PRIuMAX"\n",bc_fielddata.offset[i]); \
-         bc_famaccess(typename,bc_fielddata.fname[i]); \
+         bc_fieldoffset(typename,bc_fielddata.fname[i]); \
          printf(" :: Ptr (");bc_conid(typename);printf(") -> "); \
          printf("Ptr (");bc_typemarkup(bc_fielddata.ftype[i]);printf(")\n"); \
         } \
@@ -263,29 +261,6 @@ static struct {
              printf(" = "); bc_fieldname(typename,bc_fielddata.fname[j]); \
              printf(" vu}\n"); \
             } \
-        } \
-     for (i=0; i < bc_fielddata.n; i++) \
-        { \
-         bc_fieldupdate(typename,bc_fielddata.fname[i]); \
-         printf(" :: (");bc_typemarkup(bc_fielddata.ftype[i]); \
-         printf(" -> ");bc_typemarkup(bc_fielddata.ftype[i]); \
-         printf(") -> Ptr ");bc_conid(typename); \
-         printf(" -> IO (");bc_typemarkup(bc_fielddata.ftype[i]); \
-         printf(")\n"); \
-         bc_fieldupdate(typename,bc_fielddata.fname[i]); \
-         printf(" f p = let pb = plusPtr p %"PRIuMAX, \
-           bc_fielddata.offset[i]); \
-         if (bc_fielddata.is_array[i]) \
-            printf(" ; c = %"PRIuMAX"\n  in peekArray c pb", \
-              bc_fielddata.howmany[i]); \
-         else \
-            printf("\n  in peek pb"); \
-         printf(" >>= \\v -> ("); \
-         if (bc_fielddata.is_array[i]) \
-            printf("pokeArray pb $ take c"); \
-         else \
-            printf("poke pb"); \
-         printf(" $ f v) >> return v\n"); \
         } \
      printf("instance Storable "); \
      bc_conid(typename);printf(" where\n"); \
