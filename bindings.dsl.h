@@ -69,12 +69,6 @@
 
 #define bc_dynamic(name) {printf("mK'");bc_word(name);}; \
 
-#define bc_fieldname(type,field) {printf("c'");bc_glue(type,field);}; \
-
-#define bc_unionupdate(type,field) {printf("u'");bc_glue(type,field);}; \
-
-#define bc_fieldoffset(type,field) {printf("p'");bc_glue(type,field);}; \
-
 #define bc_decimal(name) (name) > 0 \
     ? printf("%"PRIuMAX,(uintmax_t)(name)) \
     : printf("%"PRIdMAX,(intmax_t)(name)) \
@@ -177,52 +171,65 @@ static struct {
 	char fname[500][1000], ftype[500][1000];
 } bc_fielddata;
 
+#define bc_fieldname(type,field) {printf("c'");bc_glue(type,field);}; \
+
+#define bc_unionupdate(type,field) {printf("u'");bc_glue(type,field);}; \
+
+#define bc_fieldoffset(type,field) {printf("p'");bc_glue(type,field);}; \
+
 #define hsc_starttype(name) \
     { \
      name *refpointer = 0; \
      bc_fielddata.n = 0; \
-     printf("data ");bc_conid(# name);printf(" = "); \
-     bc_conid(# name);printf("{"); \
      char typename[] = # name; \
      size_t typesize = sizeof(name); \
      int index; \
 
-#define hsc_field(name,type) \
+#define bc_basicfield(name,type,a,u,f) \
      index = bc_fielddata.n++; \
-     if (index > 0) printf(","); \
-     printf("\n  "); \
-     bc_fieldname(typename,# name); \
-     printf(" :: ");bc_typemarkup(# type); \
      bc_fielddata.offset[index] = (uintmax_t) \
          ((char*)&refpointer->name - (char*)refpointer); \
-     bc_fielddata.is_array[index] = 0; \
-     bc_fielddata.is_union[index] = 0; \
-     bc_fielddata.is_fam[index] = 0; \
+     bc_fielddata.is_array[index] = a; \
+     bc_fielddata.is_union[index] = u; \
+     bc_fielddata.is_fam[index] = f; \
      strcpy(bc_fielddata.fname[index],# name); \
-     strcpy(bc_fielddata.ftype[index],# type); \
+     strcpy(bc_fielddata.ftype[index],type); \
 
-#define hsc_array_field(name,type) \
-     hsc_field(name,[type]); \
-     bc_fielddata.howmany[index] = sizeof(refpointer->name) \
-       / sizeof(refpointer->name[0]); \
-     bc_fielddata.is_array[index] = 1; \
+#define hsc_field(name,type) \
+     bc_basicfield(name,# type,0,0,0); \
 
 #define hsc_union_field(name,type) \
-     hsc_field(name,type); \
-     bc_fielddata.is_union[index] = 1; \
-
-#define hsc_union_array_field(name,type) \
-     hsc_array_field(name,type); \
-     bc_fielddata.is_union[index] = 1; \
+     bc_basicfield(name,# type,0,1,0); \
 
 #define hsc_flexible_array_member(name,type) \
-     hsc_field(name,[type]); \
-     bc_fielddata.is_fam[index] = 1; \
-     strcpy(bc_fielddata.ftype[index],# type); \
+     bc_basicfield(name,# type,1,0,1); \
+
+#define hsc_array_field(name,type) \
+     bc_basicfield(name,# type,1,0,0); \
+     bc_fielddata.howmany[index] = sizeof(refpointer->name) \
+       / sizeof(refpointer->name[0]); \
+
+#define hsc_union_array_field(name,type) \
+     bc_basicfield(name,# type,1,1,0); \
+     bc_fielddata.howmany[index] = sizeof(refpointer->name) \
+       / sizeof(refpointer->name[0]); \
 
 #define hsc_stoptype(dummy) \
-     printf("\n } deriving (Eq,Show)\n"); \
+     printf("data ");bc_conid(typename);printf(" = "); \
+     bc_conid(typename);printf("{\n"); \
      int i; \
+     for (i=0; i < bc_fielddata.n; i++) \
+        { \
+         printf("  "); \
+         bc_fieldname(typename,bc_fielddata.fname[i]); \
+         printf(" :: "); \
+         if (bc_fielddata.is_array[i]) printf("["); \
+         bc_typemarkup(bc_fielddata.ftype[i]); \
+         if (bc_fielddata.is_array[i]) printf("]"); \
+         if (i+1 < bc_fielddata.n) printf(","); \
+         printf("\n"); \
+        } \
+     printf("} deriving (Eq,Show)\n"); \
      for (i=0; i < bc_fielddata.n; i++) \
         { \
          bc_fieldoffset(typename,bc_fielddata.fname[i]); \
@@ -234,8 +241,10 @@ static struct {
      for (i=0; i < bc_fielddata.n; i++) if (bc_fielddata.is_union[i]) \
         { \
          bc_unionupdate(typename,bc_fielddata.fname[i]); \
-         printf(" :: ");bc_conid(typename); \
-         printf(" -> ");bc_typemarkup(bc_fielddata.ftype[i]) \
+         printf(" :: ");bc_conid(typename);printf(" -> "); \
+         if (bc_fielddata.is_array[i]) printf("["); \
+         bc_typemarkup(bc_fielddata.ftype[i]); \
+         if (bc_fielddata.is_array[i]) printf("]"); \
          printf(" -> IO ");bc_conid(typename); \
          printf("\n"); \
          bc_unionupdate(typename,bc_fielddata.fname[i]); \
