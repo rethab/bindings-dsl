@@ -8,6 +8,9 @@
 #ifndef __BINDINGS_DSL_H__
 #define __BINDINGS_DSL_H__
 
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 #include <inttypes.h>
 
 #define hsc_strict_import(dummy) printf( \
