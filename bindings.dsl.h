@@ -182,16 +182,17 @@ static struct {
 
 #define hsc_starttype(name) \
     { \
-     name *refpointer = 0; \
+     struct {char _; name v;} bc_refdata; \
+     size_t typesize = sizeof bc_refdata.v; \
+     ptrdiff_t typealign = (char*)&bc_refdata.v - (char*)&bc_refdata; \
      bc_fielddata.n = 0; \
      char typename[] = # name; \
-     size_t typesize = sizeof(name); \
      int index; \
 
 #define bc_basicfield(name,type,a,u,f) \
      index = bc_fielddata.n++; \
      bc_fielddata.offset[index] = (uintmax_t) \
-         ((char*)&refpointer->name - (char*)refpointer); \
+         ((char*)&bc_refdata.v.name - (char*)&bc_refdata.v); \
      bc_fielddata.is_array[index] = a; \
      bc_fielddata.is_union[index] = u; \
      bc_fielddata.is_fam[index] = f; \
@@ -209,13 +210,13 @@ static struct {
 
 #define hsc_array_field(name,type) \
      bc_basicfield(name,# type,1,0,0); \
-     bc_fielddata.howmany[index] = sizeof(refpointer->name) \
-       / sizeof(refpointer->name[0]); \
+     bc_fielddata.howmany[index] = sizeof bc_refdata.v.name \
+       / sizeof bc_refdata.v.name[0]; \
 
 #define hsc_union_array_field(name,type) \
      bc_basicfield(name,# type,1,1,0); \
-     bc_fielddata.howmany[index] = sizeof(refpointer->name) \
-       / sizeof(refpointer->name[0]); \
+     bc_fielddata.howmany[index] = sizeof bc_refdata.v.name \
+       / sizeof bc_refdata.v.name[0]; \
 
 #define hsc_stoptype(dummy) \
      printf("data ");bc_conid(typename);printf(" = "); \
@@ -276,8 +277,8 @@ static struct {
         } \
      printf("instance Storable "); \
      bc_conid(typename);printf(" where\n"); \
-     printf("  sizeOf _ = %"PRIuMAX"\n  alignment = sizeOf\n", \
-       (uintmax_t)(typesize)); \
+     printf("  sizeOf _ = %"PRIuMAX"\n  alignment _ = %"PRIuMAX"\n", \
+       (uintmax_t)(typesize),(uintmax_t)(typealign)); \
      printf("  peek p = do\n"); \
      for (i=0; i < bc_fielddata.n; i++) \
         { \
