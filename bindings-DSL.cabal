@@ -1,4 +1,4 @@
-cabal-version: >= 1.2.3
+cabal-version: >= 1.8
 name: bindings-DSL
 homepage: http://bitbucket.org/mauricio/bindings-dsl
 synopsis:
@@ -17,7 +17,7 @@ description:
   .
   This package contains no Haskell code, only C header files
   designed for hsc2hs.
-version: 1.0.16
+version: 1.0.17
 license: BSD3
 license-file: LICENSE
 maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
