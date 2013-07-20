@@ -30,3 +30,11 @@ library
   install-includes: bindings.dsl.h , bindings.cmacros.h
   build-depends: base >= 0 && < 1000
   exposed-modules: Bindings
+source-repository head
+  type: git
+  location: ssh://git@bitbucket.org/mauricio/bindings-dsl
+  branch: master
+source-repository this
+  type: git
+  location: ssh://git@bitbucket.org/mauricio/bindings-dsl
+  tag: 1.0.17
