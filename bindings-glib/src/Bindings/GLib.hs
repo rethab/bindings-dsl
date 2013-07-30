@@ -1,0 +1,1 @@
+module Bindings.GLib (module Bindings.GLib.CoreApplicationSupport,module Bindings.GLib.DataTypes,module Bindings.GLib.Fundamentals,module Bindings.GLib.Utilities) where {import Bindings.GLib.CoreApplicationSupport;import Bindings.GLib.DataTypes;import Bindings.GLib.Fundamentals;import Bindings.GLib.Utilities}

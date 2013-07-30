@@ -1,0 +1,44 @@
+cabal-version: >= 1.8
+name: bindings-posix
+synopsis:
+  Low level bindings to posix.
+version: 1.2.4
+license: BSD3
+license-file: LICENSE
+maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+author: Maurício C. Antunes
+bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
+build-type: Simple
+category: FFI
+library
+  hs-source-dirs: src
+  extensions:
+    ForeignFunctionInterface
+  build-depends:
+    base >= 3 && < 5,
+    bindings-DSL >= 1.0.16 && < 1.1
+  exposed-modules:
+    Bindings.Posix
+    Bindings.Posix.Errno
+    Bindings.Posix.Fcntl
+    Bindings.Posix.Locale
+    Bindings.Posix.Signal
+    Bindings.Posix.Sys
+    Bindings.Posix.Sys.Mman
+    Bindings.Posix.Sys.Select
+    Bindings.Posix.Sys.Types
+    Bindings.Posix.Sys.Utsname
+    Bindings.Posix.Time
+    Bindings.Posix.Unistd
+  cc-options:
+    "-D_ISOC99_SOURCE"
+    "-D_POSIX_C_SOURCE=200112L"
+    "-D_XOPEN_SOURCE=600"
+  c-sources: src/inlines.c
+  extra-libraries: pthread
+
+source-repository head
+  type: git
+  location: https://bitbucket.org/mauricio/bindings-dsl
+  branch: master
+  subdir: bindings-posix

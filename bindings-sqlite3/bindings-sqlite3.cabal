@@ -1,0 +1,29 @@
+cabal-version: >= 1.8
+name: bindings-sqlite3
+synopsis:
+  Low level bindings to sqlite3.
+version: 1.0.4
+license: BSD3
+license-file: LICENSE
+maintainer: Maurício C. Antunes
+author: Maurício C. Antunes
+build-type: Simple
+category: FFI
+bug-reports: http://bitbucket.org/mauricio/bindings-dls/issues
+library
+  hs-source-dirs: src
+  extensions:
+    ForeignFunctionInterface
+  build-depends:
+    base >=3 && < 5,
+    bindings-DSL >= 1.0.16 && < 1.1
+  exposed-modules:
+    Bindings.Sqlite3
+  pkgconfig-depends:
+    sqlite3 >= 3.7.17
+  c-sources: src/Bindings/Sqlite3.c
+source-repository head
+  type: git
+  location: https://bitbucket.org/mauricio/bindings-dsl
+  branch: master
+  subdir: bindings-sqlite3

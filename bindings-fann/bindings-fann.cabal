@@ -1,0 +1,34 @@
+cabal-version: >= 1.8
+name: bindings-fann
+synopsis:
+  Low level bindings to FANN neural network library.
+version: 0.2
+license: BSD3
+license-file: LICENSE
+maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+author: Maurício C. Antunes
+build-type: Simple
+category: FFI
+library
+  hs-source-dirs: src
+  extensions:
+    ForeignFunctionInterface
+  build-depends:
+    base >= 3 && < 5,
+    bindings-DSL >= 1.0.16 && < 1.1
+  exposed-modules:
+    Bindings.Fann
+    Bindings.Fann.Constants
+    Bindings.Fann.CreationDestructionExecution
+    Bindings.Fann.DataStructures
+    Bindings.Fann.ErrorHandling
+    Bindings.Fann.InputOutput
+    Bindings.Fann.Options
+    Bindings.Fann.Training
+    Bindings.Fann.TrainingData
+  pkgconfig-depends: fann >=2.2 && <3
+source-repository head
+  type: git
+  location: https://bitbucket.org/mauricio/bindings-dsl
+  branch: master
+  subdir: bindings-fann

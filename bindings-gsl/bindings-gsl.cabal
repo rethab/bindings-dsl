@@ -1,0 +1,73 @@
+cabal-version: >= 1.8
+name: bindings-gsl
+synopsis:
+  Low level bindings to GNU GSL.
+version: 0.2.1
+license: BSD3
+license-file: LICENSE
+maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+author: Maurício C. Antunes
+build-type: Simple
+category: FFI
+bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
+library
+  hs-source-dirs: src
+  extensions:
+    ForeignFunctionInterface
+  build-depends:
+    base >= 3 && < 5,
+    bindings-DSL >= 1.0.16 && < 1.1
+  exposed-modules:
+    Bindings.Gsl
+    Bindings.Gsl.BasisSplines
+    Bindings.Gsl.BlasSupport
+    Bindings.Gsl.Cblas
+    Bindings.Gsl.ChebyshevApproximations
+    Bindings.Gsl.Combinations
+    Bindings.Gsl.ComplexNumbers
+    Bindings.Gsl.DiscreteHankelTransforms
+    Bindings.Gsl.Eigensystems
+    Bindings.Gsl.ErrorHandling
+    Bindings.Gsl.FastFourierTransforms
+    Bindings.Gsl.Histograms
+    Bindings.Gsl.IeeeFloatingPointArithmetic
+    Bindings.Gsl.Interpolation
+    Bindings.Gsl.LeastSquaresFitting
+    Bindings.Gsl.LinearAlgebra
+    Bindings.Gsl.MathematicalFunctions
+    Bindings.Gsl.MonteCarloIntegration
+    Bindings.Gsl.MultidimensionalMinimization
+    Bindings.Gsl.MultidimensionalRootFinding
+    Bindings.Gsl.NonlinearLeastSquaresFitting
+    Bindings.Gsl.NTuples
+    Bindings.Gsl.NumericalDifferentiation
+    Bindings.Gsl.NumericalIntegration
+    Bindings.Gsl.OneDimensionalMinimization
+    Bindings.Gsl.OneDimensionalRootFinding
+    Bindings.Gsl.OrdinaryDifferentialEquations
+    Bindings.Gsl.Permutations
+    Bindings.Gsl.PhysicalConstants
+    Bindings.Gsl.Polynomials
+    Bindings.Gsl.QuasiRandomSequences
+    Bindings.Gsl.RandomNumberDistributions
+    Bindings.Gsl.RandomNumberGeneration
+    Bindings.Gsl.SeriesAcceleration
+    Bindings.Gsl.SimulatedAnnealing
+    Bindings.Gsl.Sorting
+    Bindings.Gsl.SpecialFunctions
+    Bindings.Gsl.Statistics
+    Bindings.Gsl.VectorsAndMatrices
+    Bindings.Gsl.VectorsAndMatrices.Blocks
+    Bindings.Gsl.VectorsAndMatrices.DataTypes
+    Bindings.Gsl.VectorsAndMatrices.Matrices
+    Bindings.Gsl.VectorsAndMatrices.Vectors
+    Bindings.Gsl.Version
+    Bindings.Gsl.WaveletTransforms
+  c-sources: src/inlines.c
+  pkgconfig-depends: gsl >= 1.13
+
+source-repository head
+  type: git
+  location: https://bitbucket.org/mauricio/bindings-dsl
+  branch: master
+  subdir: bindings-gsl

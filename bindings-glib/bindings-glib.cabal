@@ -1,0 +1,72 @@
+cabal-version: >= 1.8
+name: bindings-glib
+synopsis:
+  Low level bindings to GLib.
+version: 0.1.6
+license: BSD3
+license-file: LICENSE
+maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+author: Maurício C. Antunes
+build-type: Simple
+category: FFI
+bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
+library
+  hs-source-dirs: src
+  extensions:
+    ForeignFunctionInterface
+  build-depends:
+    base >= 3 && < 5,
+    bindings-DSL >= 1.0.16 && < 1.1
+  pkgconfig-depends: glib-2.0 >= 2.36.3, gthread-2.0 >= 2.36.3
+  exposed-modules:
+    Bindings.GLib
+    Bindings.GLib.Fundamentals
+    Bindings.GLib.Fundamentals.AtomicOperations
+    Bindings.GLib.Fundamentals.BasicTypes
+    Bindings.GLib.Fundamentals.ByteOrderMacros
+    Bindings.GLib.Fundamentals.LimitsOfBasicTypes
+    Bindings.GLib.Fundamentals.MiscellaneousMacros
+    Bindings.GLib.Fundamentals.NumericalDefinitions
+    Bindings.GLib.Fundamentals.StandardMacros
+    Bindings.GLib.Fundamentals.TypeConversionMacros
+    Bindings.GLib.Fundamentals.VersionInformation
+    Bindings.GLib.CoreApplicationSupport
+    Bindings.GLib.CoreApplicationSupport.AsynchronousQueues
+    Bindings.GLib.CoreApplicationSupport.ErrorReporting
+    Bindings.GLib.CoreApplicationSupport.MainEventLoop
+    Bindings.GLib.CoreApplicationSupport.MemoryAllocation
+    Bindings.GLib.CoreApplicationSupport.MessageLogging
+    Bindings.GLib.CoreApplicationSupport.MessageOutputAndDebuggingFunctions
+    Bindings.GLib.CoreApplicationSupport.ThreadPools
+    Bindings.GLib.CoreApplicationSupport.Threads
+    Bindings.GLib.Utilities
+    Bindings.GLib.Utilities.CommandlineOptionParser
+    Bindings.GLib.Utilities.DateAndTimeFunctions
+    Bindings.GLib.Utilities.HostnameUtilities
+    Bindings.GLib.Utilities.SimpleXmlSubsetParser
+    Bindings.GLib.Utilities.UnicodeManipulation
+    Bindings.GLib.DataTypes
+    Bindings.GLib.DataTypes.Arrays
+    Bindings.GLib.DataTypes.BalancedBinaryTrees
+    Bindings.GLib.DataTypes.Datasets
+    Bindings.GLib.DataTypes.DoublyLinkedLists
+    Bindings.GLib.DataTypes.HashTables
+    Bindings.GLib.DataTypes.MemorySlices
+    Bindings.GLib.DataTypes.NAryTrees
+    Bindings.GLib.DataTypes.PointerArrays
+    Bindings.GLib.DataTypes.Quarks
+    Bindings.GLib.DataTypes.SinglyLinkedLists
+    Bindings.GLib.DataTypes.StringChunks
+    Bindings.GLib.DataTypes.Strings
+    Bindings.GLib.DataTypes.TrashStacks
+  c-sources:
+    src/datatypes.narytrees.c
+    src/datatypes.pointerarrays.c
+    src/datatypes.singlylinkedlists.c
+    src/inlines.c
+    src/utilities.unicodemanipulation.c
+source-repository head
+  type: git
+  location: https://bitbucket.org/mauricio/bindings-dsl
+  branch: master
+  subdir: bindings-glib

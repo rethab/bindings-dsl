@@ -1,0 +1,38 @@
+cabal-version: >= 1.8
+name: bindings-libcddb
+homepage: http://bitbucket.org/mauricio/bindings-libcddb
+synopsis:
+  Low level binding to libcddb.
+version: 0.3.1
+license: BSD3
+license-file: LICENSE
+maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+author: Maurício C. Antunes
+build-type: Simple
+bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
+category: FFI
+library
+  hs-source-dirs: src
+  extensions:
+    ForeignFunctionInterface
+  build-depends:
+    base >=3 && <5,
+    bindings-DSL >= 1.0.16 && < 1.1
+  exposed-modules:
+    Bindings.Libcddb
+    Bindings.Libcddb.Cddb
+    Bindings.Libcddb.CddbCmd
+    Bindings.Libcddb.CddbConn
+    Bindings.Libcddb.CddbDisc
+    Bindings.Libcddb.CddbError
+    Bindings.Libcddb.CddbLog
+    Bindings.Libcddb.CddbSite
+    Bindings.Libcddb.CddbTrack
+  pkgconfig-depends:
+    libcddb >= 1.3.2
+  c-sources: src/inlines.c
+source-repository head
+  type: git
+  location: https://bitbucket.org/mauricio/bindings-dsl
+  branch: master
+  subdir: bindings-libcddb

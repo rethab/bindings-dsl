@@ -1,0 +1,29 @@
+-- | <http://library.gnome.org/devel/glib/stable/glib-data-types.html>
+module Bindings.GLib.DataTypes (
+  module Bindings.GLib.DataTypes.Arrays,
+  module Bindings.GLib.DataTypes.BalancedBinaryTrees,
+  module Bindings.GLib.DataTypes.Datasets,
+  module Bindings.GLib.DataTypes.DoublyLinkedLists,
+  module Bindings.GLib.DataTypes.HashTables,
+  module Bindings.GLib.DataTypes.MemorySlices,
+  module Bindings.GLib.DataTypes.NAryTrees,
+  module Bindings.GLib.DataTypes.PointerArrays,
+  module Bindings.GLib.DataTypes.Quarks,
+  module Bindings.GLib.DataTypes.SinglyLinkedLists,
+  module Bindings.GLib.DataTypes.StringChunks,
+  module Bindings.GLib.DataTypes.Strings,
+  module Bindings.GLib.DataTypes.TrashStacks,
+ ) where
+import Bindings.GLib.DataTypes.Arrays
+import Bindings.GLib.DataTypes.BalancedBinaryTrees
+import Bindings.GLib.DataTypes.Datasets
+import Bindings.GLib.DataTypes.DoublyLinkedLists
+import Bindings.GLib.DataTypes.HashTables
+import Bindings.GLib.DataTypes.MemorySlices
+import Bindings.GLib.DataTypes.NAryTrees
+import Bindings.GLib.DataTypes.PointerArrays
+import Bindings.GLib.DataTypes.Quarks
+import Bindings.GLib.DataTypes.SinglyLinkedLists
+import Bindings.GLib.DataTypes.StringChunks
+import Bindings.GLib.DataTypes.Strings
+import Bindings.GLib.DataTypes.TrashStacks

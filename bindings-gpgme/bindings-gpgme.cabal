@@ -1,0 +1,36 @@
+cabal-version: >= 1.8
+name: bindings-gpgme
+homepage: http://bitbucket.org/mauricio/bindings-gpgme
+synopsis:
+  Low level bindings to gpgme.
+version: 0.1.5
+license: BSD3
+license-file: LICENSE
+maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+author: Maurício C. Antunes
+build-type: Simple
+category: FFI
+bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
+library
+  hs-source-dirs: src
+  extensions:
+    ForeignFunctionInterface
+  build-depends:
+    base >= 3 && < 5,
+    bindings-DSL >= 1.0.16 && < 1.1
+  exposed-modules:
+    Bindings.Gpgme
+  c-sources:
+    src/inlines.c
+  includes:
+    gpgme.h
+    gpg-error.h
+  extra-libraries:
+    gpgme
+  cc-options: -D_FILE_OFFSET_BITS=64
+
+source-repository head
+  type: git
+  location: https://bitbucket.org/mauricio/bindings-dsl
+  branch: master
+  subdir: bindings-gpgme
