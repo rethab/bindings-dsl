@@ -1,0 +1,24 @@
+cabal-version: >= 1.8
+name: regex-example
+synopsis:
+  Example used in bindings-DSL documentation.
+version: 1.0
+license: BSD3
+license-file: LICENSE
+maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+author: Maurício C. Antunes
+bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
+build-type: Simple
+category: FFI
+library
+  hs-source-dirs: src
+  build-depends:
+    base >= 3 && < 5,
+    bindings-posix >= 1.2.4
+  exposed-modules:
+    RegexExample
+source-repository head
+  type: git
+  location: https://bitbucket.org/mauricio/bindings-dsl
+  branch: master
+  subdir: regex-example
