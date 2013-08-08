@@ -2,7 +2,12 @@ cabal-version: >= 1.8
 name: bindings-posix
 synopsis:
   Low level bindings to posix.
-version: 1.2.4
+description:
+  Low level bindings to Posix standard library, part
+  of the @bindings-*@ project. See:
+  .
+  <http://bitbucket.org/mauricio/bindings-dsl>
+version: 1.2.6
 license: BSD3
 license-file: LICENSE
 maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>

@@ -2,6 +2,11 @@ cabal-version: >= 1.8
 name: bindings-glib
 synopsis:
   Low level bindings to GLib.
+description:
+  Low level bindings to GLib, part
+  of the @bindings-*@ project. See:
+  .
+  <http://bitbucket.org/mauricio/bindings-dsl>
 version: 0.1.6
 license: BSD3
 license-file: LICENSE

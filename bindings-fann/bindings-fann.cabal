@@ -2,6 +2,11 @@ cabal-version: >= 1.8
 name: bindings-fann
 synopsis:
   Low level bindings to FANN neural network library.
+description:
+  Low level bindings to FANN neural network library, part
+  of the @bindings-*@ project. See:
+  .
+  <http://bitbucket.org/mauricio/bindings-dsl>
 version: 0.2
 license: BSD3
 license-file: LICENSE

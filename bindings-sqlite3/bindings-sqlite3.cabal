@@ -2,6 +2,11 @@ cabal-version: >= 1.8
 name: bindings-sqlite3
 synopsis:
   Low level bindings to sqlite3.
+description:
+  Low level bindings to sqlite3, part
+  of the @bindings-*@ project. See:
+  .
+  <http://bitbucket.org/mauricio/bindings-dsl>
 version: 1.0.4
 license: BSD3
 license-file: LICENSE

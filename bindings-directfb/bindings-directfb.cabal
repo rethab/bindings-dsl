@@ -2,6 +2,11 @@ cabal-version: >= 1.8
 name: bindings-directfb
 synopsis:
   Low level bindings to DirectFB
+description:
+  Low level bindings to DirectFB, part
+  of the @bindings-*@ project. See:
+  .
+  <http://bitbucket.org/mauricio/bindings-dsl>
 version: 0.2
 license: BSD3
 license-file: LICENSE

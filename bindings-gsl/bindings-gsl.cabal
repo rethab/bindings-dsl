@@ -2,6 +2,11 @@ cabal-version: >= 1.8
 name: bindings-gsl
 synopsis:
   Low level bindings to GNU GSL.
+description:
+  Low level bindings to GNU GSL, part
+  of the @bindings-*@ project. See:
+  .
+  <http://bitbucket.org/mauricio/bindings-dsl>
 version: 0.2.1
 license: BSD3
 license-file: LICENSE
@@ -65,7 +70,6 @@ library
     Bindings.Gsl.WaveletTransforms
   c-sources: src/inlines.c
   pkgconfig-depends: gsl >= 1.13
-
 source-repository head
   type: git
   location: https://bitbucket.org/mauricio/bindings-dsl

@@ -3,6 +3,11 @@ name: bindings-gpgme
 homepage: http://bitbucket.org/mauricio/bindings-gpgme
 synopsis:
   Low level bindings to gpgme.
+description:
+  Low level bindings to gpgme, part
+  of the @bindings-*@ project. See:
+  .
+  <http://bitbucket.org/mauricio/bindings-dsl>
 version: 0.1.5
 license: BSD3
 license-file: LICENSE
