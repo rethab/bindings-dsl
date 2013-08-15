@@ -9,9 +9,6 @@ import Foreign.C
 import System.IO.Unsafe
 import Bindings.Posix.Regex
 
-parse :: String -> String -> [String]
-parse = (System.IO.Unsafe.unsafePerformIO .) . parseIO
-
 iF a b c = if a then b else c
 
 newtype RegexException = RegexException String deriving (Show, Typeable)
@@ -37,10 +34,10 @@ withRegexPtr regex exec =
 	cflags = c'REG_EXTENDED .|. c'REG_NEWLINE
   in finally compileAndExec (c'regfree preg)
 
-parseIO :: String -> String -> IO [String]
-parseIO regex text =
+parseLineIO :: String -> String -> IO [String]
+parseLineIO regex line =
 	withRegexPtr regex $ \preg ->
-	withCString text $ \ctext ->
+	withCString line $ \cline ->
 	alloca $ \pmatch ->
   let
 	getMatches :: IO (Int,Int)
@@ -50,17 +47,24 @@ parseIO regex text =
 		return (fromEnum rm_so, fromEnum rm_eo)
 	findMatches :: Int -> [String] -> IO [String]
 	findMatches pos list = do
-		status <- c'regexec preg (advancePtr ctext pos) 1 pmatch eflags
+                let string = advancePtr cline pos
+		status <- c'regexec preg string 1 pmatch eflags
 		iF (status /= 0) (return list) $ do
-			(so,eo) <- getMatches
-			let cmatch = advancePtr ctext (pos + so)
+			(rm_so,rm_eo) <- getMatches
+			let cmatch = advancePtr string rm_so
 			char <- peek cmatch
 			iF (char == 0) (return list) $ do
-				match <- peekCStringLen (cmatch, eo - so)
+				match <- peekCStringLen (cmatch, rm_eo - rm_so)
 				let (nextPos,nextList) = iF (null match)
-					(pos + so + 1, list)
-					(pos + eo, match:list)
+					(pos + rm_so + 1, list)
+					(pos + rm_eo, match:list)
 				findMatches nextPos nextList
 	  where
 		eflags = iF (pos == 0) 0 c'REG_NOTBOL
   in liftM reverse $ findMatches 0 []
+
+parseLine :: String -> String -> [String]
+parseLine = (System.IO.Unsafe.unsafePerformIO .) . parseLineIO
+
+parse :: String -> String -> [String]
+parse regex text = concatMap (parseLine regex) (lines text)
