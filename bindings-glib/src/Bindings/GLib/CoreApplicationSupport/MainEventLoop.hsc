@@ -49,7 +49,7 @@ import Bindings.GLib.CoreApplicationSupport.Threads
 #ccall g_main_context_set_poll_func , Ptr <GMainContext> -> <GPollFunc> -> IO ()
 #ccall g_main_context_get_poll_func , Ptr <GMainContext> -> IO <GPollFunc>
 
-#callback GPollFunc , Ptr <GPollFD> -> <guint> -> <gint> -> IO <gint>
+#callback_t GPollFunc , Ptr <GPollFD> -> <guint> -> <gint> -> IO <gint>
 
 #ccall g_main_context_add_poll , Ptr <GMainContext> -> Ptr <GPollFD> -> <gint> -> IO ()
 #ccall g_main_context_remove_poll , Ptr <GMainContext> -> Ptr <GPollFD> -> IO ()
@@ -74,7 +74,7 @@ import Bindings.GLib.CoreApplicationSupport.Threads
 
 #integral_t GPid
 
-#callback GChildWatchFunc , <GPid> -> <gint> -> <gpointer> -> IO ()
+#callback_t GChildWatchFunc , <GPid> -> <gint> -> <gpointer> -> IO ()
 
 #ccall g_child_watch_source_new , <GPid> -> IO (Ptr <GSource>)
 #ccall g_child_watch_add , <GPid> -> <GChildWatchFunc> -> <gpointer> -> IO <guint>
@@ -89,7 +89,7 @@ import Bindings.GLib.CoreApplicationSupport.Threads
 
 #opaque_t GSource
 
-#callback GSourceDummyMarshal , IO ()
+#callback_t GSourceDummyMarshal , IO ()
 
 #starttype GSourceFuncs
 #field prepare , FunPtr (Ptr <GSource> -> Ptr <gint> -> IO <gboolean>)
@@ -121,7 +121,7 @@ import Bindings.GLib.CoreApplicationSupport.Threads
 #ccall g_source_get_context , Ptr <GSource> -> IO (Ptr <GMainContext>)
 #ccall g_source_set_callback , Ptr <GSource> -> <GSourceFunc> -> <gpointer> -> <GDestroyNotify> -> IO ()
 
-#callback GSourceFunc , <gpointer> -> IO <gboolean>
+#callback_t GSourceFunc , <gpointer> -> IO <gboolean>
 
 #ccall g_source_set_callback_indirect , Ptr <GSource> -> <gpointer> -> Ptr <GSourceCallbackFuncs> -> IO ()
 #ccall g_source_add_poll , Ptr <GSource> -> Ptr <GPollFD> -> IO ()

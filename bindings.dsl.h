@@ -152,8 +152,10 @@
 
 #ifdef BINDINGS_STDCALLCONV
 #define hsc_callback(name,type) hsc_callbackconv(name,stdcall,type)
+#define hsc_callback_t(name,type) hsc_callbackconv(name,stdcall,type)
 #else
 #define hsc_callback(name,type) hsc_callbackconv(name,ccall,type)
+#define hsc_callback_t(name,type) hsc_callbackconv(name,ccall,type)
 #endif
 
 #define hsc_callbackconv(name,conv,type) \

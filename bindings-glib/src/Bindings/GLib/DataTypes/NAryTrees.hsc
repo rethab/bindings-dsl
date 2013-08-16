@@ -19,7 +19,7 @@ import Bindings.GLib.DataTypes.BalancedBinaryTrees
 #ccall g_node_new , <gpointer> -> IO (Ptr <GNode>)
 #ccall g_node_copy , Ptr <GNode> -> IO (Ptr <GNode>)
 
-#callback GCopyFunc , <gconstpointer> -> <gpointer> -> IO <gpointer> 
+#callback_t GCopyFunc , <gconstpointer> -> <gpointer> -> IO <gpointer> 
 
 #ccall g_node_copy_deep , Ptr <GNode> -> <GCopyFunc> -> <gpointer> -> IO (Ptr <GNode>)
 
@@ -47,11 +47,11 @@ import Bindings.GLib.DataTypes.BalancedBinaryTrees
 #num G_TRAVERSE_LEAFS
 #num G_TRAVERSE_NON_LEAFS
 
-#callback GNodeTraverseFunc , Ptr <GNode> -> <gpointer> -> IO <gboolean> 
+#callback_t GNodeTraverseFunc , Ptr <GNode> -> <gpointer> -> IO <gboolean> 
 
 #ccall g_node_children_foreach , Ptr <GNode> -> <GTraverseFlags> -> <GNodeForeachFunc> -> <gpointer> -> IO ()
 
-#callback GNodeForeachFunc , Ptr <GNode> -> <gpointer> -> IO ()
+#callback_t GNodeForeachFunc , Ptr <GNode> -> <gpointer> -> IO ()
 
 #ccall g_node_get_root , Ptr <GNode> -> IO (Ptr <GNode>)
 #ccall g_node_find , Ptr <GNode> -> <GTraverseType> -> <GTraverseFlags> -> <gpointer> -> IO (Ptr <GNode>)

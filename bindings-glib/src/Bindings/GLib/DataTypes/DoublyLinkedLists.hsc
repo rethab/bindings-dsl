@@ -33,17 +33,17 @@ import Bindings.GLib.Fundamentals
 #ccall g_list_reverse , Ptr <GList> -> IO (Ptr <GList>)
 #ccall g_list_sort , Ptr <GList> -> <GCompareFunc> -> IO (Ptr <GList>)
 
-#callback GCompareFunc , <gconstpointer> -> <gconstpointer> -> IO <gint>
+#callback_t GCompareFunc , <gconstpointer> -> <gconstpointer> -> IO <gint>
 
 #ccall g_list_insert_sorted_with_data , Ptr <GList> -> <gpointer> -> <GCompareDataFunc> -> <gpointer> -> IO (Ptr <GList>)
 #ccall g_list_sort_with_data , Ptr <GList> -> <GCompareDataFunc> -> <gpointer> -> IO (Ptr <GList>)
 
-#callback GCompareDataFunc , <gconstpointer> -> <gconstpointer> -> <gpointer> -> IO <gint>
+#callback_t GCompareDataFunc , <gconstpointer> -> <gconstpointer> -> <gpointer> -> IO <gint>
 
 #ccall g_list_concat , Ptr <GList> -> Ptr <GList> -> IO (Ptr <GList>)
 #ccall g_list_foreach , Ptr <GList> -> <GFunc> -> <gpointer> -> IO ()
 
-#callback GFunc , <gpointer> -> <gpointer> -> IO ()
+#callback_t GFunc , <gpointer> -> <gpointer> -> IO ()
 
 #ccall g_list_first , Ptr <GList> -> IO (Ptr <GList>)
 #ccall g_list_last , Ptr <GList> -> IO (Ptr <GList>)

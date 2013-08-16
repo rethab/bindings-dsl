@@ -7,14 +7,14 @@ module Bindings.Gsl.SimulatedAnnealing where
 #strict_import
 import Bindings.Gsl.RandomNumberGeneration
 
-#callback gsl_siman_Efunc_t , Ptr () -> IO CDouble
-#callback gsl_siman_step_t , Ptr <gsl_rng> -> Ptr () -> CDouble -> IO ()
-#callback gsl_siman_metric_t , Ptr () -> Ptr () -> IO CDouble
+#callback_t gsl_siman_Efunc_t , Ptr () -> IO CDouble
+#callback_t gsl_siman_step_t , Ptr <gsl_rng> -> Ptr () -> CDouble -> IO ()
+#callback_t gsl_siman_metric_t , Ptr () -> Ptr () -> IO CDouble
 
-#callback gsl_siman_print_t , FunPtr (Ptr () -> IO ())
-#callback gsl_siman_copy_t , FunPtr (Ptr () -> Ptr () -> IO ())
-#callback gsl_siman_copy_construct_t , FunPtr (Ptr () -> IO (Ptr ()))
-#callback gsl_siman_destroy_t , FunPtr (Ptr () -> IO ())
+#callback_t gsl_siman_print_t , FunPtr (Ptr () -> IO ())
+#callback_t gsl_siman_copy_t , FunPtr (Ptr () -> Ptr () -> IO ())
+#callback_t gsl_siman_copy_construct_t , FunPtr (Ptr () -> IO (Ptr ()))
+#callback_t gsl_siman_destroy_t , FunPtr (Ptr () -> IO ())
 
 #starttype gsl_siman_params_t
 #field n_tries , CInt

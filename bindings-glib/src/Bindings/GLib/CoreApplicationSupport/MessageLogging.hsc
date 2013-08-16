@@ -11,7 +11,7 @@ import Bindings.GLib.Fundamentals
 #num G_LOG_FATAL_MASK
 #num G_LOG_LEVEL_USER_SHIFT
 
-#callback GLogFunc , Ptr <gchar> -> <GLogLevelFlags> -> Ptr <gchar> -> <gpointer> -> IO ()
+#callback_t GLogFunc , Ptr <gchar> -> <GLogLevelFlags> -> Ptr <gchar> -> <gpointer> -> IO ()
 
 #integral_t GLogLevelFlags
 

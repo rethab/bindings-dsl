@@ -694,18 +694,18 @@ import Bindings.Posix.Sys.Select
 #num DFENUM_OK
 #num DFENUM_CANCEL
 
-#callback DFBVideoModeCallback , CInt -> CInt -> CInt -> \
+#callback_t DFBVideoModeCallback , CInt -> CInt -> CInt -> \
   Ptr () -> IO <DFBEnumerationResult>
--- callback DFBScreenCallback , <DFBScreenID> -> \
+-- callback_t DFBScreenCallback , <DFBScreenID> -> \
 --   <DFBScreenDescription> -> Ptr () -> \
 --   IO <DFBEnumerationResult>
--- callback DFBDisplayLayerCallback , <DFBDisplayLayerID> -> \
+-- callback_t DFBDisplayLayerCallback , <DFBDisplayLayerID> -> \
 --   <DFBDisplayLayerDescription> -> Ptr () -> \
 --   IO <DFBEnumerationResult>
--- callback DFBInputDeviceCallback , <DFBInputDeviceID> -> \
+-- callback_t DFBInputDeviceCallback , <DFBInputDeviceID> -> \
 --   <DFBInputDeviceDescription> -> Ptr () -> \
 --   IO <DFBEnumerationResult>
-#callback DFBGetDataCallback , Ptr () -> CUInt -> Ptr () -> IO CInt
+#callback_t DFBGetDataCallback , Ptr () -> CUInt -> Ptr () -> IO CInt
 
 #integral_t DFBVideoProviderCapabilities
 
@@ -1400,7 +1400,7 @@ import Bindings.Posix.Sys.Select
 #field location , <DFBLocation>
 #stoptype
 
-#callback DFBTextEncodingCallback , <DFBTextEncodingID> -> \
+#callback_t DFBTextEncodingCallback , <DFBTextEncodingID> -> \
   CString -> Ptr () -> IO <DFBEnumerationResult>
 
 #integral_t DFBImageCapabilities
@@ -1421,7 +1421,7 @@ import Bindings.Posix.Sys.Select
 #num DIRCR_OK
 #num DIRCR_ABORT
 
-#callback DIRenderCallback , Ptr <DFBRectangle> -> \
+#callback_t DIRenderCallback , Ptr <DFBRectangle> -> \
     Ptr () -> IO <DIRenderCallbackResult>
 
 #integral_t DFBStreamCapabilities
@@ -1494,7 +1494,7 @@ import Bindings.Posix.Sys.Select
 #field audio.maximum_time , CUInt
 #stoptype
 
-#callback DVFrameCallback , Ptr () -> IO ()
+#callback_t DVFrameCallback , Ptr () -> IO ()
 
 #integral_t DFBInputDeviceKeyType
 

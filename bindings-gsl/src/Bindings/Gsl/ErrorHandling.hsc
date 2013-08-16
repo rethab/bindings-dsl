@@ -45,8 +45,8 @@ module Bindings.Gsl.ErrorHandling where
 #ccall gsl_error , CString -> CString -> CInt -> CInt -> CInt -> IO ()
 #ccall gsl_stream_printf , CString -> CString -> CInt -> CInt -> CString -> IO ()
 #ccall gsl_strerror , CInt -> IO CString 
-#callback gsl_error_handler_t , CString -> CString -> CInt -> CInt -> CInt -> IO ()
-#callback gsl_stream_handler_t , CString -> CString -> CInt -> CInt -> CString -> IO ()
+#callback_t gsl_error_handler_t , CString -> CString -> CInt -> CInt -> CInt -> IO ()
+#callback_t gsl_stream_handler_t , CString -> CString -> CInt -> CInt -> CString -> IO ()
 #ccall gsl_set_error_handler , Ptr <gsl_error_handler_t> -> IO (Ptr <gsl_error_handler_t>)
 #ccall gsl_set_error_handler_off , IO (Ptr <gsl_error_handler_t>)
 #ccall gsl_set_stream_handler , Ptr <gsl_stream_handler_t> -> IO (Ptr <gsl_stream_handler_t>)

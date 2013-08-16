@@ -14,8 +14,8 @@ import Bindings.GLib.DataTypes.DoublyLinkedLists
 #ccall g_hash_table_new , <GHashFunc> -> <GEqualFunc> -> IO (Ptr <GHashTable>)
 #ccall g_hash_table_new_full , <GHashFunc> -> <GEqualFunc> -> <GDestroyNotify> -> <GDestroyNotify> -> IO (Ptr <GHashTable>)
 
-#callback GHashFunc , <gconstpointer> -> IO <guint>
-#callback GEqualFunc , <gconstpointer> -> <gconstpointer> -> IO <gboolean>
+#callback_t GHashFunc , <gconstpointer> -> IO <guint>
+#callback_t GEqualFunc , <gconstpointer> -> <gconstpointer> -> IO <gboolean>
 
 #ccall g_hash_table_insert , Ptr <GHashTable> -> <gpointer> -> <gpointer> -> IO ()
 #ccall g_hash_table_replace , Ptr <GHashTable> -> <gpointer> -> <gpointer> -> IO ()
@@ -25,7 +25,7 @@ import Bindings.GLib.DataTypes.DoublyLinkedLists
 #ccall g_hash_table_foreach , Ptr <GHashTable> -> <GHFunc> -> <gpointer> -> IO ()
 #ccall g_hash_table_find , Ptr <GHashTable> -> <GHRFunc> -> <gpointer> -> IO <gpointer>
 
-#callback GHFunc , <gpointer> -> <gpointer> -> <gpointer> -> IO ()
+#callback_t GHFunc , <gpointer> -> <gpointer> -> <gpointer> -> IO ()
 
 #ccall g_hash_table_remove , Ptr <GHashTable> -> <gconstpointer> -> IO <gboolean>
 #ccall g_hash_table_steal , Ptr <GHashTable> -> <gconstpointer> -> IO <gboolean>
@@ -36,7 +36,7 @@ import Bindings.GLib.DataTypes.DoublyLinkedLists
 #ccall g_hash_table_get_keys , Ptr <GHashTable> -> IO (Ptr <GList>)
 #ccall g_hash_table_get_values , Ptr <GHashTable> -> IO (Ptr <GList>)
 
-#callback GHRFunc , <gpointer> -> <gpointer> -> <gpointer> -> IO <gboolean>
+#callback_t GHRFunc , <gpointer> -> <gpointer> -> <gpointer> -> IO <gboolean>
 
 #ccall g_hash_table_destroy , Ptr <GHashTable> -> IO ()
 #ccall g_hash_table_ref , Ptr <GHashTable> -> IO (Ptr <GHashTable>)

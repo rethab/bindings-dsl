@@ -113,7 +113,7 @@ module Bindings.Sqlite3 where
 
 #globalvar sqlite3_temp_directory , CString
 
-#callback sqlite3_syscall_ptr , IO ()
+#callback_t sqlite3_syscall_ptr , IO ()
 #starttype sqlite3_vfs
 #field iVersion , CInt
 #field szOsFile , CInt
@@ -561,7 +561,7 @@ module Bindings.Sqlite3 where
 #num SQLITE_VERSION_NUMBER
 #globalarray SQLITE_SOURCE_ID , CChar
 
-#callback sqlite3_destructor_type , Ptr () -> IO ()
+#callback_t sqlite3_destructor_type , Ptr () -> IO ()
 #function_pointer SQLITE_STATIC
 #function_pointer SQLITE_TRANSIENT
 

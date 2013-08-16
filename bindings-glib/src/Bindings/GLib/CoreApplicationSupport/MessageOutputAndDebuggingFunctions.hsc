@@ -9,7 +9,7 @@ import Bindings.GLib.Fundamentals
 
 #ccall g_set_print_handler , Ptr <GPrintFunc> -> IO <GPrintFunc>
 
-#callback GPrintFunc , Ptr <gchar> -> IO ()
+#callback_t GPrintFunc , Ptr <gchar> -> IO ()
 
 #ccall g_set_printerr_handler , <GPrintFunc> -> IO <GPrintFunc>
 

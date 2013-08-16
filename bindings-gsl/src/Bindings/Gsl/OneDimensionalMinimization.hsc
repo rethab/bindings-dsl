@@ -43,7 +43,7 @@ import Bindings.Gsl.MathematicalFunctions
 #globalvar gsl_min_fminimizer_goldensection , Ptr gsl_min_fminimizer_type
 #globalvar gsl_min_fminimizer_brent , Ptr gsl_min_fminimizer_type
 
-#callback gsl_min_bracketing_function , Ptr <gsl_function> -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> CSize -> IO CInt
+#callback_t gsl_min_bracketing_function , Ptr <gsl_function> -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> CSize -> IO CInt
 
 #ccall gsl_min_find_bracket , Ptr <gsl_function> -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> CSize -> IO CInt
 

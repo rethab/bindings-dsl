@@ -57,7 +57,7 @@ import Bindings.Gsl.MathematicalFunctions
 #ccall gsl_integration_qawo_table_set_length , Ptr <gsl_integration_qawo_table> -> CDouble -> IO CInt
 #ccall gsl_integration_qawo_table_free , Ptr <gsl_integration_qawo_table> -> IO ()
 
-#callback gsl_integration_rule , Ptr <gsl_function> -> CDouble -> CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> IO ()
+#callback_t gsl_integration_rule , Ptr <gsl_function> -> CDouble -> CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> IO ()
 
 #ccall gsl_integration_qk15 , Ptr <gsl_function> -> CDouble -> CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> IO ()
 #ccall gsl_integration_qk21 , Ptr <gsl_function> -> CDouble -> CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> IO ()

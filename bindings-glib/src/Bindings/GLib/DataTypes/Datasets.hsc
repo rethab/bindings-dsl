@@ -11,7 +11,7 @@ import Bindings.GLib.DataTypes.Quarks
 #cinline g_dataset_id_set_data , <gconstpointer> -> <GQuark> -> <gpointer> -> IO ()
 #ccall g_dataset_id_set_data_full , <gconstpointer> -> <GQuark> -> <gpointer> -> <GDestroyNotify> -> IO ()
 
-#callback GDestroyNotify , <gpointer> -> IO ()
+#callback_t GDestroyNotify , <gpointer> -> IO ()
 
 #ccall g_dataset_id_get_data , <gconstpointer> -> <GQuark> -> IO <gpointer>
 #cinline g_dataset_id_remove_data , <gconstpointer> -> <GQuark> -> IO ()
@@ -25,7 +25,7 @@ import Bindings.GLib.DataTypes.Quarks
 
 #ccall g_dataset_foreach , <gconstpointer> -> <GDataForeachFunc> -> <gpointer> -> IO ()
 
-#callback GDataForeachFunc , <GQuark> -> <gpointer> -> <gpointer> -> IO ()
+#callback_t GDataForeachFunc , <GQuark> -> <gpointer> -> <gpointer> -> IO ()
 
 #ccall g_dataset_destroy , <gconstpointer> -> IO ()
 

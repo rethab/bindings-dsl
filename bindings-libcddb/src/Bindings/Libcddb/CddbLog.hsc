@@ -6,7 +6,7 @@
 module Bindings.Libcddb.CddbLog where
 #strict_import
 
-#callback cddb_log_handler_t , <cddb_log_level_t> -> CString -> IO ()
+#callback_t cddb_log_handler_t , <cddb_log_level_t> -> CString -> IO ()
 
 #integral_t cddb_log_level_t
 

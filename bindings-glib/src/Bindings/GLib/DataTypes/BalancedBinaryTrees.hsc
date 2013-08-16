@@ -25,7 +25,7 @@ import Bindings.GLib.DataTypes.DoublyLinkedLists
 #ccall g_tree_foreach , Ptr <GTree> -> <GTraverseFunc> -> <gpointer> -> IO ()
 #ccall g_tree_traverse , Ptr <GTree> -> <GTraverseFunc> -> <GTraverseType> -> <gpointer> -> IO ()
 
-#callback GTraverseFunc , <gpointer> -> <gpointer> -> <gpointer> -> IO <gboolean> 
+#callback_t GTraverseFunc , <gpointer> -> <gpointer> -> <gpointer> -> IO <gboolean> 
 
 #integral_t GTraverseType
 #num G_IN_ORDER

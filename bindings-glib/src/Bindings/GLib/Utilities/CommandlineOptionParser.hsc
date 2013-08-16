@@ -17,7 +17,7 @@ import Bindings.GLib.DataTypes.Datasets
 
 #num G_OPTION_ERROR
 
-#callback GOptionArgFunc , Ptr <gchar> -> Ptr <gchar> -> <gpointer> -> Ptr (Ptr <GError>) -> IO <gboolean>
+#callback_t GOptionArgFunc , Ptr <gchar> -> Ptr <gchar> -> <gpointer> -> Ptr (Ptr <GError>) -> IO <gboolean>
 
 #opaque_t GOptionContext
 
@@ -28,7 +28,7 @@ import Bindings.GLib.DataTypes.Datasets
 #ccall g_option_context_get_description , Ptr <GOptionContext> -> IO (Ptr <gchar>)
 
 
-#callback GTranslateFunc , Ptr <gchar> -> <gpointer> -> IO (Ptr <gchar>)
+#callback_t GTranslateFunc , Ptr <gchar> -> <gpointer> -> IO (Ptr <gchar>)
 
 #ccall g_option_context_set_translate_func , Ptr <GOptionContext> -> <GTranslateFunc> -> <gpointer> -> <GDestroyNotify> -> IO ()
 #ccall g_option_context_set_translation_domain , Ptr <GOptionContext> -> Ptr <gchar> -> IO ()
@@ -86,11 +86,11 @@ import Bindings.GLib.DataTypes.Datasets
 #ccall g_option_group_free , Ptr <GOptionGroup> -> IO ()
 #ccall g_option_group_add_entries , Ptr <GOptionGroup> -> Ptr <GOptionEntry> -> IO ()
 
-#callback GOptionParseFunc , Ptr <GOptionContext> -> Ptr <GOptionGroup> -> <gpointer> -> Ptr (Ptr <GError>) -> IO <gboolean>
+#callback_t GOptionParseFunc , Ptr <GOptionContext> -> Ptr <GOptionGroup> -> <gpointer> -> Ptr (Ptr <GError>) -> IO <gboolean>
 
 #ccall g_option_group_set_parse_hooks , Ptr <GOptionGroup> -> <GOptionParseFunc> -> <GOptionParseFunc> -> IO ()
 
-#callback GOptionErrorFunc , Ptr <GOptionContext> -> Ptr <GOptionGroup> -> <gpointer> -> Ptr (Ptr <GError>) -> IO ()
+#callback_t GOptionErrorFunc , Ptr <GOptionContext> -> Ptr <GOptionGroup> -> <gpointer> -> Ptr (Ptr <GError>) -> IO ()
 
 #ccall g_option_group_set_error_hook , Ptr <GOptionGroup> -> <GOptionErrorFunc> -> IO ()
 #ccall g_option_group_set_translate_func , Ptr <GOptionGroup> -> <GTranslateFunc> -> <gpointer> -> <GDestroyNotify> -> IO ()

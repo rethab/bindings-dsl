@@ -248,9 +248,9 @@ module Bindings.Gpgme where
 #stoptype
 #synonym_t gpgme_key_t , Ptr <_gpgme_key>
 
-#callback gpgme_passphrase_cb_t , Ptr () -> CString -> CString -> CInt -> CInt -> IO <gpgme_error_t>
-#callback gpgme_progress_cb_t , Ptr () -> CString -> CInt -> CInt -> CInt -> IO ()
-#callback gpgme_edit_cb_t , Ptr () -> <gpgme_status_code_t> -> CString -> CInt -> IO <gpgme_error_t>
+#callback_t gpgme_passphrase_cb_t , Ptr () -> CString -> CString -> CInt -> CInt -> IO <gpgme_error_t>
+#callback_t gpgme_progress_cb_t , Ptr () -> CString -> CInt -> CInt -> CInt -> IO ()
+#callback_t gpgme_edit_cb_t , Ptr () -> <gpgme_status_code_t> -> CString -> CInt -> IO <gpgme_error_t>
 
 #ccall gpgme_new , Ptr <gpgme_ctx_t> -> IO <gpgme_error_t>
 #ccall gpgme_release , <gpgme_ctx_t> -> IO ()
@@ -284,9 +284,9 @@ module Bindings.Gpgme where
 #ccall gpgme_sig_notation_add , <gpgme_ctx_t> -> CString -> CString -> <gpgme_sig_notation_flags_t> -> IO <gpgme_error_t>
 #ccall gpgme_sig_notation_get , <gpgme_ctx_t> -> IO <gpgme_sig_notation_t>
 
-#callback gpgme_io_cb_t , Ptr () -> CInt -> IO <gpgme_error_t>
-#callback gpgme_register_io_cb_t , Ptr () -> CInt -> CInt -> <gpgme_io_cb_t> -> Ptr () -> Ptr (Ptr ()) -> IO <gpgme_error_t>
-#callback gpgme_remove_io_cb_t , Ptr () -> IO ()
+#callback_t gpgme_io_cb_t , Ptr () -> CInt -> IO <gpgme_error_t>
+#callback_t gpgme_register_io_cb_t , Ptr () -> CInt -> CInt -> <gpgme_io_cb_t> -> Ptr () -> Ptr (Ptr ()) -> IO <gpgme_error_t>
+#callback_t gpgme_remove_io_cb_t , Ptr () -> IO ()
 
 #integral_t gpgme_event_io_t
 #num GPGME_EVENT_START
@@ -294,7 +294,7 @@ module Bindings.Gpgme where
 #num GPGME_EVENT_NEXT_KEY
 #num GPGME_EVENT_NEXT_TRUSTITEM
 
-#callback gpgme_event_io_cb_t , Ptr () -> <gpgme_event_io_t> -> Ptr () -> IO ()
+#callback_t gpgme_event_io_cb_t , Ptr () -> <gpgme_event_io_t> -> Ptr () -> IO ()
 
 #starttype struct gpgme_io_cbs
 #field add , <gpgme_register_io_cb_t>
@@ -310,10 +310,10 @@ module Bindings.Gpgme where
 #ccall gpgme_get_io_cbs , <gpgme_ctx_t> -> <gpgme_io_cbs_t> -> IO ()
 #ccall gpgme_wait , <gpgme_ctx_t> -> Ptr <gpgme_error_t> -> CInt -> IO <gpgme_ctx_t>
 
-#callback gpgme_data_read_cb_t , Ptr () -> Ptr () -> CSize -> IO <ssize_t>
-#callback gpgme_data_write_cb_t , Ptr () -> Ptr () -> CSize -> IO <ssize_t>
-#callback gpgme_data_seek_cb_t , Ptr () -> <off_t> -> CInt -> IO <off_t>
-#callback gpgme_data_release_cb_t , Ptr () -> IO ()
+#callback_t gpgme_data_read_cb_t , Ptr () -> Ptr () -> CSize -> IO <ssize_t>
+#callback_t gpgme_data_write_cb_t , Ptr () -> Ptr () -> CSize -> IO <ssize_t>
+#callback_t gpgme_data_seek_cb_t , Ptr () -> <off_t> -> CInt -> IO <off_t>
+#callback_t gpgme_data_release_cb_t , Ptr () -> IO ()
 
 #starttype struct gpgme_data_cbs
 #field read , <gpgme_data_read_cb_t>

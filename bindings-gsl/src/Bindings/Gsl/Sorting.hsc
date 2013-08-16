@@ -8,7 +8,7 @@ module Bindings.Gsl.Sorting where
 import Bindings.Gsl.VectorsAndMatrices.DataTypes
 import Bindings.Gsl.Permutations
 
-#callback gsl_comparison_fn_t , FunPtr ( Ptr () -> Ptr () -> IO CInt)
+#callback_t gsl_comparison_fn_t , FunPtr ( Ptr () -> Ptr () -> IO CInt)
 
 #ccall gsl_heapsort , Ptr () -> CSize -> CSize -> <gsl_comparison_fn_t> -> IO ()
 #ccall gsl_heapsort_index , Ptr CSize -> Ptr () -> CSize -> CSize -> <gsl_comparison_fn_t> -> IO CInt

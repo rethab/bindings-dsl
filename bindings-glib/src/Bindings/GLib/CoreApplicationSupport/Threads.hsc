@@ -45,7 +45,7 @@ import Bindings.GLib.CoreApplicationSupport.ErrorReporting
 #cinline g_thread_supported , IO <gboolean>
 #ccall g_thread_get_initialized , IO <gboolean>
 
-#callback GThreadFunc , <gpointer> -> IO <gpointer>
+#callback_t GThreadFunc , <gpointer> -> IO <gpointer>
 
 #integral_t GThreadPriority
 
