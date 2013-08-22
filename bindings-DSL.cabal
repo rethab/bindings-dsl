@@ -29,7 +29,7 @@ category: FFI
 library
   install-includes: bindings.dsl.h , bindings.cmacros.h
   build-depends: base >= 0 && < 1000
-  exposed-modules: Bindings
+  exposed-modules: Bindings.Utilities
 source-repository head
   type: git
   location: ssh://git@bitbucket.org/mauricio/bindings-dsl
