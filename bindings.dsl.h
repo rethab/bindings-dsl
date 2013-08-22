@@ -190,6 +190,7 @@ static struct {
      bc_fielddata.n = 0; \
      char typename[] = # name; \
      int index; \
+     int standalone_deriving = 0; \
 
 #define bc_basicfield(name,type,u,f) \
      index = bc_fielddata.n++; \
@@ -235,7 +236,14 @@ static struct {
          if (i+1 < bc_fielddata.n) printf(","); \
          printf("\n"); \
         } \
-     printf("} deriving (Eq,Show)\n"); \
+     if (!standalone_deriving) \
+         printf("} deriving (Eq,Show)\n"); \
+     else \
+        { \
+         printf("}\n"); \
+         printf("deriving instance Eq ");bc_conid(typename);printf("\n"); \
+         printf("deriving instance Show ");bc_conid(typename);printf("\n"); \
+        } \
      for (i=0; i < bc_fielddata.n; i++) \
         { \
          bc_fieldoffset(typename,bc_fielddata.fname[i]); \
