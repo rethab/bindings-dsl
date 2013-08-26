@@ -15,8 +15,8 @@ description:
   .
   <http://bitbucket.org/mauricio/bindings-dsl>
   .
-  This package contains no Haskell code, only C header files
-  designed for hsc2hs.
+  The extra module Bindings.Utilities will contain tools that may
+  be convenient when working with FFI.
 version: 1.0.17
 license: BSD3
 license-file: LICENSE
