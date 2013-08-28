@@ -8,6 +8,8 @@ description:
   of the @bindings-*@ project. See:
   .
   <http://bitbucket.org/mauricio/bindings-dsl>
+  .
+  <http://www.gnupg.org/related_software/gpgme>
 version: 0.1.5
 license: BSD3
 license-file: LICENSE

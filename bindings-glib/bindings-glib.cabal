@@ -7,6 +7,8 @@ description:
   of the @bindings-*@ project. See:
   .
   <http://bitbucket.org/mauricio/bindings-dsl>
+  .
+  <https://developer.gnome.org/glib>
 version: 0.1.6
 license: BSD3
 license-file: LICENSE

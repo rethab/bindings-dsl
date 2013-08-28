@@ -7,6 +7,8 @@ description:
   of the @bindings-*@ project. See:
   .
   <http://bitbucket.org/mauricio/bindings-dsl>
+  .
+  <http://sourceware.org/libffi>
 version: 0.3.1
 license: BSD3
 license-file: LICENSE

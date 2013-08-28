@@ -7,6 +7,8 @@ description:
   of the @bindings-*@ project. See:
   .
   <http://bitbucket.org/mauricio/bindings-dsl>
+  .
+  <http://directfb.org>
 version: 0.2
 license: BSD3
 license-file: LICENSE

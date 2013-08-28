@@ -7,6 +7,8 @@ description:
   of the @bindings-*@ project. See:
   .
   <http://bitbucket.org/mauricio/bindings-dsl>
+  .
+  <http://www.gnu.org/software/gsl>
 version: 0.2.1
 license: BSD3
 license-file: LICENSE
