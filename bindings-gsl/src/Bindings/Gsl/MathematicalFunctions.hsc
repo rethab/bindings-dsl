@@ -93,4 +93,4 @@ module Bindings.Gsl.MathematicalFunctions where
 #ccall gsl_pow_8 , CDouble -> IO CDouble
 #ccall gsl_pow_9 , CDouble -> IO CDouble
 #ccall gsl_pow_int , CDouble -> CInt -> IO CDouble
-
+#ccall gsl_pow_uint , CDouble -> CUInt -> IO CDouble

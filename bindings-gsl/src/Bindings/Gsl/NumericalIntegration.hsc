@@ -21,6 +21,24 @@ import Bindings.Gsl.MathematicalFunctions
 #field level , Ptr CSize
 #stoptype
 
+#starttype gsl_integration_cquad_ival
+#field a , CDouble
+#field b , CDouble
+#array_field c , CDouble
+#array_field fx , CDouble
+#field igral , CDouble
+#field err , CDouble
+#field depth , CInt
+#field rdepth , CInt
+#field ndiv , CInt
+#stoptype
+
+#starttype gsl_integration_cquad_workspace
+#field size , CSize
+#field ivals , Ptr <gsl_integration_cquad_ival>
+#field heap , Ptr CSize
+#stoptype
+
 #ccall gsl_integration_workspace_alloc , CSize -> IO (Ptr <gsl_integration_workspace>)
 #ccall gsl_integration_workspace_free , Ptr <gsl_integration_workspace> -> IO ()
 
@@ -87,3 +105,27 @@ import Bindings.Gsl.MathematicalFunctions
 #ccall gsl_integration_qawo , Ptr <gsl_function> -> CDouble -> CDouble -> CDouble -> CSize -> Ptr <gsl_integration_workspace> -> Ptr <gsl_integration_qawo_table> -> Ptr CDouble -> Ptr CDouble -> IO CInt
 #ccall gsl_integration_qawf , Ptr <gsl_function> -> CDouble -> CDouble -> CSize -> Ptr <gsl_integration_workspace> -> Ptr <gsl_integration_workspace> -> Ptr <gsl_integration_qawo_table> -> Ptr CDouble -> Ptr CDouble -> IO CInt
 
+#ccall gsl_integration_cquad_workspace_alloc , CSize -> \
+    IO (Ptr <gsl_integration_cquad_workspace>)
+#ccall gsl_integration_cquad_workspace_free , \
+    Ptr <gsl_integration_cquad_workspace> -> IO ()
+#ccall gsl_integration_cquad , Ptr <gsl_function> -> CDouble -> CDouble -> \
+    CDouble -> CDouble -> Ptr <gsl_integration_cquad_workspace> -> \
+    Ptr CDouble -> Ptr CDouble -> Ptr CSize  -> IO CInt
+
+#starttype gsl_integration_glfixed_table
+#field n , CSize
+#field x , Ptr CDouble
+#field w , Ptr CDouble
+#field precomputed , CInt
+#stoptype
+
+#ccall gsl_integration_glfixed_table_alloc , CSize -> \
+    IO (Ptr <gsl_integration_glfixed_table>)
+#ccall gsl_integration_glfixed , Ptr <gsl_function> -> CDouble -> CDouble -> \
+    Ptr <gsl_integration_glfixed_table>  -> IO CDouble
+#ccall gsl_integration_glfixed_point , CDouble -> CDouble -> CSize -> \
+    Ptr CDouble  -> Ptr CDouble -> Ptr <gsl_integration_glfixed_table> -> \
+    IO CInt
+#ccall gsl_integration_glfixed_table_free , \
+    Ptr <gsl_integration_glfixed_table> -> IO ()

@@ -5,7 +5,7 @@
 
 module Bindings.Gsl.NonlinearLeastSquaresFitting where
 #strict_import
-import Bindings.Gsl.VectorsAndMatrices
+import Bindings.Gsl.VectorsAndMatrices.DataTypes
 
 #ccall gsl_multifit_gradient , Ptr <gsl_matrix> -> \
     Ptr <gsl_vector> -> Ptr <gsl_vector> -> IO CInt

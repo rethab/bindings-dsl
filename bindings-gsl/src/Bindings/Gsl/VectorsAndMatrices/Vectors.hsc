@@ -309,6 +309,7 @@ import Bindings.Gsl.ComplexNumbers
 #ccall gsl_vector_isnonneg , Ptr <gsl_vector> -> IO CInt
 #ccall gsl_vector_isnull , Ptr <gsl_vector> -> IO CInt
 #ccall gsl_vector_ispos , Ptr <gsl_vector> -> IO CInt
+#ccall gsl_vector_equal , Ptr <gsl_vector> -> Ptr <gsl_vector> -> IO CInt
 #ccall gsl_vector_long_add , Ptr <gsl_vector_long> -> Ptr <gsl_vector_long> -> IO CInt
 #ccall gsl_vector_long_add_constant , Ptr <gsl_vector_long> -> CDouble -> IO CInt
 #ccall gsl_vector_long_alloc , CSize -> IO (Ptr <gsl_vector_long>)

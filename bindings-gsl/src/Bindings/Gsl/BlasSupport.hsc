@@ -6,7 +6,7 @@
 module Bindings.Gsl.BlasSupport where
 #strict_import
 import Bindings.Gsl.ComplexNumbers
-import Bindings.Gsl.VectorsAndMatrices
+import Bindings.Gsl.VectorsAndMatrices.DataTypes
 
 #integral_t CBLAS_INDEX_t
 #integral_t CBLAS_ORDER_t

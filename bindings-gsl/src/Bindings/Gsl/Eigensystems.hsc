@@ -6,7 +6,7 @@
 module Bindings.Gsl.Eigensystems where
 #strict_import
 import Bindings.Gsl.ComplexNumbers
-import Bindings.Gsl.VectorsAndMatrices
+import Bindings.Gsl.VectorsAndMatrices.DataTypes
 
 #starttype gsl_eigen_symm_workspace
 #field size , CSize
@@ -97,8 +97,13 @@ import Bindings.Gsl.VectorsAndMatrices
 
 #ccall gsl_eigen_nonsymmv_alloc , CSize -> IO  (Ptr <gsl_eigen_nonsymmv_workspace>)
 #ccall gsl_eigen_nonsymmv_free , Ptr <gsl_eigen_nonsymmv_workspace> -> IO ()
-#ccall gsl_eigen_nonsymmv , Ptr <gsl_matrix> -> Ptr <gsl_vector_complex> -> Ptr <gsl_matrix_complex> -> Ptr <gsl_eigen_nonsymmv_workspace> -> IO CInt
-#ccall gsl_eigen_nonsymmv_Z , Ptr <gsl_matrix> -> Ptr <gsl_vector_complex> -> Ptr <gsl_matrix_complex> -> Ptr <gsl_matrix> -> Ptr <gsl_eigen_nonsymmv_workspace> -> IO CInt
+#ccall gsl_eigen_nonsymmv_params , CInt -> \
+    Ptr <gsl_eigen_nonsymm_workspace> -> IO ()
+#ccall gsl_eigen_nonsymmv , Ptr <gsl_matrix> -> Ptr <gsl_vector_complex> -> \
+    Ptr <gsl_matrix_complex> -> Ptr <gsl_eigen_nonsymmv_workspace> -> IO CInt
+#ccall gsl_eigen_nonsymmv_Z , Ptr <gsl_matrix> -> Ptr <gsl_vector_complex> -> \
+    Ptr <gsl_matrix_complex> -> Ptr <gsl_matrix> -> \
+    Ptr <gsl_eigen_nonsymmv_workspace> -> IO CInt
 
 #starttype gsl_eigen_gensymm_workspace
 #field size , CSize

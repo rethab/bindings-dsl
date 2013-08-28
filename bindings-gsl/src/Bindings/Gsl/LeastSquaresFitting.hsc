@@ -42,12 +42,30 @@ import Bindings.Gsl.VectorsAndMatrices.DataTypes
 #field D , Ptr <gsl_vector>
 #stoptype
 
-#ccall gsl_multifit_linear_alloc , CSize -> CSize -> IO (Ptr <gsl_multifit_linear_workspace>)
+#ccall gsl_multifit_linear_alloc , CSize -> CSize -> \
+    IO (Ptr <gsl_multifit_linear_workspace>)
 #ccall gsl_multifit_linear_free , Ptr <gsl_multifit_linear_workspace> -> IO ()
-#ccall gsl_multifit_linear , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> Ptr <gsl_vector> -> Ptr <gsl_matrix> -> Ptr CDouble -> Ptr <gsl_multifit_linear_workspace> -> IO CInt
-#ccall gsl_multifit_linear_svd , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> CDouble -> Ptr CSize -> Ptr <gsl_vector> -> Ptr <gsl_matrix> -> Ptr CDouble -> Ptr <gsl_multifit_linear_workspace> -> IO CInt
-#ccall gsl_multifit_wlinear , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> Ptr <gsl_vector> -> Ptr <gsl_vector> -> Ptr <gsl_matrix> -> Ptr CDouble -> Ptr <gsl_multifit_linear_workspace> -> IO CInt
-#ccall gsl_multifit_wlinear_svd , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> Ptr <gsl_vector> -> CDouble -> Ptr CSize -> Ptr <gsl_vector> -> Ptr <gsl_matrix> -> Ptr CDouble -> Ptr <gsl_multifit_linear_workspace> -> IO CInt
-#ccall gsl_multifit_linear_est , Ptr <gsl_vector> -> Ptr <gsl_vector> -> Ptr <gsl_matrix> -> Ptr CDouble -> Ptr CDouble -> IO CInt
-#ccall gsl_multifit_linear_residuals , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> Ptr <gsl_vector> -> Ptr <gsl_vector> -> IO CInt
-
+#ccall gsl_multifit_linear , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> \
+    Ptr <gsl_vector> -> Ptr <gsl_matrix> -> Ptr CDouble -> \
+    Ptr <gsl_multifit_linear_workspace> -> IO CInt
+#ccall gsl_multifit_wlinear , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> \
+    Ptr <gsl_vector> -> Ptr <gsl_vector> -> Ptr <gsl_matrix> -> \
+    Ptr CDouble -> Ptr <gsl_multifit_linear_workspace> -> IO CInt
+#ccall gsl_multifit_linear_svd , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> \
+    CDouble -> Ptr CSize -> Ptr <gsl_vector> -> Ptr <gsl_matrix> -> \
+    Ptr CDouble -> Ptr <gsl_multifit_linear_workspace> -> IO CInt
+#ccall gsl_multifit_wlinear_svd , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> \
+    Ptr <gsl_vector> -> CDouble -> Ptr CSize -> Ptr <gsl_vector> -> \
+    Ptr <gsl_matrix> -> Ptr CDouble -> \
+    Ptr <gsl_multifit_linear_workspace> -> IO CInt
+#ccall gsl_multifit_linear_usvd , Ptr <gsl_matrix> ->  Ptr <gsl_vector> -> \
+    CDouble -> Ptr CSize -> Ptr <gsl_vector> -> Ptr <gsl_matrix> -> \
+    Ptr CDouble -> Ptr <gsl_multifit_linear_workspace> -> IO CInt
+#ccall gsl_multifit_wlinear_usvd , Ptr <gsl_matrix> ->  Ptr <gsl_vector> -> \
+    Ptr <gsl_vector> -> CDouble -> Ptr CSize -> Ptr <gsl_vector> -> \
+    Ptr <gsl_matrix> -> Ptr CDouble -> Ptr <gsl_multifit_linear_workspace> -> \
+    IO CInt
+#ccall gsl_multifit_linear_est , Ptr <gsl_vector> -> Ptr <gsl_vector> -> \
+    Ptr <gsl_matrix> -> Ptr CDouble -> Ptr CDouble -> IO CInt
+#ccall gsl_multifit_linear_residuals , Ptr <gsl_matrix> -> \
+    Ptr <gsl_vector> -> Ptr <gsl_vector> -> Ptr <gsl_vector> -> IO CInt

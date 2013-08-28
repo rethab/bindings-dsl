@@ -4,5 +4,7 @@
 module Bindings.Gsl.Version where
 #strict_import
 
-#pointer GSL_VERSION
+#globalarray GSL_VERSION , CChar
+#num GSL_MAJOR_VERSION
+#num GSL_MINOR_VERSION
 #globalarray gsl_version , CChar

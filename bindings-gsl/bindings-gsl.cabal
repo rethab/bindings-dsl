@@ -23,7 +23,7 @@ library
     ForeignFunctionInterface
   build-depends:
     base >= 3 && < 5,
-    bindings-DSL >= 1.0.16 && < 1.1
+    bindings-DSL >= 1.0.17 && < 1.1
   exposed-modules:
     Bindings.Gsl
     Bindings.Gsl.BasisSplines
@@ -45,8 +45,8 @@ library
     Bindings.Gsl.MonteCarloIntegration
     Bindings.Gsl.MultidimensionalMinimization
     Bindings.Gsl.MultidimensionalRootFinding
-    Bindings.Gsl.NonlinearLeastSquaresFitting
     Bindings.Gsl.NTuples
+    Bindings.Gsl.NonlinearLeastSquaresFitting
     Bindings.Gsl.NumericalDifferentiation
     Bindings.Gsl.NumericalIntegration
     Bindings.Gsl.OneDimensionalMinimization
@@ -63,15 +63,26 @@ library
     Bindings.Gsl.Sorting
     Bindings.Gsl.SpecialFunctions
     Bindings.Gsl.Statistics
-    Bindings.Gsl.VectorsAndMatrices
     Bindings.Gsl.VectorsAndMatrices.Blocks
     Bindings.Gsl.VectorsAndMatrices.DataTypes
     Bindings.Gsl.VectorsAndMatrices.Matrices
     Bindings.Gsl.VectorsAndMatrices.Vectors
     Bindings.Gsl.Version
     Bindings.Gsl.WaveletTransforms
-  c-sources: src/inlines.c
-  pkgconfig-depends: gsl >= 1.13
+    Bindings.Gsl.Multisets
+  c-sources:
+    src/Bindings/Gsl/ErrorHandling.c
+    src/Bindings/Gsl/MathematicalFunctions.c
+    src/Bindings/Gsl/MonteCarloIntegration.c
+    src/Bindings/Gsl/MultidimensionalMinimization.c
+    src/Bindings/Gsl/MultidimensionalRootFinding.c
+    src/Bindings/Gsl/Multisets.c
+    src/Bindings/Gsl/NonlinearLeastSquaresFitting.c
+    src/Bindings/Gsl/OrdinaryDifferentialEquations.c
+    src/Bindings/Gsl/SpecialFunctions.c
+    src/Bindings/Gsl/VectorsAndMatrices/Vectors.c
+    src/Bindings/Gsl/Version.c
+  pkgconfig-depends: gsl >= 1.15
 source-repository head
   type: git
   location: https://bitbucket.org/mauricio/bindings-dsl

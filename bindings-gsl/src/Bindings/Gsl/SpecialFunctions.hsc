@@ -6,7 +6,7 @@
 module Bindings.Gsl.SpecialFunctions where
 #strict_import
 import Bindings.Gsl.Eigensystems
-import Bindings.Gsl.VectorsAndMatrices
+import Bindings.Gsl.VectorsAndMatrices.DataTypes
 
 #integral_t gsl_mode_t
 

@@ -104,6 +104,7 @@ import Bindings.Gsl.SpecialFunctions
 #ccall gsl_linalg_complex_cholesky_decomp , Ptr <gsl_matrix_complex> -> IO CInt
 #ccall gsl_linalg_complex_cholesky_solve , Ptr <gsl_matrix_complex> -> Ptr <gsl_vector_complex> -> Ptr <gsl_vector_complex> -> IO CInt
 #ccall gsl_linalg_complex_cholesky_svx , Ptr <gsl_matrix_complex> -> Ptr <gsl_vector_complex> -> IO CInt
+#ccall gsl_linalg_complex_cholesky_invert , Ptr <gsl_matrix_complex> -> IO CInt
 #ccall gsl_linalg_symmtd_decomp , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> IO CInt
 #ccall gsl_linalg_symmtd_unpack , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> Ptr <gsl_matrix> -> Ptr <gsl_vector> -> Ptr <gsl_vector> -> IO CInt
 #ccall gsl_linalg_symmtd_unpack_T , Ptr <gsl_matrix> -> Ptr <gsl_vector> -> Ptr <gsl_vector> -> IO CInt

@@ -381,6 +381,7 @@ import Bindings.Gsl.ComplexNumbers
 #ccall gsl_matrix_isnonneg , Ptr <gsl_matrix> -> IO CInt
 #ccall gsl_matrix_isnull , Ptr <gsl_matrix> -> IO CInt
 #ccall gsl_matrix_ispos , Ptr <gsl_matrix> -> IO CInt
+#ccall gsl_matrix_equal, Ptr <gsl_matrix> -> Ptr <gsl_matrix> -> IO CInt
 #ccall gsl_matrix_long_add , Ptr <gsl_matrix_long> -> Ptr <gsl_matrix_long> -> IO CInt
 #ccall gsl_matrix_long_add_constant , Ptr <gsl_matrix_long> -> CDouble -> IO CInt
 #ccall gsl_matrix_long_add_diagonal , Ptr <gsl_matrix_long> -> CDouble -> IO CInt

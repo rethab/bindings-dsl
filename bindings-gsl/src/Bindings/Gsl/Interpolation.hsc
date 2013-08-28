@@ -47,6 +47,7 @@ module Bindings.Gsl.Interpolation where
 #ccall gsl_interp_init , Ptr <gsl_interp> -> Ptr CDouble -> Ptr CDouble -> CSize -> IO CInt
 #ccall gsl_interp_name , Ptr <gsl_interp> -> IO CString 
 #ccall gsl_interp_min_size , Ptr <gsl_interp> -> IO CUInt
+#ccall gsl_interp_type_min_size , Ptr <gsl_interp_type> -> IO CUInt
 #ccall gsl_interp_eval_e , Ptr <gsl_interp> -> Ptr CDouble -> Ptr CDouble -> CDouble -> Ptr <gsl_interp_accel> -> Ptr CDouble -> IO CInt
 #ccall gsl_interp_eval , Ptr <gsl_interp> -> Ptr CDouble -> Ptr CDouble -> CDouble -> Ptr <gsl_interp_accel> -> IO CDouble
 #ccall gsl_interp_eval_deriv_e , Ptr <gsl_interp> -> Ptr CDouble -> Ptr CDouble -> CDouble -> Ptr <gsl_interp_accel> -> Ptr CDouble -> IO CInt
