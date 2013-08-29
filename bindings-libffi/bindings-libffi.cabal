@@ -1,7 +1,7 @@
 cabal-version: >= 1.8
 name: bindings-libffi
 synopsis:
-  Low level bindings to libffi.
+  Project bindings-* raw interface to libffi
 description:
   Low level bindings to libffi, part
   of the @bindings-*@ project. See:

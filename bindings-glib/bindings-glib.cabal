@@ -1,7 +1,7 @@
 cabal-version: >= 1.8
 name: bindings-glib
 synopsis:
-  Low level bindings to GLib.
+  Project bindings-* raw interface to GLib
 description:
   Low level bindings to GLib, part
   of the @bindings-*@ project. See:

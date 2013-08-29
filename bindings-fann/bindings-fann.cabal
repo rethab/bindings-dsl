@@ -1,7 +1,7 @@
 cabal-version: >= 1.8
 name: bindings-fann
 synopsis:
-  Low level bindings to FANN neural network library.
+  Project bindings-* raw interface to FANN neural network library
 description:
   Low level bindings to FANN neural network library, part
   of the @bindings-*@ project. See:

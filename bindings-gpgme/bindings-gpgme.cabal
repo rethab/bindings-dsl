@@ -2,7 +2,7 @@ cabal-version: >= 1.8
 name: bindings-gpgme
 homepage: http://bitbucket.org/mauricio/bindings-gpgme
 synopsis:
-  Low level bindings to gpgme.
+  Project bindings-* raw interface to gpgme
 description:
   Low level bindings to gpgme, part
   of the @bindings-*@ project. See:

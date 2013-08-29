@@ -1,7 +1,7 @@
 cabal-version: >= 1.8
 name: bindings-sqlite3
 synopsis:
-  Low level bindings to sqlite3.
+  Project bindings-* raw interface to sqlite3
 description:
   Low level bindings to sqlite3, part
   of the @bindings-*@ project. See:

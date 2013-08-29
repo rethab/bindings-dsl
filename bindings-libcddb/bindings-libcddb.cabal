@@ -2,7 +2,7 @@ cabal-version: >= 1.8
 name: bindings-libcddb
 homepage: http://bitbucket.org/mauricio/bindings-libcddb
 synopsis:
-  Low level binding to libcddb.
+  Project bindings-* raw interface to libcddb
 description:
   Low level bindings to libcddb, part
   of the @bindings-*@ project. See:

@@ -1,7 +1,7 @@
 cabal-version: >= 1.8
 name: bindings-gsl
 synopsis:
-  Low level bindings to GNU GSL.
+  Project bindings-* raw interface to GNU GSL
 description:
   Low level bindings to GNU GSL, part
   of the @bindings-*@ project. See:

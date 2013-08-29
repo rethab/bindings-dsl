@@ -1,7 +1,7 @@
 cabal-version: >= 1.8
 name: bindings-directfb
 synopsis:
-  Low level bindings to DirectFB
+  Project bindings-* raw interface to DirectFB
 description:
   Low level bindings to DirectFB, part
   of the @bindings-*@ project. See:
