@@ -1,0 +1,3 @@
+buildable: @BUILD_BINDINGS_HDF5@
+cc-options: @HDF5_CFLAGS@
+ld-options: @HDF5_LIBS@

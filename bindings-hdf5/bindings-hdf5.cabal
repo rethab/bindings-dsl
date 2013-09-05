@@ -1,0 +1,44 @@
+cabal-version: >= 1.8
+name: bindings-hdf5
+synopsis:
+  Project bindings-* raw interface to HDF5 library
+description:
+  Low level bindings to HDF5, part
+  of the @bindings-*@ project. See:
+  .
+  <http://bitbucket.org/mauricio/bindings-dsl>
+  .
+  <http://www.hdfgroup.org/HDF5>
+version: 0.1
+license: BSD3
+license-file: LICENSE
+maintainer: Maurício C. Antunes
+author: Maurício C. Antunes
+build-type: Configure
+category: FFI
+bug-reports: http://bitbucket.org/mauricio/bindings-dls/issues
+extra-source-files:
+  ax_lib_hdf5.m4,
+  bindings-hdf5.buildinfo.in,
+  configure.ac,
+  configure
+extra-tmp-files:
+  bindings-hdf5.buildinfo,
+  config.log,
+  config.status
+library
+  hs-source-dirs: src
+  extensions:
+    ForeignFunctionInterface
+  build-depends:
+    base >=3 && < 5,
+    bindings-DSL >= 1.0.17 && < 1.1
+  exposed-modules:
+    Bindings.HDF5
+    Bindings.HDF5.Types
+    Bindings.HDF5.HighLevelAPI
+source-repository head
+  type: git
+  location: https://bitbucket.org/mauricio/bindings-dsl
+  branch: master
+  subdir: bindings-hdf5
