@@ -17,7 +17,7 @@ description:
   .
   The extra module Bindings.Utilities will contain tools that may
   be convenient when working with FFI.
-version: 1.0.19
+version: 1.0.20
 license: BSD3
 license-file: LICENSE
 maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
@@ -26,6 +26,7 @@ stability: Stable API, well tested, portable, used in comercial code.
 build-type: Simple
 bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
 category: FFI
+extra-source-files: ChangeLog
 library
   install-includes: bindings.dsl.h , bindings.cmacros.h
   build-depends: base >= 0 && < 1000
@@ -37,4 +38,4 @@ source-repository head
 source-repository this
   type: git
   location: ssh://git@bitbucket.org/mauricio/bindings-dsl
-  tag: 1.0.19
+  tag: 1.0.20
