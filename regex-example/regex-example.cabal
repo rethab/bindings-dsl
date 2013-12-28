@@ -2,7 +2,7 @@ cabal-version: >= 1.8
 name: regex-example
 synopsis:
   Example used in bindings-DSL documentation.
-version: 1.0
+version: 1.1
 license: BSD3
 license-file: LICENSE
 maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
@@ -14,6 +14,7 @@ library
   hs-source-dirs: src
   build-depends:
     base >= 3 && < 5,
+    transformers >= 0.3 && < 0.4,
     bindings-posix >= 1.2.4
   exposed-modules:
     RegexExample
