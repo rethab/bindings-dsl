@@ -1,6 +1,6 @@
 cabal-version: >= 1.8
 name: bindings-DSL
-homepage: http://bitbucket.org/mauricio/bindings-dsl
+homepage: https://github.com/jwiegley/bindings-dsl/wiki
 synopsis:
   FFI domain specific language, on top of hsc2hs.
 description: 
@@ -13,18 +13,18 @@ description:
   to help write bindings to inline functions or macro functions.
   Documentation is available at package homepage:
   .
-  <http://bitbucket.org/mauricio/bindings-dsl>
+  <https://github.com/jwiegley/bindings-dsl/wiki>
   .
   The extra module Bindings.Utilities will contain tools that may
   be convenient when working with FFI.
-version: 1.0.20
+version: 1.0.21
 license: BSD3
 license-file: LICENSE
-maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+maintainer: John Wiegley <johnw@fpcomplete.com>
 author: Maurício C. Antunes
 stability: Stable API, well tested, portable, used in comercial code.
 build-type: Simple
-bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
+bug-reports: https://github.com/jwiegley/bindings-dsl/issues
 category: FFI
 extra-source-files: ChangeLog
 library
@@ -33,9 +33,9 @@ library
   exposed-modules: Bindings.Utilities
 source-repository head
   type: git
-  location: ssh://git@bitbucket.org/mauricio/bindings-dsl
+  location: git://github.com/jwiegley/bindings-dsl
   branch: master
 source-repository this
   type: git
-  location: ssh://git@bitbucket.org/mauricio/bindings-dsl
-  tag: 1.0.20
+  location: git://github.com/jwiegley/bindings-dsl
+  tag: 1.0.21
