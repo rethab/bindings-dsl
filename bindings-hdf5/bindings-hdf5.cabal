@@ -9,7 +9,7 @@ description:
   <http://bitbucket.org/mauricio/bindings-dsl>
   .
   <http://www.hdfgroup.org/HDF5>
-version: 0.1
+version: 0.1.1
 license: BSD3
 license-file: LICENSE
 maintainer: Maurício C. Antunes
@@ -37,6 +37,7 @@ library
     Bindings.HDF5
     Bindings.HDF5.Types
     Bindings.HDF5.HighLevelAPI
+    Bindings.HDF5.LowLevelAPI
 source-repository head
   type: git
   location: https://bitbucket.org/mauricio/bindings-dsl
