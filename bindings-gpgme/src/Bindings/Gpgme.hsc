@@ -6,11 +6,14 @@
 module Bindings.Gpgme where
 #strict_import
 
+-- * Basic types
 #integral_t off_t
 #integral_t ssize_t
 
 #integral_t gpgme_ctx_t
 #integral_t gpgme_data_t
+
+-- * Errors
 #integral_t gpg_error_t
 #integral_t gpgme_error_t
 #integral_t gpg_err_code_t
@@ -31,12 +34,15 @@ module Bindings.Gpgme where
 #ccall gpgme_err_make_from_errno , <gpgme_err_source_t> -> CInt -> IO <gpgme_error_t>
 #ccall gpgme_error_from_errno , CInt -> IO <gpgme_err_code_t>
 
+-- * Data encoding
 #integral_t gpgme_data_encoding_t
 #num GPGME_DATA_ENCODING_NONE
 #num GPGME_DATA_ENCODING_BINARY
 #num GPGME_DATA_ENCODING_BASE64
 #num GPGME_DATA_ENCODING_ARMOR
 
+-- * Algorithms
+-- ** Public key algorithms
 #integral_t gpgme_pubkey_algo_t
 #num GPGME_PK_RSA
 #num GPGME_PK_RSA_E
@@ -45,6 +51,7 @@ module Bindings.Gpgme where
 #num GPGME_PK_DSA
 #num GPGME_PK_ELG
 
+-- ** Hash algorithms
 #integral_t gpgme_hash_algo_t
 #num GPGME_MD_NONE
 #num GPGME_MD_MD5
@@ -61,11 +68,13 @@ module Bindings.Gpgme where
 #num GPGME_MD_CRC32_RFC1510
 #num GPGME_MD_CRC24_RFC2440
 
+-- * Signature mode
 #integral_t gpgme_sig_mode_t
 #num GPGME_SIG_MODE_NORMAL
 #num GPGME_SIG_MODE_DETACH
 #num GPGME_SIG_MODE_CLEAR
 
+-- * Identity validity
 #integral_t gpgme_validity_t
 #num GPGME_VALIDITY_UNKNOWN
 #num GPGME_VALIDITY_UNDEFINED
@@ -74,12 +83,14 @@ module Bindings.Gpgme where
 #num GPGME_VALIDITY_FULL
 #num GPGME_VALIDITY_ULTIMATE
 
+-- * Protocols
 #integral_t gpgme_protocol_t
 #num GPGME_PROTOCOL_OpenPGP
 #num GPGME_PROTOCOL_CMS
 #num GPGME_PROTOCOL_GPGCONF
 #num GPGME_PROTOCOL_UNKNOWN
 
+-- * Key list modes
 #integral_t gpgme_keylist_mode_t
 #num GPGME_KEYLIST_MODE_LOCAL
 #num GPGME_KEYLIST_MODE_EXTERN
@@ -89,6 +100,7 @@ module Bindings.Gpgme where
 #num GPGME_AUDITLOG_HTML
 #num GPGME_AUDITLOG_WITH_HELP
 
+-- * Signature notations
 #integral_t gpgme_sig_notation_flags_t
 #num GPGME_SIG_NOTATION_HUMAN_READABLE
 #num GPGME_SIG_NOTATION_CRITICAL
@@ -103,6 +115,7 @@ module Bindings.Gpgme where
 #stoptype
 #synonym_t gpgme_sig_notation_t , Ptr <_gpgme_sig_notation>
 
+-- * Status codes
 #integral_t gpgme_status_code_t
 #num GPGME_STATUS_EOF
 #num GPGME_STATUS_ENTER
@@ -187,6 +200,7 @@ module Bindings.Gpgme where
 #num GPGME_STATUS_PKA_TRUST_GOOD
 #num GPGME_STATUS_PLAINTEXT
 
+-- * Engine information
 #starttype struct _gpgme_engine_info
 #field next , Ptr <_gpgme_engine_info>
 #field protocol , <gpgme_protocol_t>
@@ -197,6 +211,7 @@ module Bindings.Gpgme where
 #stoptype
 #synonym_t gpgme_engine_info_t , Ptr <_gpgme_engine_info>
 
+-- * Keys
 #starttype struct _gpgme_subkey
 #field next , Ptr <_gpgme_subkey>
 #field pubkey_algo , <gpgme_pubkey_algo_t>
@@ -221,7 +236,7 @@ module Bindings.Gpgme where
 #field email , CString
 #field comment , CString
 #field sig_class , CUInt
-#field notations , <gpgme_sig_notation_t> 
+#field notations , <gpgme_sig_notation_t>
 #stoptype
 #synonym_t gpgme_key_sig_t , Ptr <_gpgme_key_sig>
 
@@ -248,10 +263,12 @@ module Bindings.Gpgme where
 #stoptype
 #synonym_t gpgme_key_t , Ptr <_gpgme_key>
 
+-- * Callback types
 #callback_t gpgme_passphrase_cb_t , Ptr () -> CString -> CString -> CInt -> CInt -> IO <gpgme_error_t>
 #callback_t gpgme_progress_cb_t , Ptr () -> CString -> CInt -> CInt -> CInt -> IO ()
 #callback_t gpgme_edit_cb_t , Ptr () -> <gpgme_status_code_t> -> CString -> CInt -> IO <gpgme_error_t>
 
+-- * Creating and configuring contexts
 #ccall gpgme_new , Ptr <gpgme_ctx_t> -> IO <gpgme_error_t>
 #ccall gpgme_release , <gpgme_ctx_t> -> IO ()
 #ccall gpgme_set_protocol , <gpgme_ctx_t> -> <gpgme_protocol_t> -> IO <gpgme_error_t>
@@ -284,6 +301,7 @@ module Bindings.Gpgme where
 #ccall gpgme_sig_notation_add , <gpgme_ctx_t> -> CString -> CString -> <gpgme_sig_notation_flags_t> -> IO <gpgme_error_t>
 #ccall gpgme_sig_notation_get , <gpgme_ctx_t> -> IO <gpgme_sig_notation_t>
 
+-- * IO events
 #callback_t gpgme_io_cb_t , Ptr () -> CInt -> IO <gpgme_error_t>
 #callback_t gpgme_register_io_cb_t , Ptr () -> CInt -> CInt -> <gpgme_io_cb_t> -> Ptr () -> Ptr (Ptr ()) -> IO <gpgme_error_t>
 #callback_t gpgme_remove_io_cb_t , Ptr () -> IO ()
@@ -309,7 +327,10 @@ module Bindings.Gpgme where
 #ccall gpgme_set_io_cbs , <gpgme_ctx_t> -> <gpgme_io_cbs_t> -> IO ()
 #ccall gpgme_get_io_cbs , <gpgme_ctx_t> -> <gpgme_io_cbs_t> -> IO ()
 #ccall gpgme_wait , <gpgme_ctx_t> -> Ptr <gpgme_error_t> -> CInt -> IO <gpgme_ctx_t>
+#ccall gpgme_cancel , <gpgme_ctx_t> -> IO <gpgme_error_t>
+#ccall gpgme_cancel_async , <gpgme_ctx_t> -> IO <gpgme_error_t>
 
+-- * Data buffers
 #callback_t gpgme_data_read_cb_t , Ptr () -> Ptr () -> CSize -> IO <ssize_t>
 #callback_t gpgme_data_write_cb_t , Ptr () -> Ptr () -> CSize -> IO <ssize_t>
 #callback_t gpgme_data_seek_cb_t , Ptr () -> <off_t> -> CInt -> IO <off_t>
@@ -341,13 +362,14 @@ module Bindings.Gpgme where
 #ccall gpgme_data_set_file_name , <gpgme_data_t> -> CString -> IO <gpgme_error_t>
 #ccall gpgme_data_new_from_file , Ptr <gpgme_data_t> -> CString -> CInt -> IO <gpgme_error_t>
 #ccall gpgme_data_new_from_filepart , Ptr <gpgme_data_t> -> CString -> Ptr CFile -> <off_t> -> CSize -> IO <gpgme_error_t>
+
+-- * Key management
 #ccall gpgme_get_key , <gpgme_ctx_t> -> CString -> Ptr <gpgme_key_t> -> CInt -> IO <gpgme_error_t>
 #ccall gpgme_key_ref , <gpgme_key_t> -> IO ()
 #ccall gpgme_key_unref , <gpgme_key_t> -> IO ()
 #ccall gpgme_key_release , <gpgme_key_t> -> IO ()
-#ccall gpgme_cancel , <gpgme_ctx_t> -> IO <gpgme_error_t>
-#ccall gpgme_cancel_async , <gpgme_ctx_t> -> IO <gpgme_error_t>
 
+-- * Encryption
 #starttype struct _gpgme_invalid_key
 #field next , <_gpgme_invalid_key>
 #field fpr , CString
@@ -370,6 +392,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_encrypt_sign_start , <gpgme_ctx_t> -> Ptr <gpgme_key_t> -> <gpgme_encrypt_flags_t> -> <gpgme_data_t> -> <gpgme_data_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_encrypt_sign , <gpgme_ctx_t> -> Ptr <gpgme_key_t> -> <gpgme_encrypt_flags_t> -> <gpgme_data_t> -> <gpgme_data_t> -> IO <gpgme_error_t>
 
+-- * Decryption
 #starttype struct _gpgme_recipient
 #field next , Ptr <_gpgme_recipient>
 #field keyid , CString
@@ -391,6 +414,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_decrypt_verify_start , <gpgme_ctx_t> -> <gpgme_data_t> -> <gpgme_data_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_decrypt_verify , <gpgme_ctx_t> -> <gpgme_data_t> -> <gpgme_data_t> -> IO <gpgme_error_t>
 
+-- * Signing
 #starttype struct _gpgme_new_signature
 #field next , Ptr <_gpgme_new_signature>
 #field type , <gpgme_sig_mode_t>
@@ -412,6 +436,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_sign_start , <gpgme_ctx_t> -> <gpgme_data_t> -> <gpgme_data_t> -> <gpgme_sig_mode_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_sign , <gpgme_ctx_t> -> <gpgme_data_t> -> <gpgme_data_t> -> <gpgme_sig_mode_t> -> IO <gpgme_error_t>
 
+-- * Signature verification
 #integral_t gpgme_sigsum_t
 #num GPGME_SIGSUM_VALID
 #num GPGME_SIGSUM_GREEN
@@ -451,6 +476,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_verify_start , <gpgme_ctx_t> -> <gpgme_data_t> -> <gpgme_data_t> -> <gpgme_data_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_verify , <gpgme_ctx_t> -> <gpgme_data_t> -> <gpgme_data_t> -> <gpgme_data_t> -> IO <gpgme_error_t>
 
+-- * Importing keys
 #num GPGME_IMPORT_NEW
 #num GPGME_IMPORT_UID
 #num GPGME_IMPORT_SIG
@@ -492,6 +518,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_export_ext_start , <gpgme_ctx_t> -> Ptr CString -> CUInt -> <gpgme_data_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_export_ext , <gpgme_ctx_t> -> Ptr CString -> CUInt -> <gpgme_data_t> -> IO <gpgme_error_t>
 
+-- * Key generation and editing
 #starttype struct _gpgme_op_genkey_result
 #field fpr , CString
 #stoptype
@@ -507,6 +534,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_card_edit_start , <gpgme_ctx_t> -> <gpgme_key_t> -> <gpgme_edit_cb_t> -> Ptr () -> <gpgme_data_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_card_edit , <gpgme_ctx_t> -> <gpgme_key_t> -> <gpgme_edit_cb_t> -> Ptr () -> <gpgme_data_t> -> IO <gpgme_error_t>
 
+-- * Listing keys
 #starttype struct _gpgme_op_keylist_result
 #stoptype
 #synonym_t gpgme_keylist_result_t , Ptr <_gpgme_op_keylist_result>
@@ -517,6 +545,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_keylist_next , <gpgme_ctx_t> -> Ptr <gpgme_key_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_keylist_end , <gpgme_ctx_t> -> IO <gpgme_error_t>
 
+-- * Trust items
 #starttype struct _gpgme_trust_item
 #field keyid , CString
 #field type , CInt
@@ -535,6 +564,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_getauditlog_start , <gpgme_ctx_t> -> <gpgme_data_t> -> CUInt -> IO <gpgme_error_t>
 #ccall gpgme_op_getauditlog , <gpgme_ctx_t> -> <gpgme_data_t> -> CUInt -> IO <gpgme_error_t>
 
+-- * Configuration
 #integral_t gpgme_conf_level_t
 #num GPGME_CONF_BASIC
 #num GPGME_CONF_ADVANCED
@@ -611,8 +641,9 @@ module Bindings.Gpgme where
 #ccall gpgme_conf_release , <gpgme_conf_comp_t> -> IO ()
 #ccall gpgme_op_conf_load , <gpgme_ctx_t> -> Ptr <gpgme_conf_comp_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_conf_save , <gpgme_ctx_t> -> <gpgme_conf_comp_t> -> IO <gpgme_error_t>
+
+-- * Engine information
 #ccall gpgme_check_version , CString -> IO CString
 #ccall gpgme_get_engine_info , Ptr <gpgme_engine_info_t> -> IO <gpgme_error_t>
 #ccall gpgme_set_engine_info , <gpgme_protocol_t> -> CString -> CString -> IO <gpgme_error_t>
 #ccall gpgme_engine_check_version , <gpgme_protocol_t> -> IO <gpgme_error_t>
-
