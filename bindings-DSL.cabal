@@ -17,10 +17,10 @@ description:
   .
   The extra module Bindings.Utilities will contain tools that may
   be convenient when working with FFI.
-version: 1.0.21
+version: 1.0.22
 license: BSD3
 license-file: LICENSE
-maintainer: John Wiegley <johnw@fpcomplete.com>
+maintainer: John Wiegley <johnw@newartisans.com>
 author: Maurício C. Antunes
 stability: Stable API, well tested, portable, used in comercial code.
 build-type: Simple
