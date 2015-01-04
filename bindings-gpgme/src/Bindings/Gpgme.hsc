@@ -228,8 +228,8 @@ module Bindings.Gpgme where
 #field next , Ptr <_gpgme_key_sig>
 #field pubkey_algo , <gpgme_pubkey_algo_t>
 #field keyid , CString
-#field timestamp , CInt
-#field expires , CInt
+#field timestamp , CLong
+#field expires , CLong
 #field status , <gpgme_error_t>
 #field uid , CString
 #field name , CString
