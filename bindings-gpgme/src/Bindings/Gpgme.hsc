@@ -648,3 +648,9 @@ module Bindings.Gpgme where
 #ccall gpgme_get_engine_info , Ptr <gpgme_engine_info_t> -> IO <gpgme_error_t>
 #ccall gpgme_set_engine_info , <gpgme_protocol_t> -> CString -> CString -> IO <gpgme_error_t>
 #ccall gpgme_engine_check_version , <gpgme_protocol_t> -> IO <gpgme_error_t>
+
+-- * I/O wrappers
+-- These are needed when implementing passphrase callbacks.
+#ccall gpgme_io_read , CInt -> Ptr () -> CSize -> IO CSize
+#ccall gpgme_io_write , CInt -> Ptr () -> CSize -> IO CSize
+#ccall gpgme_io_writen , CInt -> Ptr () -> CSize -> IO CSize
