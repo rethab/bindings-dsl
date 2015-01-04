@@ -221,7 +221,9 @@ module Bindings.Gpgme where
 #field timestamp , CLong
 #field expires , CLong
 #field card_number , CString
+#if GPGME_VERSION_NUMBER >= 0x010500
 #field curve , CString
+#endif
 #stoptype
 #synonym_t gpgme_subkey_t , Ptr <_gpgme_subkey>
 
