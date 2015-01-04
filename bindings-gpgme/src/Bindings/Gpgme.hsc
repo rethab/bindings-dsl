@@ -221,6 +221,7 @@ module Bindings.Gpgme where
 #field timestamp , CLong
 #field expires , CLong
 #field card_number , CString
+#field curve , CString
 #stoptype
 #synonym_t gpgme_subkey_t , Ptr <_gpgme_subkey>
 
