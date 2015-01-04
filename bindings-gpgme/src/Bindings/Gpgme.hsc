@@ -651,6 +651,16 @@ module Bindings.Gpgme where
 #ccall gpgme_set_engine_info , <gpgme_protocol_t> -> CString -> CString -> IO <gpgme_error_t>
 #ccall gpgme_engine_check_version , <gpgme_protocol_t> -> IO <gpgme_error_t>
 
+-- * Pinentry modes
+#integral_t gpgme_pinentry_mode_t
+#num GPGME_PINENTRY_MODE_DEFAULT
+#num GPGME_PINENTRY_MODE_ASK
+#num GPGME_PINENTRY_MODE_CANCEL
+#num GPGME_PINENTRY_MODE_ERROR
+#num GPGME_PINENTRY_MODE_LOOPBACK
+#ccall gpgme_set_pinentry_mode , <gpgme_ctx_t> -> <gpgme_pinentry_mode_t> -> IO <gpgme_error_t>
+#ccall gpgme_get_pinentry_mode , <gpgme_ctx_t> -> IO <gpgme_pinentry_mode_t>
+
 -- * I/O wrappers
 -- These are needed when implementing passphrase callbacks.
 #ccall gpgme_io_read , CInt -> Ptr () -> CSize -> IO CSize
