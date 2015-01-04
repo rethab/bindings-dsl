@@ -22,7 +22,7 @@ license: BSD3
 license-file: LICENSE
 maintainer: John Wiegley <johnw@newartisans.com>
 author: Maurício C. Antunes
-stability: Stable API, well tested, portable, used in comercial code.
+stability: Stable API, well tested, portable, used in commercial code.
 build-type: Simple
 bug-reports: https://github.com/jwiegley/bindings-dsl/issues
 category: FFI
