@@ -6,13 +6,14 @@ description:
   Low level bindings to FANN neural network library, part
   of the @bindings-*@ project. See:
   .
-  <http://bitbucket.org/mauricio/bindings-dsl>
+  <https://github.com/jwiegley/bindings-dsl>
   .
   <http://leenissen.dk>
 version: 0.2
 license: BSD3
 license-file: LICENSE
-maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+maintainer: John Wiegley <johnw@newartisans.com>
+bug-reports: https://github.com/jwiegley/bindings-dsl/issues
 author: Maurício C. Antunes
 build-type: Simple
 category: FFI
@@ -36,6 +37,6 @@ library
   pkgconfig-depends: fann >=2.2 && <3
 source-repository head
   type: git
-  location: https://bitbucket.org/mauricio/bindings-dsl
+  location: git://github.com/jwiegley/bindings-dsl
   branch: master
   subdir: bindings-fann
