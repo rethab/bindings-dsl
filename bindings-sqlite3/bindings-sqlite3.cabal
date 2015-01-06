@@ -6,17 +6,17 @@ description:
   Low level bindings to sqlite3, part
   of the @bindings-*@ project. See:
   .
-  <http://bitbucket.org/mauricio/bindings-dsl>
+  <https://github.com/jwiegley/bindings-dsl>
   .
   <http://www.sqlite.org>
 version: 1.0.4
 license: BSD3
 license-file: LICENSE
-maintainer: Maurício C. Antunes
+maintainer: John Wiegley <johnw@newartisans.com>
 author: Maurício C. Antunes
 build-type: Simple
 category: FFI
-bug-reports: http://bitbucket.org/mauricio/bindings-dls/issues
+bug-reports: https://github.com/jwiegley/bindings-dsl/issues
 library
   hs-source-dirs: src
   extensions:
@@ -31,6 +31,6 @@ library
   c-sources: src/Bindings/Sqlite3.c
 source-repository head
   type: git
-  location: https://bitbucket.org/mauricio/bindings-dsl
+  location: git://github.com/jwiegley/bindings-dsl
   branch: master
   subdir: bindings-sqlite3

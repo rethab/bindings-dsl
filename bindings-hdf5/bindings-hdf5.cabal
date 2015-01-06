@@ -6,17 +6,17 @@ description:
   Low level bindings to HDF5, part
   of the @bindings-*@ project. See:
   .
-  <http://bitbucket.org/mauricio/bindings-dsl>
+  <https://github.com/jwiegley/bindings-dsl>
   .
   <http://www.hdfgroup.org/HDF5>
 version: 0.1.1
 license: BSD3
 license-file: LICENSE
-maintainer: Maurício C. Antunes
+maintainer: John Wiegley <johnw@newartisans.com>
 author: Maurício C. Antunes
 build-type: Configure
 category: FFI
-bug-reports: http://bitbucket.org/mauricio/bindings-dls/issues
+bug-reports: https://github.com/jwiegley/bindings-dsl/issues
 extra-source-files:
   ax_lib_hdf5.m4,
   bindings-hdf5.buildinfo.in,
@@ -40,6 +40,6 @@ library
     Bindings.HDF5.LowLevelAPI
 source-repository head
   type: git
-  location: https://bitbucket.org/mauricio/bindings-dsl
+  location: git://github.com/jwiegley/bindings-dsl
   branch: master
   subdir: bindings-hdf5

@@ -5,9 +5,9 @@ synopsis:
 version: 1.1
 license: BSD3
 license-file: LICENSE
-maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+maintainer: John Wiegley <johnw@newartisans.com>
 author: Maurício C. Antunes
-bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
+bug-reports: https://github.com/jwiegley/bindings-dsl/issues
 build-type: Simple
 category: FFI
 library
@@ -20,6 +20,6 @@ library
     RegexExample
 source-repository head
   type: git
-  location: https://bitbucket.org/mauricio/bindings-dsl
+  location: git://github.com/jwiegley/bindings-dsl
   branch: master
   subdir: regex-example

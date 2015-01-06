@@ -6,15 +6,15 @@ description:
   Low level bindings to Posix standard library, part
   of the @bindings-*@ project. See:
   .
-  <http://bitbucket.org/mauricio/bindings-dsl>
+  <https://github.com/jwiegley/bindings-dsl>
   .
   <http://pubs.opengroup.org/onlinepubs/9699919799/idx/headers.html>
 version: 1.2.6
 license: BSD3
 license-file: LICENSE
-maintainer: Maurício C. Antunes <mauricio.antunes@gmail.com>
+maintainer: John Wiegley <johnw@newartisans.com>
 author: Maurício C. Antunes
-bug-reports: http://bitbucket.org/mauricio/bindings-dsl/issues
+bug-reports: https://github.com/jwiegley/bindings-dsl/issues
 build-type: Simple
 category: FFI
 library
@@ -48,6 +48,6 @@ library
   extra-libraries: pthread
 source-repository head
   type: git
-  location: https://bitbucket.org/mauricio/bindings-dsl
+  location: git://github.com/jwiegley/bindings-dsl
   branch: master
   subdir: bindings-posix
