@@ -185,8 +185,8 @@
     printf(" -> (");bc_typemarkup(# type);printf(")\n"); \
 
 static struct {
-	int n, array_size[500], is_union[500], is_fam[500];
-	uintmax_t offset[500];
+	int n, is_union[500], is_fam[500];
+	uintmax_t array_size[500], offset[500];
 	char fname[500][1000], ftype[500][1000];
 } bc_fielddata;
 
