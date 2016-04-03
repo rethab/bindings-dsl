@@ -304,7 +304,7 @@ static struct {
      bc_conid(typename);printf(" where\n"); \
      printf("  sizeOf _ = %" PRIuMAX "\n  alignment _ = %" PRIuMAX "\n", \
        (uintmax_t)(typesize),(uintmax_t)(typealign)); \
-     printf("  peek p = do\n"); \
+     printf("  peek _p = do\n"); \
      for (i=0; i < bc_fielddata.n; i++) \
         { \
          printf("    v%d <- ",i); \
@@ -315,34 +315,34 @@ static struct {
             printf ("let s = div %" PRIuMAX " $ sizeOf $ (undefined :: ", \
               bc_fielddata.array_size[i]); \
             bc_typemarkup(bc_fielddata.ftype[i]); \
-            printf(") in peekArray s (plusPtr p %" PRIuMAX ")", \
+            printf(") in peekArray s (plusPtr _p %" PRIuMAX ")", \
               bc_fielddata.offset[i]); \
            } \
          else \
-            printf("peekByteOff p %" PRIuMAX "", bc_fielddata.offset[i]); \
+            printf("peekByteOff _p %" PRIuMAX "", bc_fielddata.offset[i]); \
          printf("\n"); \
         } \
      printf("    return $ ");bc_conid(typename); \
      for (i=0; i < bc_fielddata.n; i++) printf(" v%d",i); \
      printf("\n"); \
-     printf("  poke p (");bc_conid(typename); \
+     printf("  poke _p (");bc_conid(typename); \
      for (i=0; i < bc_fielddata.n; i++) printf(" v%d",i); \
      printf(") = do\n"); \
      for (i=0; i < bc_fielddata.n; i++) \
         { \
          if (bc_fielddata.is_fam[i]) \
-            printf("    pokeArray (plusPtr p %" PRIuMAX ") v%d", \
+            printf("    pokeArray (plusPtr _p %" PRIuMAX ") v%d", \
               bc_fielddata.offset[i],i); \
          else if (bc_fielddata.array_size[i] > 0) \
            { \
             printf("    let s = div %" PRIuMAX " $ sizeOf $ (undefined :: ", \
               bc_fielddata.array_size[i]); \
             bc_typemarkup(bc_fielddata.ftype[i]); \
-            printf(")\n    pokeArray (plusPtr p %" PRIuMAX ") (take s v%d)", \
+            printf(")\n    pokeArray (plusPtr _p %" PRIuMAX ") (take s v%d)", \
               bc_fielddata.offset[i], i); \
            } \
          else \
-            printf("    pokeByteOff p %" PRIuMAX " v%d", \
+            printf("    pokeByteOff _p %" PRIuMAX " v%d", \
               bc_fielddata.offset[i],i); \
          printf("\n"); \
         } \
