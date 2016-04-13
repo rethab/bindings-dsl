@@ -86,11 +86,11 @@
 #define bc_float(name) printf("%Le",(long double)(name)) \
 
 #if __GLASGOW_HASKELL__ >= 710
-# define bc_patsig(name) \
+# define bc_patsig(name,constr) \
     printf("pattern ");bc_conid(name); \
-    printf(" :: () => (Eq a, Num a) => a");
+    printf(" :: () => (Eq a, %s a) => a",constr);
 #else
-# define bc_patsig(name)
+# define bc_patsig(name,constr)
 #endif
 
 #define hsc_num(name) \
@@ -102,9 +102,13 @@
     bc_varid(# name);printf(" :: (Fractional a) => a\n"); \
 
 #if __GLASGOW_HASKELL__ >= 708
-# define hsc_pattern(name) \
+# define hsc_num_pattern(name) \
      printf("pattern ");bc_conid(# name);printf(" = "); \
-     bc_decimal(name);printf("\n");bc_patsig(# name)
+     bc_decimal(name);printf("\n");bc_patsig(# name,"Num");
+
+# define hsc_fractional_pattern(name) \
+     printf("pattern ");bc_conid(# name);printf(" = "); \
+     bc_float(name);printf("\n");bc_patsig(# name,"Fractional");
 #endif
 
 #define hsc_pointer(name) \
