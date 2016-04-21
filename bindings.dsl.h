@@ -140,7 +140,7 @@
 #define hsc_ccall_unsafe(name,type)             bc_ccall_unsafe(name,name,type)
 #define hsc_ccall_unsafe_var(cname,hsname,type) bc_ccall_unsafe(cname,hsname,type)
 
-#define hsc_ccall_unsafe(cname,hsname,type) \
+#define bc_ccall_unsafe(cname,hsname,type) \
     printf("foreign import ccall unsafe \"%s\" unsafe'",# cname); \
     bc_varid(# hsname);printf("\n"); \
     printf("  :: ");bc_typemarkup(# type);printf("\n"); \
