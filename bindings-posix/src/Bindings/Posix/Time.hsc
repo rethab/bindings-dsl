@@ -26,21 +26,28 @@ import Bindings.Posix.Signal
 #field tv_nsec , CLong
 #stoptype
 
+#ifndef __MACH__
 #starttype struct itimerspec
 #field it_interval , <timespec>
 #field it_value , <timespec>
 #stoptype
+#endif
 
 #num CLOCKS_PER_SEC
+#ifndef __MACH__
 #num CLOCK_REALTIME
 #num TIMER_ABSTIME
+#endif
 
 #cinline getdate_err , IO CInt
 
+#ifndef __MACH__
 #ccall clock_getres , <clockid_t> -> Ptr <timespec> -> IO CInt
 #ccall clock_gettime , <clockid_t> -> Ptr <timespec> -> IO CInt
 #ccall clock_nanosleep , <clockid_t> -> CInt -> Ptr <timespec> -> Ptr <timespec> -> IO CInt
 #ccall clock_settime , <clockid_t> -> Ptr <timespec> -> IO CInt
+#endif
+
 #ccall difftime , <time_t> -> <time_t> -> IO CDouble
 #ccall getdate ,  CString -> IO (Ptr <tm>)
 #ccall gmtime , Ptr <time_t> -> IO (Ptr <tm>)
@@ -54,11 +61,15 @@ import Bindings.Posix.Signal
 -- #ccall strftime_l , CString -> CSize -> CString -> Ptr <tm> -> <locale_t> -> IO CSize
 #ccall strptime ,  CString -> CString -> Ptr <tm> -> IO CString
 #ccall time , Ptr <time_t> -> IO <time_t>
+
+#ifndef __MACH__
 #ccall timer_create , <clockid_t> -> Ptr <sigevent> -> Ptr <timer_t> -> IO CInt
 #ccall timer_delete , <timer_t> -> IO CInt
 #ccall timer_getoverrun , <timer_t> -> IO CInt
 #ccall timer_gettime , <timer_t> -> Ptr <itimerspec> -> IO CInt
 #ccall timer_settime , <timer_t> -> CInt -> Ptr <itimerspec> -> Ptr <itimerspec> -> IO CInt
+#endif
+
 #ccall tzset , IO ()
 
 #globalvar daylight , CInt
