@@ -85,10 +85,16 @@
 
 #define bc_float(name) printf("%Le",(long double)(name)) \
 
-#if __GLASGOW_HASKELL__ >= 710
+#if __GLASGOW_HASKELL__ >= 800
+/* GHC has supported pattern synonym type signatures since 7.10, but due to a
+ * bug in 7.10, GHC will reject the type signature we try to give to our
+ * pattern synonyms, even though they are valid. As a result, we only produce
+ * explicit type signatures on GHC 8.0 or later, where the feature works
+ * as intended.
+ */
 # define bc_patsig(name,constr) \
     printf("pattern ");bc_conid(name); \
-    printf(" :: () => (Eq a, %s a) => a",constr);
+    printf(" :: (Eq a, %s a) => a",constr);
 #else
 # define bc_patsig(name,constr)
 #endif
@@ -101,14 +107,18 @@
     bc_varid(# name);printf(" = ");bc_float(name);printf("\n"); \
     bc_varid(# name);printf(" :: (Fractional a) => a\n"); \
 
-#if __GLASGOW_HASKELL__ >= 708
+#if __GLASGOW_HASKELL__ >= 710
 # define hsc_num_pattern(name) \
-     printf("pattern ");bc_conid(# name);printf(" = "); \
-     bc_decimal(name);printf("\n");bc_patsig(# name,"Num");
+     printf("pattern ");bc_conid(# name);printf(" <- ((== ("); \
+     bc_decimal(name);printf(")) -> True) where\n    "); \
+     bc_conid(# name);printf(" = ");bc_decimal(name);printf("\n"); \
+     bc_patsig(# name,"Num");
 
 # define hsc_fractional_pattern(name) \
-     printf("pattern ");bc_conid(# name);printf(" = "); \
-     bc_float(name);printf("\n");bc_patsig(# name,"Fractional");
+     printf("pattern ");bc_conid(# name);printf(" <- ((== ("); \
+     bc_float(name);printf(")) -> True) where\n    "); \
+     bc_conid(# name);printf(" = ");bc_float(name);printf("\n"); \
+     bc_patsig(# name,"Fractional");
 #endif
 
 #define hsc_pointer(name) \
