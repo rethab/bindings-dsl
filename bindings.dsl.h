@@ -154,6 +154,15 @@
     bc_ptrid(# name);printf("\n"); \
     printf("  :: FunPtr (");bc_typemarkup(# type);printf(")\n"); \
 
+/* experimental support for interruptible calls */
+#define hsc_ccall_interruptible(name,type) \
+    printf("foreign import ccall interruptible \"%s\" interruptible'",# name); \
+    bc_varid(# name);printf("\n"); \
+    printf("  :: ");bc_typemarkup(# type);printf("\n"); \
+    printf("foreign import ccall interruptible \"&%s\" interruptible'",# name); \
+    bc_ptrid(# name);printf("\n"); \
+    printf("  :: FunPtr (");bc_typemarkup(# type);printf(")\n"); \
+
 #define hsc_cinline(name,type) \
     printf("foreign import ccall \"inline_%s\" ",# name); \
     bc_varid(# name);printf("\n"); \
