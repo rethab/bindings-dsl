@@ -132,26 +132,34 @@
     bc_varid(# name);printf(" :: FunPtr a\n"); \
 
 #ifdef BINDINGS_STDCALLCONV
-#define hsc_ccall(name,type) hsc_callconv(name,stdcall,type)
+#define hsc_ccall(name,type)             bc_callconv(name,name,stdcall,type)
+#define hsc_ccall_var(cname,hsname,type) bc_callconv(cname,hsname,stdcall,type)
 #else
-#define hsc_ccall(name,type) hsc_callconv(name,ccall,type)
+#define hsc_ccall(name,type)             bc_callconv(name,name,ccall,type)
+#define hsc_ccall_var(cname,hsname,type) bc_callconv(cname,hsname,ccall,type)
 #endif
 
-#define hsc_callconv(name,conv,type) \
-    printf("foreign import "# conv" \"%s\" ",# name); \
-    bc_varid(# name);printf("\n"); \
+#define hsc_callconv(name,conv,type)             bc_callconv(name,name,conv,type)
+#define hsc_callconv_var(cname,hsname,conv,type) bc_callconv(cname,hsname,conv,type)
+
+#define bc_callconv(cname,hsname,conv,type) \
+    printf("foreign import "# conv" \"%s\" ",# cname); \
+    bc_varid(# hsname);printf("\n"); \
     printf("  :: ");bc_typemarkup(# type);printf("\n"); \
-    printf("foreign import "# conv" \"&%s\" ",# name); \
-    bc_ptrid(# name);printf("\n"); \
+    printf("foreign import "# conv" \"&%s\" ",# cname); \
+    bc_ptrid(# hsname);printf("\n"); \
     printf("  :: FunPtr (");bc_typemarkup(# type);printf(")\n"); \
 
 /* experimental support for unsafe calls */
-#define hsc_ccall_unsafe(name,type) \
-    printf("foreign import ccall unsafe \"%s\" unsafe'",# name); \
-    bc_varid(# name);printf("\n"); \
+#define hsc_ccall_unsafe(name,type)             bc_ccall_unsafe(name,name,type)
+#define hsc_ccall_unsafe_var(cname,hsname,type) bc_ccall_unsafe(cname,hsname,type)
+
+#define bc_ccall_unsafe(cname,hsname,type) \
+    printf("foreign import ccall unsafe \"%s\" unsafe'",# cname); \
+    bc_varid(# hsname);printf("\n"); \
     printf("  :: ");bc_typemarkup(# type);printf("\n"); \
-    printf("foreign import ccall unsafe \"&%s\" unsafe'",# name); \
-    bc_ptrid(# name);printf("\n"); \
+    printf("foreign import ccall unsafe \"&%s\" unsafe'",# cname); \
+    bc_ptrid(# hsname);printf("\n"); \
     printf("  :: FunPtr (");bc_typemarkup(# type);printf(")\n"); \
 
 /* experimental support for interruptible calls */
