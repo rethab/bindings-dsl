@@ -27,8 +27,10 @@ import Bindings.Posix.Sys.Types
 #field sival_ptr , Ptr ()
 #stoptype
 
+#ifndef __MACH__
 #num SIGRTMIN
 #num SIGRTMAX
+#endif
 
 #num SIGABRT
 #num SIGALRM

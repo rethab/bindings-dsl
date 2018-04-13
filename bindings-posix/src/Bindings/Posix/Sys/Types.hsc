@@ -8,7 +8,9 @@ module Bindings.Posix.Sys.Types where
 
 #integral_t blkcnt_t
 #integral_t blksize_t
+#ifndef __MACH__
 #integral_t clockid_t
+#endif
 #integral_t dev_t
 #integral_t gid_t
 #integral_t id_t
@@ -21,11 +23,13 @@ module Bindings.Posix.Sys.Types where
 #starttype pthread_attr_t
 #stoptype
 
+#ifndef __MACH__
 #starttype pthread_barrier_t
 #stoptype
 
 #starttype pthread_barrierattr_t
 #stoptype
+#endif
 
 #starttype pthread_cond_t
 #stoptype
@@ -51,8 +55,10 @@ module Bindings.Posix.Sys.Types where
 #starttype pthread_rwlockattr_t
 #stoptype
 
+#ifndef __MACH__
 #starttype pthread_spinlock_t
 #stoptype
+#endif
 
 #integral_t pthread_t
 
@@ -60,6 +66,8 @@ module Bindings.Posix.Sys.Types where
 #integral_t ssize_t
 #integral_t suseconds_t
 #integral_t time_t
+#ifndef __MACH__
 #integral_t timer_t
+#endif
 #integral_t uid_t
 
