@@ -13,21 +13,18 @@ install:
 env:
   global:
   matrix:
-    - GHCVERSION=ghc802 PROFILING=false
-    - GHCVERSION=ghc802 PROFILING=true
-    - GHCVERSION=ghc822 PROFILING=false
-    - GHCVERSION=ghc822 PROFILING=true
-    - GHCVERSION=ghc842 PROFILING=false
-    - GHCVERSION=ghc842 PROFILING=true
+    - GHCVERSION=ghc802
+    - GHCVERSION=ghc822
+    - GHCVERSION=ghc842
 
 matrix:
   allow_failures:
   exclude:
 
 script:
-  - nix-build --argstr compiler $GHCVERSION --arg doProfiling $PROFILING
-  - (cd bindings-posix ; nix-build --argstr compiler $GHCVERSION --arg doProfiling $PROFILING)
-  - (cd bindings-gpgme ; nix-build --argstr compiler $GHCVERSION --arg doProfiling $PROFILING)
+  - nix-build --argstr compiler $GHCVERSION
+  - (cd bindings-posix ; nix-build --argstr compiler $GHCVERSION)
+  - (cd bindings-gpgme ; nix-build --argstr compiler $GHCVERSION)
 
 branches:
   only:
