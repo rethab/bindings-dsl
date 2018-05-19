@@ -9,7 +9,7 @@ description:
   <https://github.com/jwiegley/bindings-dsl>
   .
   <http://pubs.opengroup.org/onlinepubs/9699919799/idx/headers.html>
-version: 1.2.6
+version: 1.2.7
 license: BSD3
 license-file: LICENSE
 maintainer: John Wiegley <johnw@newartisans.com>

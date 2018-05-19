@@ -21,6 +21,7 @@ matrix:
 
 script:
   - nix-build --argstr compiler $GHCVERSION --arg doProfiling $PROFILING
+  - (cd bindings-posix ; nix-build --argstr compiler $GHCVERSION --arg doProfiling $PROFILING)
 
 branches:
   only:
