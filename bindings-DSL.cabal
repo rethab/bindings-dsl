@@ -17,7 +17,7 @@ description:
   .
   The extra module Bindings.Utilities will contain tools that may
   be convenient when working with FFI.
-version: 1.0.24
+version: 1.0.25
 license: BSD3
 license-file: LICENSE
 maintainer: John Wiegley <johnw@newartisans.com>
@@ -38,4 +38,4 @@ source-repository head
 source-repository this
   type: git
   location: git://github.com/jwiegley/bindings-dsl
-  tag: 1.0.24
+  tag: 1.0.25
