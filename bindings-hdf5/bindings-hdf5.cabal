@@ -9,7 +9,7 @@ description:
   <https://github.com/jwiegley/bindings-dsl>
   .
   <http://www.hdfgroup.org/HDF5>
-version: 0.1.1
+version: 0.1.2
 license: BSD3
 license-file: LICENSE
 maintainer: John Wiegley <johnw@newartisans.com>
