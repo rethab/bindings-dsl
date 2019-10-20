@@ -38,6 +38,7 @@ library
     Bindings.HDF5.Types
     Bindings.HDF5.HighLevelAPI
     Bindings.HDF5.LowLevelAPI
+  extra-libraries: hdf5, hdf5_hl
 source-repository head
   type: git
   location: git://github.com/jwiegley/bindings-dsl

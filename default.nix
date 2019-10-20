@@ -1,30 +1,28 @@
-{ compiler    ? "ghc822"
-, doBenchmark ? false
-, doTracing   ? false
-, doStrict    ? false
-, rev         ? "d1ae60cbad7a49874310de91cd17708b042400c8"
-, sha256      ? "0a1w4702jlycg2ab87m7n8frjjngf0cis40lyxm3vdwn7p4fxikz"
-, pkgs        ? import (builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/archive/${rev}.tar.gz";
-    inherit sha256; }) {
-    config.allowUnfree = true;
-    config.allowBroken = false;
-  }
-, returnShellEnv ? pkgs.lib.inNixShell
-, mkDerivation ? null
-}:
+{ nixpkgs ? import <nixpkgs> {}, compiler ? "default", doBenchmark ? false }:
 
-let haskellPackages = pkgs.haskell.packages.${compiler};
+let
 
-in haskellPackages.developPackage {
-  root = ./.;
+  inherit (nixpkgs) pkgs;
 
-  source-overrides = {
-  };
+  f = { mkDerivation, base, stdenv }:
+      mkDerivation {
+        pname = "bindings-DSL";
+        version = "1.0.25";
+        src = ./.;
+        libraryHaskellDepends = [ base ];
+        homepage = "https://github.com/jwiegley/bindings-dsl/wiki";
+        description = "FFI domain specific language, on top of hsc2hs";
+        license = stdenv.lib.licenses.bsd3;
+      };
 
-  modifier = drv: pkgs.haskell.lib.overrideCabal drv (attrs: {
-    inherit doBenchmark;
-  });
+  haskellPackages = if compiler == "default"
+                       then pkgs.haskellPackages
+                       else pkgs.haskell.packages.${compiler};
 
-  inherit returnShellEnv;
-}
+  variant = if doBenchmark then pkgs.haskell.lib.doBenchmark else pkgs.lib.id;
+
+  drv = variant (haskellPackages.callPackage f {});
+
+in
+
+  if pkgs.lib.inNixShell then drv.env else drv

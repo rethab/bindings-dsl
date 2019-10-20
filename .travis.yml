@@ -3,19 +3,14 @@ language: nix
 sudo: true
 
 git:
-  depth: 1
-
-install:
-  - git clone --depth=1 https://github.com/$TRAVIS_REPO_SLUG.git bindings-DSL
-  - cd bindings-DSL
-  - git checkout -qf $TRAVIS_COMMIT
+  depth: 5
 
 env:
   global:
   matrix:
-    - GHCVERSION=ghc802
-    - GHCVERSION=ghc822
-    - GHCVERSION=ghc843
+    - GHCVERSION=ghc822Binary
+    - GHCVERSION=ghc844
+    - GHCVERSION=ghc863Binary
 
 matrix:
   allow_failures:
@@ -29,3 +24,4 @@ script:
 branches:
   only:
     - master
+    - link-with-hdf5
