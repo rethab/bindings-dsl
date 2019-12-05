@@ -1,6 +1,6 @@
-module Bindings.Utilities (
-	storableCast,
-	storableCastArray,
+module Bindings.Utilities
+  ( storableCast
+  , storableCastArray
   ) where
 
 import Foreign.C
