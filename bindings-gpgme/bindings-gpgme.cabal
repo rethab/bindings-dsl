@@ -1,23 +1,23 @@
 cabal-version: >= 1.8
 name: bindings-gpgme
-homepage: https://github.com/jwiegley/bindings-dsl
+homepage: https://github.com/rethab/bindings-dsl
 synopsis:
   Project bindings-* raw interface to gpgme
 description:
   Low level bindings to gpgme, part
   of the @bindings-*@ project. See:
   .
-  <https://github.com/jwiegley/bindings-dsl>
+  <https://github.com/rethab/bindings-dsl>
   .
   <http://www.gnupg.org/related_software/gpgme>
 version: 0.1.7
 license: BSD3
 license-file: LICENSE
-maintainer: John Wiegley <johnw@newartisans.com>
+maintainer: Reto <rethab@protonmail.ch>
 author: Maurício C. Antunes
 build-type: Simple
 category: FFI
-bug-reports: https://github.com/jwiegley/bindings-dsl/issues
+bug-reports: https://github.com/rethab/bindings-dsl/issues
 library
   hs-source-dirs: src
   extensions:
@@ -38,6 +38,6 @@ library
 
 source-repository head
   type: git
-  location: git://github.com/jwiegley/bindings-dsl
+  location: git://github.com/rethab/bindings-dsl
   branch: master
   subdir: bindings-gpgme

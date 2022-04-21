@@ -5,9 +5,9 @@ synopsis:
 version: 1.1
 license: BSD3
 license-file: LICENSE
-maintainer: John Wiegley <johnw@newartisans.com>
+maintainer: Reto <rethab@protonmail.ch>
 author: Maurício C. Antunes
-bug-reports: https://github.com/jwiegley/bindings-dsl/issues
+bug-reports: https://github.com/rethab/bindings-dsl/issues
 build-type: Simple
 category: FFI
 library
@@ -20,6 +20,6 @@ library
     RegexExample
 source-repository head
   type: git
-  location: git://github.com/jwiegley/bindings-dsl
+  location: git://github.com/rethab/bindings-dsl
   branch: master
   subdir: regex-example

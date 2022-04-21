@@ -6,15 +6,15 @@ description:
   Low level bindings to Posix standard library, part
   of the @bindings-*@ project. See:
   .
-  <https://github.com/jwiegley/bindings-dsl>
+  <https://github.com/rethab/bindings-dsl>
   .
   <http://pubs.opengroup.org/onlinepubs/9699919799/idx/headers.html>
 version: 1.2.7
 license: BSD3
 license-file: LICENSE
-maintainer: John Wiegley <johnw@newartisans.com>
+maintainer: Reto <rethab@protonmail.ch>
 author: Maurício C. Antunes
-bug-reports: https://github.com/jwiegley/bindings-dsl/issues
+bug-reports: https://github.com/rethab/bindings-dsl/issues
 build-type: Simple
 category: FFI
 library
@@ -52,6 +52,6 @@ library
     extra-libraries: rt
 source-repository head
   type: git
-  location: git://github.com/jwiegley/bindings-dsl
+  location: git://github.com/rethab/bindings-dsl
   branch: master
   subdir: bindings-posix
