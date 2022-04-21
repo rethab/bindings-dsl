@@ -4,3 +4,6 @@
 
 # Mac
 .DS_Store
+
+# cabal
+dist-newstyle/
