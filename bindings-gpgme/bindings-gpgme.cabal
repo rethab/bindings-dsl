@@ -10,7 +10,10 @@ description:
   <https://github.com/rethab/bindings-dsl>
   .
   <http://www.gnupg.org/related_software/gpgme>
-version: 0.1.7
+  .
+  For a higher-level library, see:
+  <https://github.com/rethab/h-gpgme>
+version: 0.1.8
 license: BSD3
 license-file: LICENSE
 maintainer: Reto <rethab@protonmail.ch>
