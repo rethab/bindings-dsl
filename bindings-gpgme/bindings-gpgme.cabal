@@ -1,4 +1,4 @@
-cabal-version: >= 1.8
+cabal-version: >= 1.10
 name: bindings-gpgme
 homepage: https://github.com/rethab/bindings-dsl
 synopsis:
@@ -23,7 +23,9 @@ category: FFI
 bug-reports: https://github.com/rethab/bindings-dsl/issues
 library
   hs-source-dirs: src
-  extensions:
+  default-language:
+    Haskell2010
+  default-extensions:
     ForeignFunctionInterface
   build-depends:
     base >= 3 && < 5,
