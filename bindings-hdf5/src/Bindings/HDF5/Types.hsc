@@ -1,3 +1,4 @@
+#define H5_USE_18_API 1
 #include <hdf5.h>
 #include <hdf5_hl.h>
 #include <bindings.dsl.h>
@@ -184,7 +185,11 @@ module Bindings.HDF5.Types where
 #num H5F_CLOSE_SEMI
 #num H5F_CLOSE_STRONG
 
+#if H5_VERSION_GE(1,10,0)
+#starttype H5F_info1_t
+#else
 #starttype H5F_info_t
+#endif
 #field super_ext_size, <hsize_t>
 #field sohm.hdr_size, <hsize_t>
 #field sohm.msgs_info, <H5_ih_info_t>
@@ -484,7 +489,9 @@ module Bindings.HDF5.Types where
 #num H5D_MPIO_MPI_OPT_TYPES_ENV_VAR_DISABLED
 #num H5D_MPIO_NOT_SIMPLE_OR_SCALAR_DATASPACES
 #num H5D_MPIO_NOT_CONTIGUOUS_OR_CHUNKED_DATASET
+#if !(H5_VERSION_GE(1,10,0))
 #num H5D_MPIO_FILTERS
+#endif
 
 -- *** H5Rpublic.h Types
 
