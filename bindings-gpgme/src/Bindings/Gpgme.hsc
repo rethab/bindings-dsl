@@ -50,6 +50,10 @@ module Bindings.Gpgme where
 #num GPGME_PK_ELG_E
 #num GPGME_PK_DSA
 #num GPGME_PK_ELG
+#num GPGME_PK_ECC
+#num GPGME_PK_ECDSA
+#num GPGME_PK_ECDH
+#num GPGME_PK_EDDSA
 
 -- ** Hash algorithms
 #integral_t gpgme_hash_algo_t
