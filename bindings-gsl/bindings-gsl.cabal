@@ -23,7 +23,7 @@ library
     ForeignFunctionInterface
   build-depends:
     base >= 3 && < 5,
-    bindings-DSL >= 1.0.17 && < 1.1
+    bindings-DSL >= 1.0.17 && < 1.2
   exposed-modules:
     Bindings.Gsl
     Bindings.Gsl.BasisSplines
@@ -85,6 +85,6 @@ library
   pkgconfig-depends: gsl >= 1.15
 source-repository head
   type: git
-  location: git://github.com/rethab/bindings-dsl
+  location: https://github.com/rethab/bindings-dsl
   branch: master
   subdir: bindings-gsl
