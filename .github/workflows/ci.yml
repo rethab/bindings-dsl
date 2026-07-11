@@ -224,3 +224,61 @@ jobs:
           cabal build bindings-hdf5 \
             --extra-include-dirs=/usr/include/hdf5/serial \
             --extra-lib-dirs="/usr/lib/$arch/hdf5/serial"
+
+  # A package that cannot be packaged cannot be released, and Hackage takes a
+  # version only once. Both failures are cheap here and permanent after a tag
+  # push, so every package is checked and packaged on every PR. Neither cabal
+  # check nor cabal sdist resolves dependencies or runs pkg-config, so this
+  # needs none of the C libraries the bindings wrap.
+  publishable:
+    name: Publishable
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - bindings-DSL
+          - bindings-posix
+          - bindings-gpgme
+          - bindings-libcddb
+          - bindings-hdf5
+          - bindings-glib
+          - bindings-gsl
+          - bindings-fann
+          - bindings-sqlite3
+          - bindings-libffi
+          - bindings-directfb
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: '9.12'
+          cabal-version: 'latest'
+          cabal-update: true
+
+      - name: Check and package ${{ matrix.package }}
+        run: |
+          set -euo pipefail
+          name='${{ matrix.package }}'
+
+          if [ "$name" = 'bindings-DSL' ]; then
+            dir='.'
+          else
+            dir="$name"
+          fi
+
+          cd "$dir"
+          cabal check
+
+          # Naming the package as an sdist target selects its library component,
+          # which cabal refuses to package alone, and 'all' against the root
+          # cabal.project would emit a tarball per project member. A
+          # single-package project makes 'all' mean exactly this package, and
+          # keeps the six packages missing from cabal.project working too.
+          printf 'packages: .\n' > release.project
+          cabal sdist --project-file=release.project all --output-dir "$RUNNER_TEMP/sdist"
+
+          version=$(sed -n 's/^version:[[:space:]]*//p' "$name.cabal" | head -1 | tr -d '[:space:]')
+          test -f "$RUNNER_TEMP/sdist/$name-$version.tar.gz"
