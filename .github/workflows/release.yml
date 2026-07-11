@@ -1,4 +1,5 @@
 name: Release
+run-name: ${{ inputs.tag || github.ref_name }}${{ inputs.publish && ' (publish)' || ' (candidate)' }}
 
 # Tags are per package (bindings-DSL-1.1.0, bindings-hdf5-0.1.3, ...): a bare
 # version cannot say which of the eleven packages it releases.
