@@ -57,6 +57,14 @@ separate packages from this repository:
 | [bindings-posix](bindings-posix) | [![Hackage](https://img.shields.io/hackage/v/bindings-posix.svg?label=)](https://hackage.haskell.org/package/bindings-posix) |
 | [bindings-sqlite3](bindings-sqlite3) | [![Hackage](https://img.shields.io/hackage/v/bindings-sqlite3.svg?label=)](https://hackage.haskell.org/package/bindings-sqlite3) |
 
+## Contributing
+
+Contributions are welcome, whether to the DSL itself or to any of the bindings.
+Bugs, missing coverage of a C API, and build problems can be raised in the
+[issue tracker](https://github.com/rethab/bindings-dsl/issues); pull requests are
+just as welcome. CI builds the DSL and the bindings across several GHC versions
+and library releases, so open a pull request and let it run.
+
 ## Building bindings-gpgme on macOS with Homebrew
 
 `gpgme.h` includes `<gpg-error.h>`, and Homebrew ships `libgpg-error` as a keg of
