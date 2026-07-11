@@ -32,7 +32,7 @@ library
     Haskell2010
   include-dirs: .
   install-includes: bindings.dsl.h , bindings.cmacros.h
-  build-depends: base >= 0 && < 1000
+  build-depends: base >= 4 && < 5
   exposed-modules: Bindings.Utilities
 source-repository head
   type: git
