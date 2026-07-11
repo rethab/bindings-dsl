@@ -72,12 +72,49 @@ cross compile.
 
 Unreleased
 
+* Add #array2d_field for members like char x[8][255], which #array_field
+  miscompiled: it divided the member size by sizeOf (Ptr CChar) and produced
+  255 rows instead of 8. Declare the type as the row pointer (Ptr CChar);
+  peek returns pointers into the struct, poke memmoves each row back.
+
+* #array_field and #union_array_field element counts are now baked in from C
+  (sizeof member / sizeof member[0]) instead of dividing by the declared
+  Haskell type's sizeOf at runtime. Beware: if your declared type's sizeOf
+  does not match the C element size, the count changes. The old code never
+  read past the member; the new code reads count * sizeOf bytes and will
+  overrun it if the declared type is too big. Correctly declared bindings
+  generate identical code.
+
 * bindings-gpgme: hide the trust item API when building against gpgme 2.0,
   which removed it (deprecated since 1.14), so the binding compiles against
   both the 1.x and 2.x series.
 
 * bindings-gpgme: add the ECC, ECDSA, ECDH and EDDSA public key algorithm
   constants, and gpgme_op_delete_ext.
+
+* bindings-gpgme: catch up with the API added between gpgme 1.6 and 2.1, which
+  the binding had never covered. Key creation and editing (createkey, adduid,
+  keysign, setexpire, interact and friends), context flags (offline, sender,
+  status callback, set_ctx_flag), the encrypt, decrypt, export and keylist mode
+  flags, importing and exporting by key rather than by pattern, TOFU, and the
+  various new struct members. Each is guarded on the gpgme version that
+  introduced it, so the binding still builds against older releases.
+
+* bindings-gpgme: expose the key capability and status bits (revoked, expired,
+  can_encrypt, secret, ...) as c'gpgme_key_*, c'gpgme_subkey_* and related
+  accessors. They are C bitfields, which have no offsetof and so could not be
+  bound as struct fields; they now go through inlines.c. Previously there was no
+  way to tell whether a listed key was revoked or able to encrypt.
+
+* bindings-gpgme: bind gpgme_error_from_syserror through inlines.c. It is a
+  static inline in gpgme.h rather than a symbol in libgpgme, so a #ccall linked
+  but failed to resolve at load time.
+
+* bindings-gpgme: add gpgme_invalid_key_next. The next member of
+  _gpgme_invalid_key is bound as an embedded struct instead of a pointer, so
+  invalid_recipients and invalid_signers cannot be walked. Fixing the field
+  would change the type of a generated accessor and break its callers, so it is
+  left as it is and this is added alongside.
 
 * bindings-hdf5: hide H5D_MPIO_FILTERS on HDF5 1.10 and later, which removed
   it.
