@@ -4,6 +4,24 @@
 [![CI](https://github.com/rethab/bindings-dsl/actions/workflows/ci.yml/badge.svg)](https://github.com/rethab/bindings-dsl/actions/workflows/ci.yml)
 ![BSD3 License](https://img.shields.io/github/license/rethab/bindings-dsl?label=license)
 
+## Packages
+
+`bindings-DSL` is the DSL itself. The bindings built on top of it are released as
+separate packages from this repository:
+
+| Package | Hackage |
+| --- | --- |
+| [bindings-directfb](bindings-directfb) | [![Hackage](https://img.shields.io/hackage/v/bindings-directfb.svg?label=)](https://hackage.haskell.org/package/bindings-directfb) |
+| [bindings-fann](bindings-fann) | [![Hackage](https://img.shields.io/hackage/v/bindings-fann.svg?label=)](https://hackage.haskell.org/package/bindings-fann) |
+| [bindings-glib](bindings-glib) | [![Hackage](https://img.shields.io/hackage/v/bindings-glib.svg?label=)](https://hackage.haskell.org/package/bindings-glib) |
+| [bindings-gpgme](bindings-gpgme) | [![Hackage](https://img.shields.io/hackage/v/bindings-gpgme.svg?label=)](https://hackage.haskell.org/package/bindings-gpgme) |
+| [bindings-gsl](bindings-gsl) | [![Hackage](https://img.shields.io/hackage/v/bindings-gsl.svg?label=)](https://hackage.haskell.org/package/bindings-gsl) |
+| [bindings-hdf5](bindings-hdf5) | [![Hackage](https://img.shields.io/hackage/v/bindings-hdf5.svg?label=)](https://hackage.haskell.org/package/bindings-hdf5) |
+| [bindings-libcddb](bindings-libcddb) | [![Hackage](https://img.shields.io/hackage/v/bindings-libcddb.svg?label=)](https://hackage.haskell.org/package/bindings-libcddb) |
+| [bindings-libffi](bindings-libffi) | [![Hackage](https://img.shields.io/hackage/v/bindings-libffi.svg?label=)](https://hackage.haskell.org/package/bindings-libffi) |
+| [bindings-posix](bindings-posix) | [![Hackage](https://img.shields.io/hackage/v/bindings-posix.svg?label=)](https://hackage.haskell.org/package/bindings-posix) |
+| [bindings-sqlite3](bindings-sqlite3) | [![Hackage](https://img.shields.io/hackage/v/bindings-sqlite3.svg?label=)](https://hackage.haskell.org/package/bindings-sqlite3) |
+
 ## Building bindings-gpgme on macOS with Homebrew
 
 `gpgme.h` includes `<gpg-error.h>`, and Homebrew ships `libgpg-error` as a keg of
