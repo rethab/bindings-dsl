@@ -92,6 +92,30 @@ Unreleased
 * bindings-gpgme: add the ECC, ECDSA, ECDH and EDDSA public key algorithm
   constants, and gpgme_op_delete_ext.
 
+* bindings-gpgme: catch up with the API added between gpgme 1.6 and 2.1, which
+  the binding had never covered. Key creation and editing (createkey, adduid,
+  keysign, setexpire, interact and friends), context flags (offline, sender,
+  status callback, set_ctx_flag), the encrypt, decrypt, export and keylist mode
+  flags, importing and exporting by key rather than by pattern, TOFU, and the
+  various new struct members. Each is guarded on the gpgme version that
+  introduced it, so the binding still builds against older releases.
+
+* bindings-gpgme: expose the key capability and status bits (revoked, expired,
+  can_encrypt, secret, ...) as c'gpgme_key_*, c'gpgme_subkey_* and related
+  accessors. They are C bitfields, which have no offsetof and so could not be
+  bound as struct fields; they now go through inlines.c. Previously there was no
+  way to tell whether a listed key was revoked or able to encrypt.
+
+* bindings-gpgme: bind gpgme_error_from_syserror through inlines.c. It is a
+  static inline in gpgme.h rather than a symbol in libgpgme, so a #ccall linked
+  but failed to resolve at load time.
+
+* bindings-gpgme: add gpgme_invalid_key_next. The next member of
+  _gpgme_invalid_key is bound as an embedded struct instead of a pointer, so
+  invalid_recipients and invalid_signers cannot be walked. Fixing the field
+  would change the type of a generated accessor and break its callers, so it is
+  left as it is and this is added alongside.
+
 * bindings-hdf5: hide H5D_MPIO_FILTERS on HDF5 1.10 and later, which removed
   it.
 
