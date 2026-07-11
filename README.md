@@ -1,5 +1,36 @@
 # bindings-dsl
 
+## Building bindings-gpgme on macOS with Homebrew
+
+`gpgme.h` includes `<gpg-error.h>`, and Homebrew ships `libgpg-error` as a keg of
+its own, so both prefixes have to be on the include and library paths. Passing
+only gpgme's prefix leaves the nested include unresolved and the build fails with
+a misleading complaint about a missing `gpgme.h`.
+
+```sh
+brew install gpgme libgpg-error
+
+cabal build bindings-gpgme \
+  --extra-include-dirs="$(brew --prefix gpgme)/include" \
+  --extra-include-dirs="$(brew --prefix libgpg-error)/include" \
+  --extra-lib-dirs="$(brew --prefix gpgme)/lib" \
+  --extra-lib-dirs="$(brew --prefix libgpg-error)/lib"
+```
+
+With stack, list both prefixes in `stack.yaml` (`brew --prefix` is
+`/opt/homebrew` on Apple silicon and `/usr/local` on Intel):
+
+```yaml
+extra-include-dirs:
+  - /opt/homebrew/opt/gpgme/include
+  - /opt/homebrew/opt/libgpg-error/include
+extra-lib-dirs:
+  - /opt/homebrew/opt/gpgme/lib
+  - /opt/homebrew/opt/libgpg-error/lib
+```
+
+## Changelog
+
 Unreleased
 
 * bindings-gpgme: hide the trust item API when building against gpgme 2.0,
