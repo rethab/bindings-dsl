@@ -55,15 +55,17 @@ module Bindings.Gpgme where
 #num GPGME_DATA_TYPE_INVALID
 #num GPGME_DATA_TYPE_UNKNOWN
 #num GPGME_DATA_TYPE_PGP_SIGNED
-#num GPGME_DATA_TYPE_PGP_ENCRYPTED
 #num GPGME_DATA_TYPE_PGP_OTHER
 #num GPGME_DATA_TYPE_PGP_KEY
-#num GPGME_DATA_TYPE_PGP_SIGNATURE
 #num GPGME_DATA_TYPE_CMS_SIGNED
 #num GPGME_DATA_TYPE_CMS_ENCRYPTED
 #num GPGME_DATA_TYPE_CMS_OTHER
 #num GPGME_DATA_TYPE_X509_CERT
 #num GPGME_DATA_TYPE_PKCS12
+#if GPGME_VERSION_NUMBER >= 0x010700
+#num GPGME_DATA_TYPE_PGP_ENCRYPTED
+#num GPGME_DATA_TYPE_PGP_SIGNATURE
+#endif
 #endif
 
 -- * Algorithms
@@ -831,7 +833,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_export_ext , <gpgme_ctx_t> -> Ptr CString -> CUInt -> <gpgme_data_t> -> IO <gpgme_error_t>
 
 -- ** Export modes
-#if GPGME_VERSION_NUMBER >= 0x010300
+#if GPGME_VERSION_NUMBER >= 0x010200
 #integral_t gpgme_export_mode_t
 #num GPGME_EXPORT_MODE_EXTERN
 #endif
@@ -856,9 +858,7 @@ module Bindings.Gpgme where
 #ccall gpgme_op_import_keys , <gpgme_ctx_t> -> Ptr <gpgme_key_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_import_keys_start , <gpgme_ctx_t> -> Ptr <gpgme_key_t> -> IO <gpgme_error_t>
 #endif
--- gpgme_export_mode_t only exists from 1.3; before that the mode was a plain
--- unsigned int, so these are gated on the type rather than on the functions.
-#if GPGME_VERSION_NUMBER >= 0x010300
+#if GPGME_VERSION_NUMBER >= 0x010200
 #ccall gpgme_op_export_keys , <gpgme_ctx_t> -> Ptr <gpgme_key_t> -> <gpgme_export_mode_t> -> <gpgme_data_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_export_keys_start , <gpgme_ctx_t> -> Ptr <gpgme_key_t> -> <gpgme_export_mode_t> -> <gpgme_data_t> -> IO <gpgme_error_t>
 #endif
@@ -1125,7 +1125,9 @@ module Bindings.Gpgme where
 #if GPGME_VERSION_NUMBER >= 0x010500
 #num GPGME_SPAWN_DETACHED
 #num GPGME_SPAWN_ALLOW_SET_FG
+#if GPGME_VERSION_NUMBER >= 0x010b00
 #num GPGME_SPAWN_SHOW_WINDOW
+#endif
 #ccall gpgme_op_spawn , <gpgme_ctx_t> -> CString -> Ptr CString -> <gpgme_data_t> -> <gpgme_data_t> -> <gpgme_data_t> -> CUInt -> IO <gpgme_error_t>
 #ccall gpgme_op_spawn_start , <gpgme_ctx_t> -> CString -> Ptr CString -> <gpgme_data_t> -> <gpgme_data_t> -> <gpgme_data_t> -> CUInt -> IO <gpgme_error_t>
 #endif
@@ -1179,7 +1181,9 @@ module Bindings.Gpgme where
 -- The C structs above carry most of their boolean state in bitfields, which
 -- have no offset and therefore cannot be exposed as record fields. These
 -- accessors read them through C, and are the only way to reach them.
--- Each returns a non-zero value if the flag is set.
+-- Most are single-bit flags and return non-zero when set; @origin@,
+-- @pka_trust@, @trust_depth@, @trust_value@ and the TOFU @validity@ and
+-- @policy@ are wider bitfields whose value is returned as is.
 
 -- ** Keys
 #cinline gpgme_key_revoked , <gpgme_key_t> -> IO CUInt
