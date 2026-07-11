@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Portable packages that build with only a Haskell toolchain: the
+  # Portable packages that need no system library of their own: the
   # bindings-DSL library itself and bindings-posix. Exercised across a
   # range of GHC versions.
   build:
@@ -25,6 +25,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+
+      # cabal resolves the whole project, so bindings-libcddb's
+      # pkgconfig-depends must be satisfiable even here.
+      - name: Install project-wide pkg-config dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcddb2-dev pkg-config
 
       - name: Set up GHC ${{ matrix.ghc }}
         uses: haskell-actions/setup@v2
@@ -97,10 +104,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # libcddb2-dev is not a gpgme dependency; the solver needs it (see the
+      # build job).
       - name: Install gpgme build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgpg-error-dev libassuan-dev
+          sudo apt-get install -y libgpg-error-dev libassuan-dev libcddb2-dev pkg-config
 
       - name: Cache gpgme ${{ matrix.gpgme.version }}
         id: cache-gpgme
@@ -146,3 +155,72 @@ jobs:
           cabal build bindings-gpgme \
             --extra-include-dirs="$GPGME_PREFIX/include" \
             --extra-lib-dirs="$GPGME_PREFIX/lib"
+
+  # GCC 14 is pinned because the runner default (GCC 13) does not error on
+  # incompatible pointer types and would have missed #46.
+  libcddb:
+    name: bindings-libcddb (GCC 14)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install libcddb and GCC 14
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcddb2-dev pkg-config gcc-14
+
+      - name: Set up GHC
+        uses: haskell-actions/setup@v2
+        id: setup
+        with:
+          ghc-version: '9.12'
+          cabal-version: 'latest'
+          cabal-update: true
+
+      - name: Cache cabal store
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ runner.os }}-libcddb-${{ hashFiles('**/*.cabal', 'cabal.project') }}
+          restore-keys: ${{ runner.os }}-libcddb-
+
+      - name: Build
+        run: cabal build bindings-libcddb --with-gcc=gcc-14
+
+  # Debian/Ubuntu install HDF5 under a serial/parallel split that the
+  # package's buildinfo.in does not pass along, so the paths are given to
+  # cabal directly.
+  hdf5:
+    name: bindings-hdf5
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install HDF5
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libhdf5-dev libcddb2-dev pkg-config
+
+      - name: Set up GHC
+        uses: haskell-actions/setup@v2
+        id: setup
+        with:
+          ghc-version: '9.12'
+          cabal-version: 'latest'
+          cabal-update: true
+
+      - name: Cache cabal store
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ runner.os }}-hdf5-${{ hashFiles('**/*.cabal', 'cabal.project') }}
+          restore-keys: ${{ runner.os }}-hdf5-
+
+      - name: Build
+        run: |
+          arch=$(gcc -print-multiarch)
+          cabal build bindings-hdf5 \
+            --extra-include-dirs=/usr/include/hdf5/serial \
+            --extra-lib-dirs="/usr/lib/$arch/hdf5/serial"
