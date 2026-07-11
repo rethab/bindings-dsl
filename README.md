@@ -2,6 +2,14 @@
 
 Unreleased
 
+* Add #array2d_field, for struct members declared as two-dimensional arrays.
+  #array_field could not describe them: its element count was recovered by
+  dividing the member's byte size by the sizeOf of the Haskell type, which for
+  a decayed row (Ptr CChar) is the pointer size rather than the row size.
+
+* Element counts for #array_field and #union_array_field are now computed in C,
+  from the size of the member's first element, instead of at the Haskell level.
+
 * bindings-gpgme: hide the trust item API when building against gpgme 2.0,
   which removed it (deprecated since 1.14), so the binding compiles against
   both the 1.x and 2.x series.

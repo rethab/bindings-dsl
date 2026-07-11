@@ -26,6 +26,7 @@
     "import Foreign.C.String (CString,CStringLen,CWString,CWStringLen)\n" \
     "import Foreign.Marshal.Alloc (alloca)\n" \
     "import Foreign.Marshal.Array (peekArray,pokeArray)\n" \
+    "import Foreign.Marshal.Utils (moveBytes)\n" \
     "import Data.Int\n" \
     "import Data.Word\n" \
     ); \
@@ -222,8 +223,8 @@
     printf(" -> (");bc_typemarkup(# type);printf(")\n"); \
 
 static struct {
-	int n, is_union[500], is_fam[500];
-	uintmax_t array_size[500], offset[500];
+	int n, is_union[500], is_fam[500], is_2d[500];
+	uintmax_t array_size[500], elem_size[500], offset[500];
 	char fname[500][1000], ftype[500][1000];
 } bc_fielddata;
 
@@ -248,8 +249,10 @@ static struct {
      bc_fielddata.offset[index] = (uintmax_t) \
          ((char*)&bc_refdata.v.name - (char*)&bc_refdata.v); \
      bc_fielddata.array_size[index] = 0; \
+     bc_fielddata.elem_size[index] = 0; \
      bc_fielddata.is_union[index] = u; \
      bc_fielddata.is_fam[index] = f; \
+     bc_fielddata.is_2d[index] = 0; \
      strcpy(bc_fielddata.fname[index],# name); \
      strcpy(bc_fielddata.ftype[index],type); \
 
@@ -264,11 +267,19 @@ static struct {
 
 #define hsc_array_field(name,type) \
      bc_basicfield(name,# type,0,0); \
-     bc_fielddata.array_size[index] = sizeof bc_refdata.v.name \
+     bc_fielddata.array_size[index] = sizeof bc_refdata.v.name; \
+     bc_fielddata.elem_size[index] = sizeof bc_refdata.v.name[0] \
 
 #define hsc_union_array_field(name,type) \
      bc_basicfield(name,# type,1,0); \
-     bc_fielddata.array_size[index] = sizeof bc_refdata.v.name \
+     bc_fielddata.array_size[index] = sizeof bc_refdata.v.name; \
+     bc_fielddata.elem_size[index] = sizeof bc_refdata.v.name[0] \
+
+#define hsc_array2d_field(name,type) \
+     bc_basicfield(name,# type,0,0); \
+     bc_fielddata.array_size[index] = sizeof bc_refdata.v.name; \
+     bc_fielddata.elem_size[index] = sizeof bc_refdata.v.name[0]; \
+     bc_fielddata.is_2d[index] = 1 \
 
 #define hsc_stoptype(dummy) \
      printf("data ");bc_conid(typename);printf(" = "); \
@@ -316,13 +327,9 @@ static struct {
          printf(" v vf = alloca $ \\p -> do\n"); \
          printf("  poke p v\n"); \
          if (bc_fielddata.array_size[i] > 0) \
-            { \
-             printf("  let s%d = div %" PRIuMAX " $ sizeOf $ (undefined :: ", \
-               i, bc_fielddata.array_size[i]); \
-             bc_typemarkup(bc_fielddata.ftype[i]); \
-             printf(")\n  pokeArray (plusPtr p %" PRIuMAX ") $ take s%d vf", \
-               bc_fielddata.offset[i], i); \
-            } \
+             printf("  pokeArray (plusPtr p %" PRIuMAX ") $ take %" PRIuMAX " vf", \
+               bc_fielddata.offset[i], \
+               bc_fielddata.array_size[i] / bc_fielddata.elem_size[i]); \
          else \
            printf("  pokeByteOff p %" PRIuMAX " vf", \
                bc_fielddata.offset[i]); \
@@ -347,14 +354,15 @@ static struct {
          printf("    v%d <- ",i); \
          if (bc_fielddata.is_fam[i]) \
             printf("return []"); \
+         else if (bc_fielddata.is_2d[i]) \
+            printf("return [plusPtr _p (%" PRIuMAX " + %" PRIuMAX " * k) " \
+                   "| k <- [0 .. %" PRIuMAX "]]", \
+              bc_fielddata.offset[i], bc_fielddata.elem_size[i], \
+              bc_fielddata.array_size[i] / bc_fielddata.elem_size[i] - 1); \
          else if (bc_fielddata.array_size[i] > 0) \
-           { \
-            printf ("let s%d = div %" PRIuMAX " $ sizeOf $ (undefined :: ", \
-              i, bc_fielddata.array_size[i]); \
-            bc_typemarkup(bc_fielddata.ftype[i]); \
-            printf(") in peekArray s%d (plusPtr _p %" PRIuMAX ")", \
-              i, bc_fielddata.offset[i]); \
-           } \
+            printf("peekArray %" PRIuMAX " (plusPtr _p %" PRIuMAX ")", \
+              bc_fielddata.array_size[i] / bc_fielddata.elem_size[i], \
+              bc_fielddata.offset[i]); \
          else \
             printf("peekByteOff _p %" PRIuMAX "", bc_fielddata.offset[i]); \
          printf("\n"); \
@@ -370,14 +378,18 @@ static struct {
          if (bc_fielddata.is_fam[i]) \
             printf("    pokeArray (plusPtr _p %" PRIuMAX ") v%d", \
               bc_fielddata.offset[i],i); \
+         else if (bc_fielddata.is_2d[i]) \
+            printf("    sequence_ [moveBytes (plusPtr _p (%" PRIuMAX \
+                   " + %" PRIuMAX " * k)) r %" PRIuMAX \
+                   " | (k,r) <- zip [0 .. %" PRIuMAX "] v%d]", \
+              bc_fielddata.offset[i], bc_fielddata.elem_size[i], \
+              bc_fielddata.elem_size[i], \
+              bc_fielddata.array_size[i] / bc_fielddata.elem_size[i] - 1, i); \
          else if (bc_fielddata.array_size[i] > 0) \
-           { \
-            printf("    let s%d = div %" PRIuMAX " $ sizeOf $ (undefined :: ", \
-              i, bc_fielddata.array_size[i]); \
-            bc_typemarkup(bc_fielddata.ftype[i]); \
-            printf(")\n    pokeArray (plusPtr _p %" PRIuMAX ") (take s%d v%d)", \
-              bc_fielddata.offset[i], i, i); \
-           } \
+            printf("    pokeArray (plusPtr _p %" PRIuMAX ") (take %" PRIuMAX \
+                   " v%d)", \
+              bc_fielddata.offset[i], \
+              bc_fielddata.array_size[i] / bc_fielddata.elem_size[i], i); \
          else \
             printf("    pokeByteOff _p %" PRIuMAX " v%d", \
               bc_fielddata.offset[i],i); \
