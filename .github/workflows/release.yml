@@ -32,9 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # Minting the Sigstore certificate and storing the attestation.
-      id-token: write
-      attestations: write
 
     steps:
       - uses: actions/checkout@v7
@@ -111,14 +108,6 @@ jobs:
           fi
           echo "tarball=$tarball" >> "$GITHUB_OUTPUT"
           echo "dir=$out" >> "$GITHUB_OUTPUT"
-
-      # Hackage stores no attestations, so verification is on the consumer:
-      #   gh attestation verify <tarball> --repo rethab/bindings-dsl
-      # run against the Hackage tarball, which is byte-identical to this one.
-      - name: Attest build provenance
-        uses: actions/attest-build-provenance@v4
-        with:
-          subject-path: ${{ steps.sdist.outputs.tarball }}
 
       - name: Upload to Hackage
         uses: haskell-actions/hackage-publish@v1
