@@ -2,3 +2,5 @@ packages:
   .
   bindings-posix
   bindings-gpgme
+  bindings-libcddb
+  bindings-hdf5

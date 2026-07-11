@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Portable packages that build with only a Haskell toolchain: the
+  # Portable packages that need no system library of their own: the
   # bindings-DSL library itself and bindings-posix. Exercised across a
   # range of GHC versions.
   build:
@@ -25,6 +25,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+
+      # cabal resolves every package in the project before it builds any of
+      # them, so bindings-libcddb's pkg-config dependency has to be
+      # satisfiable even in jobs that never build it.
+      - name: Install project-wide pkg-config dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcddb2-dev pkg-config
 
       - name: Set up GHC ${{ matrix.ghc }}
         uses: haskell-actions/setup@v2
@@ -97,10 +105,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # libcddb2-dev is not a gpgme dependency: it is there so that cabal can
+      # resolve bindings-libcddb's pkg-config dependency, which it does for
+      # the whole project regardless of the build target.
       - name: Install gpgme build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgpg-error-dev libassuan-dev
+          sudo apt-get install -y libgpg-error-dev libassuan-dev libcddb2-dev pkg-config
 
       - name: Cache gpgme ${{ matrix.gpgme.version }}
         id: cache-gpgme
@@ -146,3 +157,77 @@ jobs:
           cabal build bindings-gpgme \
             --extra-include-dirs="$GPGME_PREFIX/include" \
             --extra-lib-dirs="$GPGME_PREFIX/lib"
+
+  # GCC 14 turned -Wincompatible-pointer-types into an error, which breaks the
+  # inline wrappers this binding generates (issue #46). The runner image still
+  # defaults to GCC 13, which compiles them happily, so the compiler is pinned
+  # explicitly: with the default toolchain this job would stay green while
+  # everyone on a current distro is broken.
+  libcddb:
+    name: bindings-libcddb (GCC 14)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install libcddb and GCC 14
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcddb2-dev pkg-config gcc-14
+
+      - name: Set up GHC
+        uses: haskell-actions/setup@v2
+        id: setup
+        with:
+          ghc-version: '9.12'
+          cabal-version: 'latest'
+          cabal-update: true
+
+      - name: Cache cabal store
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ runner.os }}-libcddb-${{ hashFiles('**/*.cabal', 'cabal.project') }}
+          restore-keys: ${{ runner.os }}-libcddb-
+
+      - name: Build
+        run: cabal build bindings-libcddb --with-gcc=gcc-14
+
+  # Debian and Ubuntu keep the HDF5 headers and libraries in a serial/parallel
+  # split under their own directories, and the package's buildinfo only passes
+  # HDF5_CFLAGS along -- not the include and library paths that its configure
+  # script discovers. Until that is fixed in the package, CI has to hand the
+  # paths to cabal itself, otherwise the build cannot even find hdf5.h.
+  hdf5:
+    name: bindings-hdf5
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install HDF5
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libhdf5-dev libcddb2-dev pkg-config
+
+      - name: Set up GHC
+        uses: haskell-actions/setup@v2
+        id: setup
+        with:
+          ghc-version: '9.12'
+          cabal-version: 'latest'
+          cabal-update: true
+
+      - name: Cache cabal store
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ runner.os }}-hdf5-${{ hashFiles('**/*.cabal', 'cabal.project') }}
+          restore-keys: ${{ runner.os }}-hdf5-
+
+      - name: Build
+        run: |
+          arch=$(gcc -print-multiarch)
+          cabal build bindings-hdf5 \
+            --extra-include-dirs=/usr/include/hdf5/serial \
+            --extra-lib-dirs="/usr/lib/$arch/hdf5/serial"
