@@ -29,6 +29,45 @@ extra-lib-dirs:
   - /opt/homebrew/opt/libgpg-error/lib
 ```
 
+## Cross compilation
+
+bindings-DSL does not work with `hsc2hs --cross-compile` (see
+[#38](https://github.com/rethab/bindings-dsl/issues/38)). Every construct
+(`#strict_import`, `#starttype`, `#ccall`, ...) is a custom hsc2hs construct that
+emits Haskell while the generated C program runs. Cross mode never runs that
+program: it recognises only a fixed set of built-in directives and rejects
+everything else with
+
+```
+directive strict_import cannot be handled in cross-compilation mode
+```
+
+`--via-asm` does not help, it only changes how cross mode extracts constants. No
+change to `bindings.dsl.h` can lift this; it needs hsc2hs to support custom
+constructs when cross compiling.
+
+Cross compiling still works if you can execute target binaries, e.g. with
+qemu-user plus `binfmt_misc`, or wine for Windows targets. Cabal gets in the way
+here: it passes `-x` to hsc2hs whenever the host platform differs from the build
+platform, and hsc2hs has no flag to undo that. Point Cabal at a wrapper that
+drops the flag and lets the normal compile-and-run path proceed under emulation:
+
+```sh
+#!/bin/sh
+# hsc2hs-no-cross, used via --with-hsc2hs=/path/to/hsc2hs-no-cross
+for a in "$@"; do
+  shift
+  case "$a" in
+    -x|--cross-compile) ;;
+    *) set -- "$@" "$a" ;;
+  esac
+done
+exec hsc2hs "$@"
+```
+
+Otherwise, write plain `.hsc` without bindings-DSL for the modules you need to
+cross compile.
+
 ## Changelog
 
 Unreleased
