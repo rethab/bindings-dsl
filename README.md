@@ -1,6 +1,49 @@
 # bindings-dsl
 
+Full documentation is on the [wiki](https://github.com/rethab/bindings-dsl/wiki).
+
+## Haddock
+
+A `-- |` comment placed above a macro invocation is picked up by Haddock and
+documents the declarations the macro generates:
+
+```haskell
+-- | The maximum length of a name.
+#num NAME_MAX
+
+-- | Opens a file.
+#ccall open , CString -> CInt -> IO CInt
+```
+
+This works for `#num`, `#fractional`, `#pointer`, `#function_pointer`,
+`#num_pattern`, `#fractional_pattern`, `#ccall`, `#cinline`, `#globalvar`,
+`#opaque_t`, `#integral_t`, `#synonym_t`, `#callback_t` and `#starttype`.
+
+Two things cannot be documented this way:
+
+* the record fields of a `#starttype` block, and
+* the `p'`-prefixed pointer that `#ccall` generates alongside the function —
+  the comment attaches to the function only.
+
+If your `Bindings.*` modules are an implementation detail that you re-export
+from a public module, add
+
+```haskell
+{-# OPTIONS_HADDOCK not-home #-}
+```
+
+to them, and make sure every type appearing in your public API is either
+re-exported from a module Haddock processes or exposed in `exposed-modules`.
+Types that only ever live in `other-modules` have no page to link to, which is
+what produces Haddock's *"could not find link destinations for ..."* warning.
+
+## Change log
+
 Unreleased
+
+* Emit the type signature before the value in #num, #fractional, #pointer and
+  #function_pointer, so that a Haddock comment written above the macro
+  attaches to the declaration Haddock documents.
 
 * bindings-gpgme: hide the trust item API when building against gpgme 2.0,
   which removed it (deprecated since 1.14), so the binding compiles against

@@ -94,42 +94,47 @@
  */
 # define bc_patsig(name,constr) \
     printf("pattern ");bc_conid(name); \
-    printf(" :: (Eq a, %s a) => a",constr);
+    printf(" :: (Eq a, %s a) => a\n",constr);
 #else
 # define bc_patsig(name,constr)
 #endif
 
+/* Type signatures are emitted before the bindings they describe, so that a
+ * Haddock comment written above the macro invocation lands on the signature,
+ * which is what Haddock documents.
+ */
+
 #define hsc_num(name) \
-    bc_varid(# name);printf(" = ");bc_decimal(name);printf("\n"); \
     bc_varid(# name);printf(" :: (Num a) => a\n"); \
+    bc_varid(# name);printf(" = ");bc_decimal(name);printf("\n"); \
 
 #define hsc_fractional(name) \
-    bc_varid(# name);printf(" = ");bc_float(name);printf("\n"); \
     bc_varid(# name);printf(" :: (Fractional a) => a\n"); \
+    bc_varid(# name);printf(" = ");bc_float(name);printf("\n"); \
 
 #if __GLASGOW_HASKELL__ >= 710
 # define hsc_num_pattern(name) \
+     bc_patsig(# name,"Num"); \
      printf("pattern ");bc_conid(# name);printf(" <- ((== ("); \
      bc_decimal(name);printf(")) -> True) where\n    "); \
-     bc_conid(# name);printf(" = ");bc_decimal(name);printf("\n"); \
-     bc_patsig(# name,"Num");
+     bc_conid(# name);printf(" = ");bc_decimal(name);printf("\n");
 
 # define hsc_fractional_pattern(name) \
+     bc_patsig(# name,"Fractional"); \
      printf("pattern ");bc_conid(# name);printf(" <- ((== ("); \
      bc_float(name);printf(")) -> True) where\n    "); \
-     bc_conid(# name);printf(" = ");bc_float(name);printf("\n"); \
-     bc_patsig(# name,"Fractional");
+     bc_conid(# name);printf(" = ");bc_float(name);printf("\n");
 #endif
 
 #define hsc_pointer(name) \
+    bc_varid(# name);printf(" :: Ptr a\n"); \
     bc_varid(# name);printf(" = wordPtrToPtr "); \
     bc_wordptr(name);printf("\n"); \
-    bc_varid(# name);printf(" :: Ptr a\n"); \
 
 #define hsc_function_pointer(name) \
+    bc_varid(# name);printf(" :: FunPtr a\n"); \
     bc_varid(# name);printf(" = (castPtrToFunPtr . wordPtrToPtr) "); \
     bc_wordptr(name);printf("\n"); \
-    bc_varid(# name);printf(" :: FunPtr a\n"); \
 
 #ifdef BINDINGS_STDCALLCONV
 #define hsc_ccall(name,type) hsc_callconv(name,stdcall,type)
