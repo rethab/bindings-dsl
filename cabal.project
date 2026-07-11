@@ -1,0 +1,4 @@
+packages:
+  .
+  bindings-posix
+  bindings-gpgme
