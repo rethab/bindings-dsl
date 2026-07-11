@@ -55,14 +55,14 @@ drops the flag and lets the normal compile-and-run path proceed under emulation:
 ```sh
 #!/bin/sh
 # hsc2hs-no-cross, used via --with-hsc2hs=/path/to/hsc2hs-no-cross
-args=""
 for a in "$@"; do
+  shift
   case "$a" in
     -x|--cross-compile) ;;
-    *) args="$args $a" ;;
+    *) set -- "$@" "$a" ;;
   esac
 done
-exec hsc2hs $args
+exec hsc2hs "$@"
 ```
 
 Otherwise, write plain `.hsc` without bindings-DSL for the modules you need to
