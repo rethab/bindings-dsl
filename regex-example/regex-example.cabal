@@ -20,6 +20,6 @@ library
     RegexExample
 source-repository head
   type: git
-  location: git://github.com/rethab/bindings-dsl
+  location: https://github.com/rethab/bindings-dsl
   branch: master
   subdir: regex-example

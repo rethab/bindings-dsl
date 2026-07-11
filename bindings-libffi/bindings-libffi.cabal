@@ -9,7 +9,7 @@ description:
   <https://github.com/rethab/bindings-dsl>
   .
   <http://sourceware.org/libffi>
-version: 0.3.1
+version: 0.3.2
 license: BSD3
 license-file: LICENSE
 maintainer: Reto <rethab@protonmail.ch>
@@ -23,12 +23,12 @@ library
     ForeignFunctionInterface
   build-depends:
     base >= 3 && <5,
-    bindings-DSL >= 1.0.16 && < 1.1
+    bindings-DSL >= 1.0.16 && < 1.2
   exposed-modules:
     Bindings.Libffi
   pkgconfig-depends: libffi >= 3.0.13
 source-repository head
   type: git
-  location: git://github.com/rethab/bindings-dsl
+  location: https://github.com/rethab/bindings-dsl
   branch: master
   subdir: bindings-libffi
