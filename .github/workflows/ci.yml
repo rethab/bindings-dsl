@@ -24,7 +24,7 @@ jobs:
         ghc: ['9.6', '9.8', '9.10', '9.12']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up GHC ${{ matrix.ghc }}
         uses: haskell-actions/setup@v2
@@ -35,7 +35,7 @@ jobs:
           cabal-update: true
 
       - name: Cache cabal store
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ steps.setup.outputs.cabal-store }}
           key: ${{ runner.os }}-ghc-${{ matrix.ghc }}-${{ hashFiles('**/*.cabal', 'cabal.project') }}
@@ -55,7 +55,7 @@ jobs:
       matrix: ${{ steps.resolve.outputs.matrix }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Resolve latest gpgme 1.x and 2.x
         id: resolve
@@ -95,7 +95,7 @@ jobs:
       GPGME_PREFIX: ${{ github.workspace }}/gpgme-install
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install gpgme build dependencies
         run: |
@@ -104,7 +104,7 @@ jobs:
 
       - name: Cache gpgme ${{ matrix.gpgme.version }}
         id: cache-gpgme
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ env.GPGME_PREFIX }}
           key: ${{ runner.os }}-gpgme-lib-${{ matrix.gpgme.version }}
@@ -131,7 +131,7 @@ jobs:
       # The Haskell dependencies don't vary with the gpgme version, so both
       # matrix legs share one cabal store cache.
       - name: Cache cabal store
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ steps.setup.outputs.cabal-store }}
           key: ${{ runner.os }}-gpgme-${{ hashFiles('**/*.cabal', 'cabal.project') }}
