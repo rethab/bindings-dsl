@@ -50,6 +50,10 @@ module Bindings.Gpgme where
 #num GPGME_PK_ELG_E
 #num GPGME_PK_DSA
 #num GPGME_PK_ELG
+#num GPGME_PK_ECC
+#num GPGME_PK_ECDSA
+#num GPGME_PK_ECDH
+#num GPGME_PK_EDDSA
 
 -- ** Hash algorithms
 #integral_t gpgme_hash_algo_t
@@ -532,6 +536,8 @@ module Bindings.Gpgme where
 #ccall gpgme_op_genkey_result , <gpgme_ctx_t> -> IO <gpgme_genkey_result_t>
 #ccall gpgme_op_delete_start , <gpgme_ctx_t> -> <gpgme_key_t> -> CInt -> IO <gpgme_error_t>
 #ccall gpgme_op_delete , <gpgme_ctx_t> -> <gpgme_key_t> -> CInt -> IO <gpgme_error_t>
+#ccall gpgme_op_delete_ext , <gpgme_ctx_t> -> <gpgme_key_t> -> CUInt -> IO <gpgme_error_t>
+#ccall gpgme_op_delete_ext_start , <gpgme_ctx_t> -> <gpgme_key_t> -> CUInt -> IO <gpgme_error_t>
 #ccall gpgme_op_edit_start , <gpgme_ctx_t> -> <gpgme_key_t> -> <gpgme_edit_cb_t> -> Ptr () -> <gpgme_data_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_edit , <gpgme_ctx_t> -> <gpgme_key_t> -> <gpgme_edit_cb_t> -> Ptr () -> <gpgme_data_t> -> IO <gpgme_error_t>
 #ccall gpgme_op_card_edit_start , <gpgme_ctx_t> -> <gpgme_key_t> -> <gpgme_edit_cb_t> -> Ptr () -> <gpgme_data_t> -> IO <gpgme_error_t>

@@ -6,17 +6,17 @@ description:
   Low level bindings to GLib, part
   of the @bindings-*@ project. See:
   .
-  <https://github.com/jwiegley/bindings-dsl>
+  <https://github.com/rethab/bindings-dsl>
   .
   <https://developer.gnome.org/glib>
 version: 0.1.6
 license: BSD3
 license-file: LICENSE
-maintainer: John Wiegley <johnw@newartisans.com>
+maintainer: Reto <rethab@protonmail.ch>
 author: Maurício C. Antunes
 build-type: Simple
 category: FFI
-bug-reports: https://github.com/jwiegley/bindings-dsl/issues
+bug-reports: https://github.com/rethab/bindings-dsl/issues
 library
   hs-source-dirs: src
   extensions:
@@ -74,6 +74,6 @@ library
     src/utilities.unicodemanipulation.c
 source-repository head
   type: git
-  location: git://github.com/jwiegley/bindings-dsl
+  location: git://github.com/rethab/bindings-dsl
   branch: master
   subdir: bindings-glib

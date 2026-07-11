@@ -1,22 +1,22 @@
 cabal-version: >= 1.8
 name: bindings-directfb
-homepage: https://github.com/jwiegley/bindings-dsl
+homepage: https://github.com/rethab/bindings-dsl
 synopsis:
   Project bindings-* raw interface to DirectFB
 description:
   Low level bindings to DirectFB, part
   of the @bindings-*@ project. See:
   .
-  <https://github.com/jwiegley/bindings-dsl>
+  <https://github.com/rethab/bindings-dsl>
   .
   <http://directfb.org>
 version: 0.2
 license: BSD3
 license-file: LICENSE
-maintainer: John Wiegley <johnw@newartisans.com>
+maintainer: Reto <rethab@protonmail.ch>
 author: Maurício C. Antunes
 build-type: Simple
-bug-reports: https://github.com/jwiegley/bindings-dsl/issues
+bug-reports: https://github.com/rethab/bindings-dsl/issues
 category: FFI
 library
   hs-source-dirs: src
@@ -47,6 +47,6 @@ library
   c-sources: src/inlines.c
 source-repository head
   type: git
-  location: git://github.com/jwiegley/bindings-dsl
+  location: git://github.com/rethab/bindings-dsl
   branch: master
   subdir: bindings-directfb

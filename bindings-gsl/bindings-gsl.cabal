@@ -6,17 +6,17 @@ description:
   Low level bindings to GNU GSL, part
   of the @bindings-*@ project. See:
   .
-  <https://github.com/jwiegley/bindings-dsl>
+  <https://github.com/rethab/bindings-dsl>
   .
   <http://www.gnu.org/software/gsl>
 version: 0.2.1
 license: BSD3
 license-file: LICENSE
-maintainer: John Wiegley <johnw@newartisans.com>
+maintainer: Reto <rethab@protonmail.ch>
 author: Maurício C. Antunes
 build-type: Simple
 category: FFI
-bug-reports: https://github.com/jwiegley/bindings-dsl/issues
+bug-reports: https://github.com/rethab/bindings-dsl/issues
 library
   hs-source-dirs: src
   extensions:
@@ -85,6 +85,6 @@ library
   pkgconfig-depends: gsl >= 1.15
 source-repository head
   type: git
-  location: git://github.com/jwiegley/bindings-dsl
+  location: git://github.com/rethab/bindings-dsl
   branch: master
   subdir: bindings-gsl
