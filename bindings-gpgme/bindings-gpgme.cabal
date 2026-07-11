@@ -13,7 +13,7 @@ description:
   .
   For a higher-level library, see:
   <https://github.com/rethab/h-gpgme>
-version: 0.1.8
+version: 0.2.0
 license: BSD3
 license-file: LICENSE
 maintainer: Reto <rethab@protonmail.ch>
