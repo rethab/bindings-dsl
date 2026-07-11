@@ -46,17 +46,46 @@ jobs:
 
   # bindings-gpgme needs the gpgme system library and its headers, so it
   # gets its own job that installs them first.
+  #
+  # gpgme 2.0 removed the trust item API (deprecated since 1.14), so the
+  # binding has to compile against both the 1.x and 2.x series. Ubuntu only
+  # ships 1.18, which cannot show that difference, so both are built from
+  # source and each is exercised as its own matrix leg.
   gpgme:
-    name: bindings-gpgme
+    name: bindings-gpgme (gpgme ${{ matrix.gpgme }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        gpgme: ['1.24.3', '2.1.2']
+
+    env:
+      GPGME_PREFIX: ${{ github.workspace }}/gpgme-install
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install gpgme
+      - name: Install gpgme build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgpgme-dev
+          sudo apt-get install -y libgpg-error-dev libassuan-dev
+
+      - name: Cache gpgme ${{ matrix.gpgme }}
+        id: cache-gpgme
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.GPGME_PREFIX }}
+          key: ${{ runner.os }}-gpgme-lib-${{ matrix.gpgme }}
+
+      - name: Build gpgme ${{ matrix.gpgme }}
+        if: steps.cache-gpgme.outputs.cache-hit != 'true'
+        run: |
+          curl -fsSLO https://gnupg.org/ftp/gcrypt/gpgme/gpgme-${{ matrix.gpgme }}.tar.bz2
+          tar xjf gpgme-${{ matrix.gpgme }}.tar.bz2
+          cd gpgme-${{ matrix.gpgme }}
+          ./configure --prefix="$GPGME_PREFIX"
+          make -j"$(nproc)"
+          make install
 
       - name: Set up GHC
         uses: haskell-actions/setup@v2
@@ -70,8 +99,15 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.setup.outputs.cabal-store }}
-          key: ${{ runner.os }}-gpgme-${{ hashFiles('**/*.cabal', 'cabal.project') }}
-          restore-keys: ${{ runner.os }}-gpgme-
+          key: ${{ runner.os }}-gpgme-${{ matrix.gpgme }}-${{ hashFiles('**/*.cabal', 'cabal.project') }}
+          restore-keys: ${{ runner.os }}-gpgme-${{ matrix.gpgme }}-
 
+      # hsc2hs compiles and *runs* a helper binary linked against libgpgme, so
+      # the freshly built library has to be on the runtime loader path too.
       - name: Build
-        run: cabal build bindings-gpgme
+        env:
+          LD_LIBRARY_PATH: ${{ env.GPGME_PREFIX }}/lib
+        run: |
+          cabal build bindings-gpgme \
+            --extra-include-dirs="$GPGME_PREFIX/include" \
+            --extra-lib-dirs="$GPGME_PREFIX/lib"
