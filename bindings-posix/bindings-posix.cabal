@@ -1,4 +1,4 @@
-cabal-version: >= 1.8
+cabal-version: >= 1.10
 name: bindings-posix
 synopsis:
   Project bindings-* raw interface to Posix
@@ -19,7 +19,9 @@ build-type: Simple
 category: FFI
 library
   hs-source-dirs: src
-  extensions:
+  default-language:
+    Haskell2010
+  default-extensions:
     ForeignFunctionInterface
   build-depends:
     base >= 3 && < 5,
