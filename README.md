@@ -1,5 +1,57 @@
 # bindings-dsl
 
+Unreleased
+
+* bindings-gpgme: hide the trust item API when building against gpgme 2.0,
+  which removed it (deprecated since 1.14), so the binding compiles against
+  both the 1.x and 2.x series.
+
+* bindings-gpgme: add the ECC, ECDSA, ECDH and EDDSA public key algorithm
+  constants, and gpgme_op_delete_ext.
+
+* bindings-hdf5: hide H5D_MPIO_FILTERS on HDF5 1.10 and later, which removed
+  it.
+
+* Replace Travis with GitHub Actions, building bindings-DSL and bindings-posix
+  across GHC 9.6 to 9.12, and bindings-gpgme against the latest gpgme 1.x and
+  2.x.
+
+Changes in 1.0.25
+
+* No changes to the DSL itself. bindings-posix stopped assuming that OS X
+  provides everything POSIX asks for.
+
+Changes in 1.0.24
+
+* Add #num_pattern and #fractional_pattern, for matching numeric constants in
+  patterns.
+
+* Support interruptible calls with #ccall_interruptible.
+
+* Silence GHC warnings for Storable instances of field-less types, printf
+  format warnings, and shadowed temporary variables.
+
+Changes in 1.0.23
+
+* No changes to the DSL itself. bindings-posix gained bindings for message
+  queues.
+
+Changes in 1.0.22
+
+* No changes to the DSL itself. bindings-gpgme gained pinentry modes, I/O
+  wrappers and the subkey curve field; bindings-hdf5 gained its low level
+  interface.
+
+Changes in 1.0.21
+
+* No changes to the DSL itself. Maintainership passed to John Wiegley.
+
+Changes in 1.0.20
+
+* Include <cinttypes> instead of <inttypes.h> under a C++ compiler, which
+  otherwise lacks PRIuMAX and PRIdMAX and fails to expand the macros. Note
+  that this requires building the user library with -std=c++11.
+
 Changes in 1.0.19
 
 * Add a change log.
