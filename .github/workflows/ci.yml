@@ -44,20 +44,52 @@ jobs:
       - name: Build
         run: cabal build bindings-DSL bindings-posix
 
+  # The versions and checksums come from GnuPG's signed release database so
+  # that neither rests on transport security alone. The pinned signing keys
+  # match the fingerprints on https://gnupg.org/signature_key.html; if GnuPG
+  # rotates keys, this job fails until the .asc is refreshed from there.
+  gpgme-versions:
+    name: resolve gpgme versions
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.resolve.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve latest gpgme 1.x and 2.x
+        id: resolve
+        run: |
+          curl -fsS -o swdb.lst https://versions.gnupg.org/swdb.lst
+          curl -fsS -o swdb.lst.sig https://versions.gnupg.org/swdb.lst.sig
+          gpg --dearmor < .github/gnupg-release-keys.asc > keyring.gpg
+          gpgv --keyring ./keyring.gpg swdb.lst.sig swdb.lst
+
+          v1=$(awk '$1 == "gpgme1_ver"  { print $2 }' swdb.lst)
+          s1=$(awk '$1 == "gpgme1_sha2" { print $2 }' swdb.lst)
+          v2=$(awk '$1 == "gpgme_ver"   { print $2 }' swdb.lst)
+          s2=$(awk '$1 == "gpgme_sha2"  { print $2 }' swdb.lst)
+          case "$v1" in 1.*) ;; *) echo "unexpected gpgme 1.x version: '$v1'" >&2; exit 1 ;; esac
+          case "$v2" in 2.*) ;; *) echo "unexpected gpgme 2.x version: '$v2'" >&2; exit 1 ;; esac
+          test -n "$s1" && test -n "$s2"
+
+          echo "matrix=[{\"version\":\"$v1\",\"sha256\":\"$s1\"},{\"version\":\"$v2\",\"sha256\":\"$s2\"}]" >> "$GITHUB_OUTPUT"
+
   # bindings-gpgme needs the gpgme system library and its headers, so it
   # gets its own job that installs them first.
   #
   # gpgme 2.0 removed the trust item API (deprecated since 1.14), so the
   # binding has to compile against both the 1.x and 2.x series. Ubuntu only
-  # ships 1.18, which cannot show that difference, so both are built from
-  # source and each is exercised as its own matrix leg.
+  # ships 1.18, which cannot show that difference, so the latest release of
+  # each series is built from source and exercised as its own matrix leg.
   gpgme:
-    name: bindings-gpgme (gpgme ${{ matrix.gpgme }})
+    name: bindings-gpgme (gpgme ${{ matrix.gpgme.version }})
     runs-on: ubuntu-latest
+    needs: gpgme-versions
     strategy:
       fail-fast: false
       matrix:
-        gpgme: ['1.24.3', '2.1.2']
+        gpgme: ${{ fromJSON(needs.gpgme-versions.outputs.matrix) }}
 
     env:
       GPGME_PREFIX: ${{ github.workspace }}/gpgme-install
@@ -70,19 +102,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgpg-error-dev libassuan-dev
 
-      - name: Cache gpgme ${{ matrix.gpgme }}
+      - name: Cache gpgme ${{ matrix.gpgme.version }}
         id: cache-gpgme
         uses: actions/cache@v4
         with:
           path: ${{ env.GPGME_PREFIX }}
-          key: ${{ runner.os }}-gpgme-lib-${{ matrix.gpgme }}
+          key: ${{ runner.os }}-gpgme-lib-${{ matrix.gpgme.version }}
 
-      - name: Build gpgme ${{ matrix.gpgme }}
+      - name: Build gpgme ${{ matrix.gpgme.version }}
         if: steps.cache-gpgme.outputs.cache-hit != 'true'
         run: |
-          curl -fsSLO https://gnupg.org/ftp/gcrypt/gpgme/gpgme-${{ matrix.gpgme }}.tar.bz2
-          tar xjf gpgme-${{ matrix.gpgme }}.tar.bz2
-          cd gpgme-${{ matrix.gpgme }}
+          curl -fsSLO https://gnupg.org/ftp/gcrypt/gpgme/gpgme-${{ matrix.gpgme.version }}.tar.bz2
+          echo "${{ matrix.gpgme.sha256 }}  gpgme-${{ matrix.gpgme.version }}.tar.bz2" | sha256sum -c -
+          tar xjf gpgme-${{ matrix.gpgme.version }}.tar.bz2
+          cd gpgme-${{ matrix.gpgme.version }}
           ./configure --prefix="$GPGME_PREFIX"
           make -j"$(nproc)"
           make install
@@ -99,8 +132,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.setup.outputs.cabal-store }}
-          key: ${{ runner.os }}-gpgme-${{ matrix.gpgme }}-${{ hashFiles('**/*.cabal', 'cabal.project') }}
-          restore-keys: ${{ runner.os }}-gpgme-${{ matrix.gpgme }}-
+          key: ${{ runner.os }}-gpgme-${{ matrix.gpgme.version }}-${{ hashFiles('**/*.cabal', 'cabal.project') }}
+          restore-keys: ${{ runner.os }}-gpgme-${{ matrix.gpgme.version }}-
 
       # hsc2hs compiles and *runs* a helper binary linked against libgpgme, so
       # the freshly built library has to be on the runtime loader path too.
