@@ -1,3 +1,4 @@
+#define H5_USE_18_API 1
 
 #include <hdf5.h>
 #include <bindings.dsl.h>
