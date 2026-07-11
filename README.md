@@ -1,5 +1,9 @@
 # bindings-dsl
 
+[![Hackage](https://img.shields.io/hackage/v/bindings-DSL.svg)](https://hackage.haskell.org/package/bindings-DSL)
+[![CI](https://github.com/rethab/bindings-dsl/actions/workflows/ci.yml/badge.svg)](https://github.com/rethab/bindings-dsl/actions/workflows/ci.yml)
+![BSD3 License](https://img.shields.io/github/license/rethab/bindings-dsl?label=license)
+
 ## Building bindings-gpgme on macOS with Homebrew
 
 `gpgme.h` includes `<gpg-error.h>`, and Homebrew ships `libgpg-error` as a keg of
