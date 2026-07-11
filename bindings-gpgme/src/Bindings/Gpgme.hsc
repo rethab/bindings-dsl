@@ -317,7 +317,9 @@ module Bindings.Gpgme where
 #num GPGME_EVENT_START
 #num GPGME_EVENT_DONE
 #num GPGME_EVENT_NEXT_KEY
+#if GPGME_VERSION_NUMBER < 0x020000
 #num GPGME_EVENT_NEXT_TRUSTITEM
+#endif
 
 #callback_t gpgme_event_io_cb_t , Ptr () -> <gpgme_event_io_t> -> Ptr () -> IO ()
 
@@ -555,6 +557,8 @@ module Bindings.Gpgme where
 #ccall gpgme_op_keylist_end , <gpgme_ctx_t> -> IO <gpgme_error_t>
 
 -- * Trust items
+-- Trust items API was removed in GPGME 2.0 (deprecated since 1.14)
+#if GPGME_VERSION_NUMBER < 0x020000
 #starttype struct _gpgme_trust_item
 #field keyid , CString
 #field type , CInt
@@ -570,6 +574,8 @@ module Bindings.Gpgme where
 #ccall gpgme_op_trustlist_end , <gpgme_ctx_t> -> IO <gpgme_error_t>
 #ccall gpgme_trust_item_ref , <gpgme_trust_item_t> -> IO ()
 #ccall gpgme_trust_item_unref , <gpgme_trust_item_t> -> IO ()
+#endif
+
 #ccall gpgme_op_getauditlog_start , <gpgme_ctx_t> -> <gpgme_data_t> -> CUInt -> IO <gpgme_error_t>
 #ccall gpgme_op_getauditlog , <gpgme_ctx_t> -> <gpgme_data_t> -> CUInt -> IO <gpgme_error_t>
 
