@@ -15,13 +15,17 @@ jobs:
   # Portable packages that need no system library of their own: the
   # bindings-DSL library itself and bindings-posix. Exercised across a
   # range of GHC versions.
+  #
+  # 9.14 is the version the runner image preinstalls, so that leg is free;
+  # every other version costs a ~100s ghcup install. Jobs that need a
+  # compiler but not a particular one therefore pin 9.14.
   build:
     name: GHC ${{ matrix.ghc }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        ghc: ['9.6', '9.8', '9.10', '9.12']
+        ghc: ['9.6', '9.8', '9.10', '9.12', '9.14']
 
     steps:
       - uses: actions/checkout@v7
@@ -133,7 +137,7 @@ jobs:
         uses: haskell-actions/setup@v2
         id: setup
         with:
-          ghc-version: '9.12'
+          ghc-version: '9.14'
           cabal-version: 'latest'
           cabal-update: true
 
@@ -174,7 +178,7 @@ jobs:
         uses: haskell-actions/setup@v2
         id: setup
         with:
-          ghc-version: '9.12'
+          ghc-version: '9.14'
           cabal-version: 'latest'
           cabal-update: true
 
@@ -207,7 +211,7 @@ jobs:
         uses: haskell-actions/setup@v2
         id: setup
         with:
-          ghc-version: '9.12'
+          ghc-version: '9.14'
           cabal-version: 'latest'
           cabal-update: true
 
@@ -230,6 +234,9 @@ jobs:
   # push, so every package is checked and packaged on every PR. Neither cabal
   # check nor cabal sdist resolves dependencies or runs pkg-config, so this
   # needs none of the C libraries the bindings wrap.
+  #
+  # They resolve nothing, so they need no compiler and no package index
+  # either: the cabal the runner image ships is enough, and no GHC is set up.
   publishable:
     name: Publishable
     runs-on: ubuntu-latest
@@ -251,12 +258,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-
-      - uses: haskell-actions/setup@v2
-        with:
-          ghc-version: '9.12'
-          cabal-version: 'latest'
-          cabal-update: true
 
       - name: Check and package ${{ matrix.package }}
         run: |
