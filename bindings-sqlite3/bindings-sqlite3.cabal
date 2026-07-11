@@ -9,7 +9,7 @@ description:
   <https://github.com/rethab/bindings-dsl>
   .
   <http://www.sqlite.org>
-version: 1.0.4
+version: 1.0.5
 license: BSD3
 license-file: LICENSE
 maintainer: Reto <rethab@protonmail.ch>

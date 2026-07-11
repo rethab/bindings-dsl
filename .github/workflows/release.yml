@@ -1,0 +1,133 @@
+name: Release
+
+# Tags are per package (bindings-DSL-1.1.0, bindings-hdf5-0.1.3, ...): a bare
+# version cannot say which of the eleven packages it releases.
+#
+# Uploads land as Hackage candidates. A version can be uploaded once and never
+# replaced or deleted, so promoting to a real release stays deliberate: review
+# the candidate page, then re-run with publish=true.
+#
+# Only the sdist goes up. Hackage builds the haddocks itself, and building them
+# here would mean installing every C library these bindings wrap.
+
+on:
+  push:
+    tags:
+      - 'bindings-*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to release, e.g. bindings-DSL-1.1.0'
+        required: true
+        type: string
+      publish:
+        description: 'Publish for real instead of uploading a candidate'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  release:
+    name: ${{ inputs.tag || github.ref_name }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Minting the Sigstore certificate and storing the attestation.
+      id-token: write
+      attestations: write
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
+
+      - name: Resolve package and version from the tag
+        id: pkg
+        run: |
+          set -euo pipefail
+          tag='${{ inputs.tag || github.ref_name }}'
+
+          # Versions carry dots, never dashes, so the last dash splits the two.
+          name="${tag%-*}"
+          version="${tag##*-}"
+
+          if [ "$name" = 'bindings-DSL' ]; then
+            dir='.'
+          else
+            dir="$name"
+          fi
+
+          cabal_file="$dir/$name.cabal"
+          if [ ! -f "$cabal_file" ]; then
+            echo "::error::Tag '$tag' does not name a package: $cabal_file not found"
+            exit 1
+          fi
+
+          # Hackage never lets a version be taken back, so a tag that disagrees
+          # with the .cabal file has to fail before anything is uploaded.
+          declared=$(sed -n 's/^version:[[:space:]]*//p' "$cabal_file" | head -1 | tr -d '[:space:]')
+          if [ "$declared" != "$version" ]; then
+            echo "::error::Tag '$tag' says version $version but $cabal_file declares $declared"
+            exit 1
+          fi
+
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: '9.12'
+          cabal-version: 'latest'
+          cabal-update: true
+
+      - name: Check the package
+        run: cabal check
+        working-directory: ${{ steps.pkg.outputs.dir }}
+
+      - name: Build the source distribution
+        id: sdist
+        run: |
+          set -euo pipefail
+          out='${{ runner.temp }}/packages'
+          dir='${{ steps.pkg.outputs.dir }}'
+          name='${{ steps.pkg.outputs.name }}'
+          version='${{ steps.pkg.outputs.version }}'
+          mkdir -p "$out"
+
+          # Naming the package as an sdist target selects its library component,
+          # which cabal refuses to package alone, and 'all' against the root
+          # cabal.project would emit five tarballs for hackage-publish to upload.
+          # A single-package project makes 'all' mean exactly this package, and
+          # keeps the six packages missing from cabal.project working too.
+          printf 'packages: .\n' > "$dir/release.project"
+          (cd "$dir" && cabal sdist --project-file=release.project all --output-dir "$out")
+          rm -f "$dir/release.project"
+
+          tarball="$out/$name-$version.tar.gz"
+          if [ "$(ls -1 "$out" | wc -l)" -ne 1 ] || [ ! -f "$tarball" ]; then
+            echo "::error::Expected only $name-$version.tar.gz, got: $(ls "$out")"
+            exit 1
+          fi
+          echo "tarball=$tarball" >> "$GITHUB_OUTPUT"
+          echo "dir=$out" >> "$GITHUB_OUTPUT"
+
+      # Hackage stores no attestations, so verification is on the consumer:
+      #   gh attestation verify <tarball> --repo rethab/bindings-dsl
+      # run against the Hackage tarball, which is byte-identical to this one.
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: ${{ steps.sdist.outputs.tarball }}
+
+      - name: Upload to Hackage
+        uses: haskell-actions/hackage-publish@v1
+        with:
+          hackageToken: ${{ secrets.HACKAGE_AUTH_TOKEN }}
+          packagesPath: ${{ steps.sdist.outputs.dir }}
+          publish: ${{ inputs.publish || false }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.pkg.outputs.name }}-${{ steps.pkg.outputs.version }}
+          path: ${{ steps.sdist.outputs.tarball }}

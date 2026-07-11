@@ -9,7 +9,7 @@ description:
   <https://github.com/rethab/bindings-dsl>
   .
   <http://pubs.opengroup.org/onlinepubs/9699919799/idx/headers.html>
-version: 1.2.7
+version: 1.2.8
 license: BSD3
 license-file: LICENSE
 maintainer: Reto <rethab@protonmail.ch>

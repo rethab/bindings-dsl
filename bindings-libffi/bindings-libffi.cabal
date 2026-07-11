@@ -9,7 +9,7 @@ description:
   <https://github.com/rethab/bindings-dsl>
   .
   <http://sourceware.org/libffi>
-version: 0.3.1
+version: 0.3.2
 license: BSD3
 license-file: LICENSE
 maintainer: Reto <rethab@protonmail.ch>

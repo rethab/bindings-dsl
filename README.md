@@ -132,6 +132,11 @@ Changes in 1.1.0
   into the .hsc file, so GHC reports an error in a struct field at that field
   rather than at an unrelated line before the #starttype block.
 
+* Every bindings-* package accepts bindings-DSL < 1.2, and is released so that
+  the new bound reaches Hackage. Releases are now tagged per package
+  (bindings-DSL-1.1.0, bindings-hdf5-0.1.3, ...) rather than with a bare
+  version, which was ambiguous once more than one package was being released.
+
 Changes in 1.0.25
 
 * No changes to the DSL itself. bindings-posix stopped assuming that OS X

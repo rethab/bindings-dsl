@@ -41,4 +41,4 @@ source-repository head
 source-repository this
   type: git
   location: https://github.com/rethab/bindings-dsl
-  tag: 1.1.0
+  tag: bindings-DSL-1.1.0

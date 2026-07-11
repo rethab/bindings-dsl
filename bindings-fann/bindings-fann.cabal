@@ -9,7 +9,7 @@ description:
   <https://github.com/rethab/bindings-dsl>
   .
   <http://leenissen.dk>
-version: 0.2
+version: 0.2.1
 license: BSD3
 license-file: LICENSE
 maintainer: gley <johnw@newartisans.com>
