@@ -333,6 +333,7 @@ static struct {
          bc_lineprag(bc_fielddata.line[i]); \
          bc_fieldoffset(typename,bc_fielddata.fname[i]); \
          printf(" p = plusPtr p %" PRIuMAX "\n",bc_fielddata.offset[i]); \
+         bc_lineprag(bc_fielddata.line[i]); \
          bc_fieldoffset(typename,bc_fielddata.fname[i]); \
          printf(" :: Ptr (");bc_conid(typename);printf(") -> "); \
          printf("Ptr (");bc_typemarkup(bc_fielddata.ftype[i]);printf(")\n"); \
