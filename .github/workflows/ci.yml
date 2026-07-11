@@ -128,12 +128,14 @@ jobs:
           cabal-version: 'latest'
           cabal-update: true
 
+      # The Haskell dependencies don't vary with the gpgme version, so both
+      # matrix legs share one cabal store cache.
       - name: Cache cabal store
         uses: actions/cache@v4
         with:
           path: ${{ steps.setup.outputs.cabal-store }}
-          key: ${{ runner.os }}-gpgme-${{ matrix.gpgme.version }}-${{ hashFiles('**/*.cabal', 'cabal.project') }}
-          restore-keys: ${{ runner.os }}-gpgme-${{ matrix.gpgme.version }}-
+          key: ${{ runner.os }}-gpgme-${{ hashFiles('**/*.cabal', 'cabal.project') }}
+          restore-keys: ${{ runner.os }}-gpgme-
 
       # hsc2hs compiles and *runs* a helper binary linked against libgpgme, so
       # the freshly built library has to be on the runtime loader path too.
