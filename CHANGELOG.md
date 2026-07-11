@@ -1,13 +1,10 @@
 # Changelog
 
 This repository releases eleven packages, each versioned independently under the
-PVP and tagged as `<pkg>-<version>` (see [RELEASE.md](RELEASE.md)). Changes are
-therefore grouped by release cycle, and within a cycle by the package and version
-they shipped in.
+PVP and tagged as `<pkg>-<version>` (see [RELEASE.md](RELEASE.md)). Each entry
+below names the package and version it shipped in.
 
-## Release cycle (2026-07)
-
-### bindings-DSL 1.1.0
+## bindings-DSL 1.1.0
 
 - Add `#array2d_field` for members like `char x[8][255]`, which `#array_field`
   miscompiled: it divided the member size by `sizeOf (Ptr CChar)` and produced
@@ -26,7 +23,7 @@ they shipped in.
   back into the `.hsc` file, so GHC reports an error in a struct field at that
   field rather than at an unrelated line before the `#starttype` block.
 
-### bindings-gpgme 0.2.0
+## bindings-gpgme 0.2.0
 
 - Hide the trust item API when building against gpgme 2.0, which removed it
   (deprecated since 1.14), so the binding compiles against both the 1.x and 2.x
@@ -59,17 +56,17 @@ they shipped in.
   generated accessor and break its callers, so it is left as it is and this is
   added alongside.
 
-### bindings-hdf5 0.1.3
+## bindings-hdf5 0.1.3
 
 - Hide `H5D_MPIO_FILTERS` on HDF5 1.10 and later, which removed it.
 
-### bindings-libcddb 0.3.1
+## bindings-libcddb 0.3.1
 
 - Declare `CDDB_CATEGORY` as `const char*`, matching libcddb. The accessor was
   instantiated with `char*`, so the generated return type dropped the const on
   the pointed-to char. GCC warned about that before 14 and rejects it from 14 on.
 
-### All packages
+## All packages
 
 - Every `bindings-*` package accepts `bindings-DSL < 1.2`, and is released so
   that the new bound reaches Hackage. Releases are now tagged per package
@@ -80,17 +77,12 @@ they shipped in.
   `bindings-posix` across GHC 9.6 to 9.12, `bindings-gpgme` against the latest
   gpgme 1.x and 2.x, `bindings-libcddb` under GCC 14, and `bindings-hdf5`.
 
-## Earlier releases
-
-These predate per-package tagging, when a single version was released at a time.
-The versions below are `bindings-DSL` versions.
-
-### 1.0.25
+## bindings-DSL 1.0.25
 
 - No changes to the DSL itself. `bindings-posix` stopped assuming that OS X
   provides everything POSIX asks for.
 
-### 1.0.24
+## bindings-DSL 1.0.24
 
 - Add `#num_pattern` and `#fractional_pattern`, for matching numeric constants in
   patterns.
@@ -100,40 +92,40 @@ The versions below are `bindings-DSL` versions.
 - Silence GHC warnings for `Storable` instances of field-less types, printf
   format warnings, and shadowed temporary variables.
 
-### 1.0.23
+## bindings-DSL 1.0.23
 
 - No changes to the DSL itself. `bindings-posix` gained bindings for message
   queues.
 
-### 1.0.22
+## bindings-DSL 1.0.22
 
 - No changes to the DSL itself. `bindings-gpgme` gained pinentry modes, I/O
   wrappers and the subkey curve field; `bindings-hdf5` gained its low level
   interface.
 
-### 1.0.21
+## bindings-DSL 1.0.21
 
 - No changes to the DSL itself. Maintainership passed to John Wiegley.
 
-### 1.0.20
+## bindings-DSL 1.0.20
 
 - Include `<cinttypes>` instead of `<inttypes.h>` under a C++ compiler, which
   otherwise lacks `PRIuMAX` and `PRIdMAX` and fails to expand the macros. Note
   that this requires building the user library with `-std=c++11`.
 
-### 1.0.19
+## bindings-DSL 1.0.19
 
 - Add a change log.
 
 - Support unsafe calls with experimental `#ccall_unsafe`.
 
-### 1.0.18
+## bindings-DSL 1.0.18
 
 This version has a bug. Marked as such in Hackage.
 
 - Introduce a silly bug to solve a problem that does not exist.
 
-### 1.0.17
+## bindings-DSL 1.0.17
 
 - Add `Bindings.Utilities` module for general utilities.
 
@@ -147,14 +139,14 @@ This version has a bug. Marked as such in Hackage.
 
 - Add examples used in tutorial.
 
-### 1.0.16
+## bindings-DSL 1.0.16
 
 - Use correct value for `Storable` alignment instead of copying `sizeOf`.
 
-### 1.0.15
+## bindings-DSL 1.0.15
 
 - New hsc2hs template doesn't include some headers, so include it ourselves.
 
-### 1.0.14
+## bindings-DSL 1.0.14
 
 - Add functions to get pointers to fields from pointers to structures.
